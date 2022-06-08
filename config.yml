@@ -1,17 +1,21 @@
-INDIGO_WELCOME_MESSAGE: "The place for all your online learning"
-INDIGO_PRIMARY_COLOR: "#3b85ff" # cool blue
+INDIGO_WELCOME_MESSAGE: "Раздвигая границы учебных аудиторий"
+#"The place for all your online learning"
+INDIGO_PRIMARY_COLOR: "#01306e" # blue
+ICP_LICENSE_INFO: "LETIteach. Все права защищены, кроме отмеченных. edX, Open edX и соответствующие логотипы являются зарегистрированными товарными знаками edX Inc."
 
 # Footer links are dictionaries with a "title" and "url"
 # To remove all links, write:
 # INDIGO_FOOTER_NAV_LINKS: []
 # INDIGO_FOOTER_LEGAL_LINKS: []
 INDIGO_FOOTER_NAV_LINKS:
-  - title: "About"
-    url: "/about"
-  - title: "Contact"
+  - title: "О нас"
+    url: "https://www.etu.ru/ru/on-line-obuchenie/"
+  - title: "Центр помощи"
+    url: "/helpdesk"
+  - title: "Контакты"
     url: "/contact"
+  - title: "Технические требования"
+    url: "/requirements"
 INDIGO_FOOTER_LEGAL_LINKS:
-    - title: "Terms of service"
+    - title: "Пользовательское соглашение"
       url: "/tos"
-    - title: "Indigo theme for Open edX"
-      url: "https://github.com/overhangio/indigo"

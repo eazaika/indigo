@@ -1,14 +1,27 @@
-Indigo, a cool blue theme for Open edX
+Deep Blue, a cool blue theme for Open edX
 ======================================
 
-Indigo is an elegant, customizable theme for `Open edX <https://open.edx.org>`__.
+Deep Blue (based on Indigo) is an theme for `Open edX <https://open.edx.org>`
 
-.. image:: ./screenshots/01-landing-page.png
+.. image:: ./screenshots/frontpage.PNG
     :alt: Platform landing page
+.. image:: ./screenshots/frontpage2.PNG
+    :alt: Platform landing page active elements
 
-**Note**: This version of the Indigo theme is compatible with the Maple release of Open edX.
+**Note**: This version of the Indigo theme is compatible with the Maple release of Open edX
 
-You can view the theme in action at https://demo.openedx.overhang.io.
+You can view the Deep Blue theme in action at `devstack <http://devopen.etu.ru>`
+
+.. image:: ./screenshots/login.PNG
+    :alt: Platform login page
+
+Developed for `ETU University <https://etu.ru>` education platform `LETIteach <https://open.etu.ru>`
+
+.. image:: ./screenshots/dashboard.PNG
+    :alt: Platform dashboard page
+
+.. image:: ./screenshots/courses.PNG
+    :alt: Platform courses page
 
 Installation
 ------------

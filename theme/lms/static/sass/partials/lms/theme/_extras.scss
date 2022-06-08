@@ -26,11 +26,22 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
   font-family: $font-family-title;
 }
 
+.mobile-menu a {
+  color: $primary;
+  font-family: Plex;
+}
+
 #content.content-wrapper {
   @include media-breakpoint-up(lg) {
-    padding-top: $content-padding-top;
-    padding-bottom: $content-padding-bottom;
-    margin-top: $header-height;
+    //padding-top: $content-padding-top;
+    //padding-bottom: $content-padding-bottom;
+    padding: 0;
+    margin-top: 72px;
+    //margin-top: $header-height;
+    //background-color: $blue;
+  }
+  @include media-breakpoint-up(sm) {
+    padding: 0;
   }
   min-height: calc(100vh - #{$header-height + $content-padding-top + $content-padding-bottom + $footer-height}); // sticky footer
 }
@@ -46,16 +57,149 @@ header.global-header {
     z-index: 200; // necessary to keep the header on top of other elements
     overflow: visible;  // fix for Safari
   }
-  //background-color: #4c61bf;
+  background-color: #000e20;
   box-shadow: none;
+
+  border-bottom: 1px solid #000e20;
+}
+
+header.global-header .logo {
+  height: 45px !important;
+}
+
+.global-header .header-logo a {
+  @include media-breakpoint-up(lg) {
+    margin: 12px 0 3px 40px;
+  }
+  @include media-breakpoint-up(xl) {
+    margin: 12px 0 3px 40px;
+  }
+}
+
+.global-header .nav-links .main .nav-tab a {
+  color: #fff;
+
+  &.active {
+    border-bottom-color: #4e719d;
+  }
+
+  &:hover {
+    border-bottom-color: #4e719d;
+  }
+}
+
+.global-header .nav-links .secondary .nav-item.nav-item-dropdown {
+  color: #e8e7e2;
+}
+
+.global-header .nav-links .secondary .nav-item a {
+  color: #fff;
+
+  &:hover {
+    text-shadow: 0px 0px 6px #fff;
+  }
+}
+
+.global-header .nav-links .secondary .dropdown-user-menu {
+  background-color: #00142e;
+
+  .dropdown-item:hover {
+    background-color: #4e719d;
+    color: #fff;
+    text-shadow: 0px 0px 6px #fff;
+  }
+}
+
+.global-header .hamburger-menu .line {
+  background: #4e719d;
+}
+
+.global-header .nav-links .nav-item a {
+  //color: $blue-dark;
+  color: #fff;
+  //padding:30px 10px;
+  //background: $blue;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.global-header .nav-links .secondary a.btn{
+  color: #000;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.2);
+  background: #767c85;
+  //border: 1px solid $blue-dark;
+  border: 1px solid #000e20;
+
+}
+
+.global-header .nav-links .secondary a.register-btn:hover {
+  background: #17447e;
+  border: 1px solid #000e20;
+  color: #fff;
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.9);
+}
+
+.global-header .nav-links .secondary a.sign-in-btn {
+  box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7);
+
+  &.hover {
+    background: #fff;
+    color: #4e719d;
+    border: 1px solid #4e719d;
+  }
+}
+
+.mobile-menu .mobile-nav-link a {
+  font-weight: 500;
+  background-color: #00142e;
+  color: #fff;
+
+  &:hover {
+    background: #4e719d;
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+  }
+}
+
+header.global-header .nav-links .main {
+  @include media-breakpoint-up(lg) {
+    margin: 24px 0 0 20px;
+  }
 }
 
 header.global-header .nav-links .secondary .user-image-frame {
   border-radius: 0;
+  border: none;
 }
 
 header.global-header .nav-links .secondary .dropdown-user-menu {
   position: fixed;
+}
+
+.global-header .nav-links .nav-item a.explore-courses {
+  @include media-breakpoint-up(lg) {
+  border-top: 1px solid #00142e;
+  border-left: 1px solid #00142e;
+  border-right: 1px solid #00142e;
+  padding: 0 5px 0 5px;
+
+    &:hover {
+      padding: 2px 5px 25px 5px;
+      border-top: 1px solid #4e719d;
+      border-left: 1px solid #4e719d;
+      border-right: 1px solid #4e719d;
+    }
+  }
+}
+
+/////////////////// Header on courses top
+#root header .logo {
+  padding-bottom: 12px;
+}
+
+#root header .logo img {
+  height: 40px;
 }
 
 /////////////////// Sign in form
@@ -67,26 +211,157 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
     }
 }
 
+.login-register-content h1 {
+  color: $primary;
+}
+
+.login-register .action-primary {
+  background: $blue-dark;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
+  border: 1px solid #fff;
+  font-weight: 400;
+
+  &:hover {
+    background: #fff;
+    border: 1px solid $blue-dark;
+    color: $blue-dark;
+  }
+}
+
+.login-register .form-toggle {
+  &:hover {
+    color: $gray;
+    test-decoration: none !important;
+  }
+}
+
+.login-register .form-field input.checkbox+label {
+  font-size: small;
+}
+
+.login-register-content .side-container {
+  padding: 30px 40px 20px 20px;
+  max-width: 400px;
+  min-width: 400px;
+  min-height: 10px;
+  flex-grow: 1;
+  order: 2;
+}
+
+.login-register-content {
+  padding-top: 20px;
+}
+
+.login-register {
+  margin: 0;
+}
+
+.status-verification.is-accepted {
+  border-top: 3px solid #617795 !important;
+}
+
+/////////////////// Search courses catalog
+.find-courses .discovery-submit {
+  background: #00142e;
+  border: 1px solid #00142e;
+
+  &:hover {
+    background: #b2bbc8 !important;
+    border: 1px solid #b2bbc8;
+  }
+}
+
+.find-courses .discovery-input {
+  box-shadow: none;
+  border: 1px solid #c8c8c8;
+}
+
+.content-wrapper .find-courses {
+  background: $primary;
+}
+
+.find-courses .wrapper-search-context .search-status-label {
+  color: #fff;
+}
+
+.find-courses .search-facets .facet-option:hover {
+  background: $blue;
+}
+
+.find-courses .search-facets .color-header-search {
+  background: #4e719d;
+  color: #fff;
+  text-shadow: 0px 1.5px 0px rgba(0, 0, 0, 0.7);
+}
+
+.find-courses .courses-container .courses .course {
+  border-bottom: 2px solid #fff;
+  &:hover {
+    border-bottom: 2px solid #fff;
+  }
+}
+
+
 /////////////////// Home page
+.home {
+  background-color: $blue;
+}
+
 .home header {
   box-shadow: none;
-  background-color: #fff;
+  background-color: $blue-dark;
 }
 
 .home > header .title {
   box-shadow: none;
+  background-color: $blue-dark;
 }
 
 .home > header .outer-wrapper {
   padding: 0;
 }
 
+
 .home > header .title > .heading-group {
   width: 100%;
   text-align: center;
 }
+
+.home > header .title > .heading-group p {
+  color: #fff;
+  font-style: normal;
+  //padding: 5px;
+  font-size: 16px;
+  text-transform: lowercase;
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.4);
+}
+
 .home > header .title > .heading-group h1 {
-  text-align: center;
+  display: inline-block;
+
+  &.logo-let {
+    color: #000e20;
+    font-size: 84px;
+    font-weight: bolder;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7);
+  }
+  &.logo-it {
+    color: #fff;
+    font-weight: 400;
+    font-size: 94px;
+    letter-spacing: -5px;
+  }
+  &.logo-each {
+    color: #17447e;
+    font-size: 70px;
+    font-weight: bolder;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.7)
+  }
+}
+
+.course-info header.course-profile .intro-inner-wrapper .intro>.heading-group {
+  box-shadow: none;
 }
 
 .animation-home-header-pop-up, .home > header .outer-wrapper {
@@ -95,6 +370,32 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 
 .highlighted-courses .courses, .find-courses .courses {
   padding-top: 0;
+}
+
+.courses-container .courses .course {
+  //border-bottom: 1px solid $gray;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+
+  &:hover {
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+.courses-container .courses .course .course-image .cover-image .learn-more {
+  background: #000b1a;
+  border-color: #000b1a;
+  letter-spacing: 2px;
+}
+
+.courses-container .courses .course:hover .cover-image:before {
+  opacity: 0.7;
+}
+
+.courses-container .courses .course .course-info .course-date {
+  border-top: 1px solid $blue;
 }
 
 .home .courses-container .courses .courses-listing {
@@ -112,7 +413,51 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 
 ////////////////// User dashboard /dashboard
 .dashboard .main-container {
-  padding: initial;
+  //padding: initial;
+}
+
+.search-bar .search-field {
+  border-radius: 0;
+
+  &:focus-visible {
+    border-radius: 0;
+  }
+}
+
+.search-bar .search-button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background: #00142e;
+
+  &:hover {
+    background: #b2bbc8 !important;
+  }
+}
+
+.search-field-wrapper input[type="text"]:focus {
+  box-shadow: none;
+}
+
+.dashboard .main-container .my-courses .course .details .wrapper-course-details .course-title a {
+  color: #17447e;
+
+  &:hover {
+    text-shadow: none;
+  }
+}
+
+.dashboard .main-container .my-courses .course .details .enter-course {
+  border: 1px solid #4e719d;
+  color: #4e719d;
+
+  &:hover {
+    background: #4e719d;
+  }
+}
+
+.dashboard .main-container .my-courses .course .details .course-actions .action:hover {
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  text-decoration: none;
 }
 
 ////////////////// "View this course as staff/learner/..."
@@ -123,25 +468,95 @@ nav.wrapper-preview-menu {
     }
 }
 
+.btn-inverse-outline-primary {
+  border-radius: 0;
+}
+
+.nav-link {
+  font-weight: 400;
+}
+
+.nav-underline-tabs .nav-link {
+  font-weight: 400;
+}
+
+.btn-outline-primary {
+  border-radius: 0;
+}
+
+.btn-brand {
+  border-radius: 0;
+}
+
 ////////////////// Course about page
+.content-wrapper {
+  margin: 3px auto 0 auto;
+}
 .course-info header.course-profile {
-  background: #fff;
+  background: $blue-dark;
   box-shadow: none;
   border-bottom: none;
 
   .intro-inner-wrapper {
     border: none;
+    background: rgba(255,255,255,0.05);
     box-shadow: none;
+
+    .intro>.heading-group h1, span {
+      color: #fff;
+      text-shadow: none;
+      box-shadow: none;
+    }
+
+    .intro .main-cta a.register {
+      background: #456185;
+      color: #fff;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+      text-shadow: none;
+
+      &:hover {
+        background: #00142e !important;
+        color: #4e719d;;
+        text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.4);
+      }
+    }
   }
 }
 
+.social-sharing .sharing-message {
+  display: none;
+}
+
+.course-info .course-sidebar header .social-sharing .share {
+  color: rgba(0,31,72,0.9);
+}
 .course-info {
   .container {
     padding-bottom: 0;
   }
+
+  .details {
+    font: normal 0.8em/1.3em Open Sans;
+  }
+
   .details .inner-wrapper > section {
     margin-bottom: 0;
   }
+
+  .course-sidebar .important-dates li {
+    .important-dates-item-text {
+      font-weight: 500;
+      color: $gray-dark;
+    }
+
+    .icon {
+      padding: 0;
+      margin: 0 6px 0 0;
+    }
+  }
+
   header.course-profile .intro-inner-wrapper .intro .main-cta {
     span.register {
       @extend %t-copy-base;
@@ -161,6 +576,27 @@ nav.wrapper-preview-menu {
 /////////////////// Course search
 .find-courses, .university-profile {
   background-color: #fff;
+}
+
+.home>header .title .course-search .search-input {
+  border: 0;
+  border-radius: 0;
+  height: 40px;
+}
+
+.home>header .title .course-search .search-button {
+  height: 40px;
+  width: 48px;
+  padding: 0 12px;
+  background: #00142e;
+  border: 2px solid #00142e;
+  border-radius: 0;
+
+  &:hover {
+    background: #b2bbc8;
+    border: 2px solid #b2bbc8;
+    border-radius: 0;
+  }
 }
 
 /////////////////// User profile
@@ -187,23 +623,84 @@ nav.wrapper-preview-menu {
   border-bottom-color: $primary;
 }
 
-/////////////////// Footer
+
+////////////////// Footer
 .wrapper-footer {
   box-shadow: none;
   padding: 25px 40px;
+  background-color: $gray-light;
 
   .wrapper-logo {
-      display: none;
+      a {
+          float: none;
+
+          &.leti-footer-logo {
+            //border-right: 1px solid $gray;
+            padding-right: 13px;
+          }
+          &.edx-footer-logo {
+            padding-left: 13px;
+            padding-right: 13px;
+          }
+          &.tutor-footer-logo {
+            padding-left: 13px;
+            padding-right: 13px;
+          }
+          &.program-5-100-footer-logo {
+            padding-left: 13px;
+          }
+      }
   }
   .copyright {
-      display: none;
+
   }
   .nav-legal ul {
       display: inline-block;
   }
+  footer#footer-openedx .colophon {
+      width: auto;
+
+      .nav-colophon li a {
+        padding: 0 4px 2px 4px;
+        font-size: 15px;
+
+        @include media-breakpoint-up(lg) {
+          &:hover {
+            color: #fff;
+            border-bottom: none;
+            background: #adb8c5;
+            opacity: 0.9;
+            padding: 29px 4px 2px 4px;
+          }
+        }
+
+        @include media-breakpoint-up(md) {
+          &:hover {
+            color: #fff;
+            border-bottom: none;
+            background: #adb8c5;
+            opacity: 0.9;
+            padding: 29px 4px 2px 4px;
+          }
+        }
+      }
+  }
   footer#footer-openedx .footer-about-openedx {
       a {
           float: none;
+
+          &.leti-footer-logo {
+            border-right: 1px solid $gray;
+            padding-right: 20px;
+          }
+          &.edx-footer-logo {
+            border-right: 1px solid $gray;
+            padding-left: 20px;
+            padding-right: 20px;
+          }
+          &.program-5-100-footer-logo {
+            padding-left: 20px;
+          }
       }
       p {
           text-align: right;

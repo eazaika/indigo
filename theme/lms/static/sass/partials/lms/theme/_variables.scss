@@ -5,5 +5,34 @@ $font-family-title: Plex;
 $serif: Crimson;
 $f-sans-serif: Crimson, 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;
 
+// Theme colors
+//
+// Note: define colors needed by your theme first
+
+// Define the primary red color
+$blue: #01306e;
+$blue-dark: #001F48;
+$blue-border: #042856;
+$blue-light: #a2c5f4;
+
+$green: #449d44;
+$green-border: #3d8b3d;
+$green-light: #449d44;
+
+$red: #b20610;
+
+$gray: #a8abaf;
+$gray-light: #e8e7e2;
+$gray-mid-light: #ececec;
+$gray-super-light: #f3f3ef;
+$gray-dark: #808080;
+$yellow-gray: #ceab82;
+
+// Make blue the primary color
+$primary: $blue;
+$inverse: #fff;
+
+$header-height: 72px;
+
 // Initialize the Open edX Bootstrap theme
 @import 'edx-bootstrap/sass/open-edx/theme';
