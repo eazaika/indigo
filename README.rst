@@ -1,7 +1,7 @@
 Deep Blue, a cool blue theme for Open edX
 ======================================
 
-Deep Blue (based on Indigo) is an theme for `Open edX <https://open.edx.org>`
+Deep Blue (based on Indigo) is an theme for `Open edX <https://open.edx.org>`__
 
 .. image:: ./screenshots/frontpage.PNG
     :alt: Platform landing page
@@ -10,12 +10,12 @@ Deep Blue (based on Indigo) is an theme for `Open edX <https://open.edx.org>`
 
 **Note**: This version of the Indigo theme is compatible with the Maple release of Open edX
 
-You can view the Deep Blue theme in action at `devstack <http://devopen.etu.ru>`
+You can view the Deep Blue theme in action at `devstack <http://devopen.etu.ru>`__
 
 .. image:: ./screenshots/login.PNG
     :alt: Platform login page
 
-Developed for `ETU University <https://etu.ru>` education platform `LETIteach <https://open.etu.ru>`
+Developed for `ETU University <https://etu.ru>`__ education platform `LETIteach <https://open.etu.ru>`__
 
 .. image:: ./screenshots/dashboard.PNG
     :alt: Platform dashboard page
