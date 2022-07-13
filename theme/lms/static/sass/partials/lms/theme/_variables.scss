@@ -10,7 +10,7 @@ $f-sans-serif: Crimson, 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-ser
 // Note: define colors needed by your theme first
 
 // Define the primary red color
-$blue: #01306e;
+$blue: #00497c;
 $blue-dark: #001F48;
 $blue-border: #042856;
 $blue-light: #a2c5f4;
@@ -32,7 +32,7 @@ $yellow-gray: #ceab82;
 $primary: $blue;
 $inverse: #fff;
 
-$header-height: 72px;
+$header-height: 71px;
 
 // Initialize the Open edX Bootstrap theme
 @import 'edx-bootstrap/sass/open-edx/theme';
