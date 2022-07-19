@@ -460,17 +460,17 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
   background-position: center;
   background-attachment: fixed;
   width: 100%;
-  height: 100%;
+  height: 90%;
   @include media-breakpoint-up(xl) {
-    height: 130%;
+    height: 90%;
   }
   @include media-breakpoint-up(lg) {
-    height: 130%;
+    height: 90%;
   }
 }
 
 .home {
-  background-color: #00417d;
+  background-color: #003f7a;
 }
 
 .home header {
