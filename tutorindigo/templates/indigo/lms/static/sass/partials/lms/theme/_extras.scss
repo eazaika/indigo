@@ -45,6 +45,15 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
   @include media-breakpoint-up(sm) {
     padding: 0;
   }
+  background-image: url('../images/back.png');
+  background-color: #00417d;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
   margin-top: 71px;
   min-height: calc(100vh - #{$header-height + $content-padding-top + $content-padding-bottom + $footer-height}); // sticky footer
 }
@@ -70,7 +79,7 @@ header.global-header {
   overflow: visible;
   background-color: #00407c;
   box-shadow: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgb(51, 102, 150);
   position: absolute;
   height: 72px;
 }
@@ -81,6 +90,9 @@ header.global-header .main-header {
 
 header.global-header .logo {
   height: 45px !important;
+  background: #265c90;
+  border-radius: 10px;
+  padding: 7px 13px 7px 13px;
 }
 
 .fixed-header {
@@ -102,37 +114,29 @@ header.global-header .logo {
 }
 
 .global-header .header-logo a {
-  @include media-breakpoint-up(lg) {
-    margin: 14px 0 3px 10px !important;
-  }
-  @include media-breakpoint-up(xl) {
-    margin: 13px 0 3px 10px;
-  }
-  @include media-breakpoint-up(md) {
-    margin: 13px 0 3px 10px;
-    margin-left: 50%;
-  }
-  @include media-breakpoint-up(sm) {
-    margin: 13px 0 3px 10px;
-    margin-left: 50%;
-  }
+  margin-top: 6px !important;
+  margin-right: 0 !important;
+  margin-bottom: 3px !important;
+  margin-left: 50%;
+
+  margin: 15px 0 0 8px;
 }
 
 .global-header .nav-links .main .nav-tab a {
   color: #fff;
   padding: 23px 6px 24px;
   font-weight: 300;
-  background: rgba(255, 255, 255, 0.15);
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  background: rgb(51, 107, 156);
+  border-bottom: 1px dashed rgb(92, 135, 173);
 
   &.active {
-    background: rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgb(51, 107, 156);
+    border-bottom: 1px dashed rgb(92, 135, 173);
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgb(26, 83, 137);
+    border-bottom: 1px solid rgb(109, 145, 180);
   }
 }
 
@@ -148,23 +152,31 @@ header.global-header .logo {
 }
 
 .global-header .nav-links .secondary .toggle-user-dropdown {
-  padding: 5px;
-  margin-right: 30px;
+  padding: 3px;
+  //margin: 0px;
+}
+
+.global-header .nav-links .top-user-menu {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  float: right;
+  align-items: center;
 }
 
 .global-header .nav-links .secondary {
-  margin: 7px 10px 10px 10px;
+  margin: 7px 0px 0px 4px;
   float: right;
   height: 55px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgb(51, 107, 156);
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
 .global-header .nav-links .secondary .nav-item {
-  margin: -2px 2px;
+  margin: 0;
   padding: 0;
 }
 
@@ -190,13 +202,13 @@ header.global-header .logo {
   background: rgb(0, 64, 124);
   top: 70px;
   right: 0;
-  border-top: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  border-left: 1px dashed rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgb(0, 64, 124);
+  border-right: 1px solid rgb(0, 64, 124);
+  border-bottom: 1px solid rgb(51, 107, 156);
+  border-left: 1px solid rgb(51, 107, 156);
 
   .dropdown-item:hover {
-    background-color: rgba(0, 64, 124, 0.15);
+    background-color: rgb(51, 107, 156);
     color: #fff;
     font-weight: 300;
     text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.2);
@@ -244,17 +256,26 @@ header.global-header .logo {
     background: rgba(0, 64, 124, 0.9);
     border-bottom: 1px dashed #fff;
   }
+
+  &:focus {
+    background: #336796;
+  }
 }
 
 
 header.global-header .nav-links .main {
   @include media-breakpoint-up(lg) {
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
   }
 }
 
 header.global-header .nav-links .secondary .user-image-frame {
   border: none;
+  margin: 0px 0px 0px 5px;
+}
+
+header.global-header .nav-links .secondary .username {
+  margin: 0px 5px 0px 0px;
 }
 
 header.global-header .nav-links .secondary .dropdown-user-menu {
@@ -291,20 +312,34 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
     }
 }
 
+.login-register .form-field .tip {
+  padding: 2px;
+}
+
 .login-register-content h1 {
   color: $primary;
 }
 
 .login-register .action-primary {
-  background: #00407c;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
-  border: 1px solid #fff;
+  background: #1c3868;
+  border: 1px solid #1c3868;
+  border-radius: 10px;
+  box-shadow: none;
   font-weight: 400;
 
   &:hover {
     background: #fff;
-    border: 1px solid $blue-dark;
-    color: $blue-dark;
+    border: 1px solid #aec2d5;
+    color: #5c86af;
+    box-shadow: 4px 4px 0px rgba(38, 92, 144, 0.3), 8px 8px 0px rgba(38, 92, 144, 0.1);
+  }
+
+  &:active {
+    text-shadown: none;
+  }
+
+  &:focus {
+    text-shadown: none;
   }
 }
 
@@ -315,8 +350,16 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
   }
 }
 
+.login-register .form-field input {
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1), 8px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
 .login-register .form-field input.checkbox+label {
   font-size: small;
+}
+
+.login-register .submission-error {
+  border-bottom: 3px double #a0050e;
 }
 
 .login-register-content .side-container {
@@ -337,12 +380,12 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 }
 
 .status-verification.is-accepted {
-  border-top: 3px solid #00407c !important;
+  border-top: 3px double #aec2d5 !important;
 }
 
 .status-verification .recovery-password a {
-  color: #f92727;
-  border-bottom: 1px dashed #f92727;
+  color: #a0050e;
+  border-bottom: 1px dashed #a0050e;
   text-decoration: none !important;
 
   &:hover {
@@ -620,14 +663,16 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 }
 
 .floating-username {
+  visibility: hidden;
   position: absolute;
   opacity: 0;
   box-sizing: border-box;
   transition: all 0.15s ease-out 0s;
-  background: rgba(255, 255, 255, 0.9);
+  background: #fff;
   color: #00407c;
   border-radius: 5px;
   padding: 1px 5px 1px 5px;
+  margin: 45px 0px 0px 0px;
   text-align: center;
   box-shadow: 0 4px 25px 0 rgba(255, 255, 255, 0.5);
   right: 1%;
@@ -656,6 +701,32 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 
   &:hover {
     background: transparent !important;
+  }
+}
+
+.empty-dashboard-message {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.empty-dashboard-message p {
+  text-shadow: none;
+  color: #fff;
+}
+
+.empty-dashboard-message a.btn {
+  box-shadow: none;
+  background-color: #3372a2;
+  border: 1px dashed #5396c8;
+  text-transform: lowercase;
+
+  &:hover {
+    box-shadow: none;
+    border-top: 1px solid #336b9c;
+    border-bottom: 1px solid #336b9c;
+
+    border-left: 1px solid #5396c8;
+    border-right: 1px solid #5396c8;
   }
 }
 
@@ -695,10 +766,6 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 
 .dashboard .main-container .my-courses .course .details .wrapper-course-details .course-title a {
   color: #fff;
-
-  &:hover {
-    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.3);
-  }
 }
 
 .dashboard .main-container .my-courses .course .details .enter-course {
@@ -1005,7 +1072,7 @@ nav.wrapper-preview-menu {
 .wrapper-footer {
   box-shadow: none;
   padding: 25px 40px;
-  background-color: $gray-light;
+  background-color: #dededf;
 
   .wrapper-logo {
       a {
@@ -1034,25 +1101,24 @@ nav.wrapper-preview-menu {
       width: auto;
 
       .nav-colophon li a {
-        color: #000;
         padding: 29px 5px 4px 5px;
-        background: rgba(255, 255, 255, 0.5);
+        background: #fbfafa;
         font-size: 15px;
         border: none;
 
         @include media-breakpoint-up(lg) {
           &:hover {
-            color: #71747c;
-            opacity: 0.7;
+            color: #333;
             border: none;
+            background: #ededed;
           }
         }
 
         @include media-breakpoint-up(md) {
           &:hover {
-            color: #71747c;
-            opacity: 0.7;
+            color: #333;
             border: none;
+            background: #ededed;
           }
         }
       }

@@ -1,7 +1,7 @@
 INDIGO_WELCOME_MESSAGE: "Раздвигая границы учебных аудиторий"
 #"The place for all your online learning"
 INDIGO_PRIMARY_COLOR: "#01306e" # blue
-ICP_LICENSE_INFO: "LETIteach. Все права защищены, кроме отмеченных. edX, Open edX и соответствующие логотипы являются зарегистрированными товарными знаками edX Inc."
+ICP_LICENSE_INFO: "LETIteach. Все права защищены. edX, Open edX и соответствующие логотипы являются зарегистрированными товарными знаками edX Inc."
 
 # Footer links are dictionaries with a "title" and "url"
 # To remove all links, write:
