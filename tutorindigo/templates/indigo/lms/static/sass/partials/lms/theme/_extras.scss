@@ -27,8 +27,9 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
 }
 
 .mobile-menu {
-  margin: 25px 0 -10px;
+  margin: 30px 0 -10px;
   width: 100%;
+  border-top: none;
 }
 
 .mobile-menu a {
@@ -120,6 +121,12 @@ header.global-header .logo {
   margin-left: 50%;
 
   margin: 15px 0 0 8px;
+
+  @include media-breakpoint-down(md) {
+    .logo {
+      margin-left: 60px !important;
+    }
+  }
 }
 
 .global-header .nav-links .main .nav-tab a {
@@ -162,10 +169,11 @@ header.global-header .logo {
   flex-direction: row;
   float: right;
   align-items: center;
+  margin-right: 7px;
 }
 
 .global-header .nav-links .secondary {
-  margin: 7px 0px 0px 4px;
+  margin: 7px 6px 0px 4px;
   float: right;
   height: 55px;
   border-radius: 10px;
@@ -215,8 +223,13 @@ header.global-header .logo {
   }
 }
 
+.global-header .hamburger-menu {
+  top: 25px;
+}
+
 .global-header .hamburger-menu .line {
-  background: #3370a0;
+  background: #fff;
+  height: 1px;
 }
 
 .global-header .nav-links .nav-item a {
@@ -243,6 +256,7 @@ header.global-header .logo {
   }
 }
 
+
 .mobile-menu .mobile-nav-link {
   overflow: inherit;
 }
@@ -253,7 +267,7 @@ header.global-header .logo {
   color: #fff;
 
   &:hover {
-    background: rgba(0, 64, 124, 0.9);
+    background: #336b9c;
     border-bottom: 1px dashed #fff;
   }
 
@@ -293,6 +307,7 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
     }
   }
 }
+
 
 /////////////////// Header on courses top
 #root header .logo {
@@ -437,7 +452,7 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
   color: #fff;
   border-top: 1px dashed rgba(255, 255, 255, 0.1);
   font-weight: 400;
-  text-shadow: 2px 1px 0px rgba(255, 255, 255, 0.3);
+  text-shadow: none;
   text-align: right;
 }
 
@@ -576,6 +591,7 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 
   &:hover {
     box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.2), 12px 12px 0px rgba(255, 255, 255, 0.2); 
+    background: #fff;
   }
 }
 
@@ -599,7 +615,7 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
   }
 
   &:hover {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .learn-more {
@@ -613,7 +629,7 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
   left: 0;
   display: inline !important;
   background: rgba(255, 255, 255, 0.4);
-  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5);
+  text-shadow: 0px 0px 6px #126f9a;
   letter-spacing: 2px;
   color: #fff;
   height: 53px;
@@ -717,16 +733,14 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 .empty-dashboard-message a.btn {
   box-shadow: none;
   background-color: #3372a2;
-  border: 1px dashed #5396c8;
+  border: 1px solid #336b9c;
+  border-left: 3px double #5396c8;
+  border-right: 3px double #5396c8;
   text-transform: lowercase;
 
   &:hover {
     box-shadow: none;
-    border-top: 1px solid #336b9c;
-    border-bottom: 1px solid #336b9c;
-
-    border-left: 1px solid #5396c8;
-    border-right: 1px solid #5396c8;
+    border: 1px solid #336b9c;
   }
 }
 
@@ -766,6 +780,13 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 
 .dashboard .main-container .my-courses .course .details .wrapper-course-details .course-title a {
   color: #fff;
+}
+
+.courses-container .courses .course .course-info .course-title {
+  color: #717171;
+  &:hover {
+    color: #454545;
+  }
 }
 
 .dashboard .main-container .my-courses .course .details .enter-course {
@@ -1068,6 +1089,14 @@ nav.wrapper-preview-menu {
 }
 
 
+.container.about {
+  color: #fff;
+
+  h1 {
+    color: #fff;
+  }
+}
+
 ////////////////// Footer
 .wrapper-footer {
   box-shadow: none;
@@ -1097,10 +1126,18 @@ nav.wrapper-preview-menu {
   .nav-legal ul {
       display: inline-block;
   }
+  footer#footer-openedx a {
+    color: #717171;
+    &:hover {
+      color: #454545;
+      border-bottom: none;
+    }
+  }
   footer#footer-openedx .colophon {
       width: auto;
 
       .nav-colophon li a {
+        color: #717171;
         padding: 29px 5px 4px 5px;
         background: #fbfafa;
         font-size: 15px;
@@ -1108,7 +1145,7 @@ nav.wrapper-preview-menu {
 
         @include media-breakpoint-up(lg) {
           &:hover {
-            color: #333;
+            color: #454545;
             border: none;
             background: #ededed;
           }
@@ -1116,7 +1153,7 @@ nav.wrapper-preview-menu {
 
         @include media-breakpoint-up(md) {
           &:hover {
-            color: #333;
+            color: #454545;
             border: none;
             background: #ededed;
           }
