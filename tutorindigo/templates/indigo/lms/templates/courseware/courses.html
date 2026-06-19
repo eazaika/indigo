@@ -66,6 +66,43 @@
           </ul>
         </div>
 
+        % if course_discovery_enabled:
+        <nav class="courses-pagination" aria-label="${_('Course catalog pages')}" style="display: none;">
+          <button type="button" class="pagination-prev" aria-label="${_('Previous page')}">
+            <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
+          </button>
+          <span class="pagination-info">
+            <span class="pagination-current">1</span> / <span class="pagination-total">1</span>
+          </span>
+          <button type="button" class="pagination-next" aria-label="${_('Next page')}">
+            <span class="icon fa fa-chevron-right" aria-hidden="true"></span>
+          </button>
+        </nav>
+        % elif courses_page is not None and courses_page.paginator.num_pages > 1:
+        <nav class="courses-pagination" aria-label="${_('Course catalog pages')}">
+          % if courses_page.has_previous():
+          <a class="pagination-prev" href="?page=${courses_page.previous_page_number()}" aria-label="${_('Previous page')}">
+            <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
+          </a>
+          % else:
+          <span class="pagination-prev is-disabled" aria-hidden="true">
+            <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
+          </span>
+          % endif
+          <span class="pagination-info">
+            <span class="pagination-current">${courses_page.number}</span> / <span class="pagination-total">${courses_page.paginator.num_pages}</span>
+          </span>
+          % if courses_page.has_next():
+          <a class="pagination-next" href="?page=${courses_page.next_page_number()}" aria-label="${_('Next page')}">
+            <span class="icon fa fa-chevron-right" aria-hidden="true"></span>
+          </a>
+          % else:
+          <span class="pagination-next is-disabled" aria-hidden="true">
+            <span class="icon fa fa-chevron-right" aria-hidden="true"></span>
+          </span>
+          % endif
+        </nav>
+        % endif
 
         % if course_discovery_enabled:
         <aside aria-label="${_('Refine Your Search')}" class="search-facets phone-menu">
