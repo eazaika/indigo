@@ -1241,7 +1241,9 @@ nav.wrapper-preview-menu {
           }
         }
 
-        .cta-button {
+        .cta-button,
+        a.register,
+        a.add-to-cart {
           display: inline-block;
           box-sizing: border-box;
           padding: 12px 36px;
@@ -1256,10 +1258,11 @@ nav.wrapper-preview-menu {
           text-transform: none;
           text-shadow: none;
           box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2), 8px 8px 0px rgba(255, 255, 255, 0.2);
-          width: auto;
-          float: none;
+          width: auto !important;
+          float: none !important;
           cursor: pointer;
           transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+          background-image: none !important;
 
           &:visited {
             color: #fff;
@@ -1267,8 +1270,9 @@ nav.wrapper-preview-menu {
 
           &:hover,
           &:focus {
-            background: #fff;
-            color: $blue;
+            background: #fff !important;
+            background-image: none !important;
+            color: $blue !important;
             border-color: transparent;
             box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.2), 12px 12px 0px rgba(255, 255, 255, 0.2);
             text-decoration: none;
