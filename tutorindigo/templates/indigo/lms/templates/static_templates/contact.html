@@ -1,16 +1,46 @@
 <%page expression_filter="h"/>
-<%! from django.utils.translation import ugettext as _ %>
+<%!
+from django.utils.translation import ugettext as _
+from django.conf import settings
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
+%>
 <%inherit file="../main.html" />
 
 <%block name="pagetitle">${_("Contact")}</%block>
+<%block name="bodyclass">view-static-page view-contact</%block>
 
-<main id="main" aria-label="Content" tabindex="-1">
-    <section class="container about">
-        <h1>
-            <%block name="pageheader">${page_header or _("Contact")}</%block>
-        </h1>
-        <p>
-            <%block name="pagecontent">For any question regarding the usage of {{ PLATFORM_NAME }}, please get in touch with <a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>.</%block>
-        </p>
-    </section>
-</main>
+<%
+  platform_name = configuration_helpers.get_value('PLATFORM_NAME', settings.PLATFORM_NAME)
+  contact_email = configuration_helpers.get_value('CONTACT_EMAIL', settings.CONTACT_EMAIL)
+%>
+
+<div class="section-bkg-wrapper">
+    <main id="main" class="static-page-content" aria-label="Content" tabindex="-1">
+        <section class="static-page-panel contact-panel">
+            <header class="static-page-panel__header">
+                <h1>
+                    <%block name="pageheader">${page_header or _("Contact")}</%block>
+                </h1>
+                <p class="static-page-panel__lead">
+                    ${_("We are here to help. Reach out to our support team anytime.")}
+                </p>
+            </header>
+
+            <div class="contact-panel__body">
+                % if page_content:
+                    <div class="contact-panel__custom">
+                        <%block name="pagecontent">${page_content}</%block>
+                    </div>
+                % else:
+                    <p class="contact-panel__text">
+                        ${_("For questions about using %(platform_name)s, please contact us by email:") % dict(platform_name=platform_name)}
+                    </p>
+                    <a class="contact-panel__email" href="mailto:${contact_email | h}">
+                        <span class="contact-panel__email-icon fa fa-envelope-o" aria-hidden="true"></span>
+                        <span class="contact-panel__email-address">${contact_email}</span>
+                    </a>
+                % endif
+            </div>
+        </section>
+    </main>
+</div>
