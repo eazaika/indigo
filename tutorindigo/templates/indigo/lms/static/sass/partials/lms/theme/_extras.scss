@@ -248,6 +248,42 @@ header.global-header .logo {
   top: 25px;
 }
 
+.global-header .header-accessibility-widget {
+  float: right;
+  margin: 16px 10px 0 0;
+  z-index: 5;
+
+  @include media-breakpoint-down(md) {
+    margin-right: 58px;
+  }
+}
+
+.global-header .header-bvi-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgb(51, 107, 156);
+  border: 1px dashed rgb(92, 135, 173);
+  color: #fff !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+
+  &:hover,
+  &:focus {
+    background: rgb(26, 83, 137);
+    color: #fff !important;
+    text-decoration: none !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.global-header .header-bvi-link__icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
 .global-header .hamburger-menu .line {
   background: #fff;
   height: 1px;

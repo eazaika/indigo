@@ -1,0 +1,30 @@
+## mako
+<%namespace name='static' file='static_content.html'/>
+<script type="text/javascript" src="${static.url('js/bvi-core.js')}"></script>
+<script type="text/javascript">
+(function () {
+  'use strict';
+
+  function initBvi() {
+    if (!window.isvek || !window.isvek.Bvi) {
+      if (window.console && console.error) {
+        console.error('BVI: library is not available', window.isvek);
+      }
+      return;
+    }
+    new window.isvek.Bvi({
+      target: '.bvi-open',
+      fontSize: 16,
+      theme: 'white',
+      panelFixed: true,
+      lang: 'ru-RU'
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBvi);
+  } else {
+    initBvi();
+  }
+}());
+</script>
