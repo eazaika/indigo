@@ -714,6 +714,75 @@ body:has(.section-bkg-wrapper) {
   }
 }
 
+/////////////////// Logout page
+body.view-logout {
+  background-color: #00417d;
+}
+
+.logout-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+body.view-logout .logout-panel {
+  @extend %login-glass-panel;
+
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  text-align: center;
+  box-sizing: border-box;
+
+  @include media-breakpoint-down(md) {
+    padding: 32px 20px;
+  }
+
+  h1 {
+    color: #fff;
+    font-family: $font-family-title;
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.35;
+    margin: 0 0 24px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  p,
+  .logout-message {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin: 0;
+    text-align: center;
+  }
+
+  .logout-message a,
+  a {
+    color: #fff !important;
+    font-weight: 600;
+    text-decoration: underline !important;
+    text-decoration-line: underline !important;
+    text-decoration-color: rgba(255, 255, 255, 0.75) !important;
+    text-underline-offset: 3px;
+    border-bottom: none !important;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #fff !important;
+      text-decoration: underline !important;
+      text-decoration-line: underline !important;
+      text-decoration-color: #fff !important;
+      border-bottom: none !important;
+    }
+  }
+}
+
 /////////////////// Search courses catalog
 .find-courses .discovery-submit {
   background: transparent;
@@ -1219,6 +1288,155 @@ body:has(.section-bkg-wrapper) {
 
 .dashboard .main-container .my-courses .course .details .wrapper-course-details .course-info [class*="info-"] {
   color: #fff;
+}
+
+////////////////// Programs listing /dashboard/programs/
+body.view-programs,
+body:has(.program-list-wrapper) {
+  background-color: #00417d;
+}
+
+:not(.courseware) > #content.content-wrapper:has(.program-list-wrapper) {
+  padding: 40px 20px 80px 40px;
+  box-sizing: border-box;
+  background-image: url('../images/back.png');
+  background-color: #00417d;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.program-list-wrapper {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  box-sizing: border-box;
+
+  .program-cards-container {
+    float: none;
+    flex: 1 1 65%;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .sidebar {
+    float: none;
+    flex: 0 1 30%;
+    min-width: 260px;
+    padding: 0;
+  }
+}
+
+.program-list-wrapper:has(.empty-programs-message) {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .program-cards-container {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+
+.program-list-wrapper .sidebar .program-advertise {
+  @extend %login-glass-panel;
+
+  padding: 24px;
+  border: none;
+  box-sizing: border-box;
+
+  .advertise-message {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .new-programs-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.12), 8px 8px 0px rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: rgba(255, 255, 255, 0.95);
+      color: $blue;
+      border-color: transparent;
+    }
+  }
+}
+
+.empty-programs-message {
+  @extend %login-glass-panel;
+
+  float: none;
+  width: 100%;
+  max-width: 720px;
+  margin: 0;
+  padding: 48px 40px;
+  border: none;
+  background: $login-glass-bg;
+  text-align: center;
+  box-sizing: border-box;
+
+  @include media-breakpoint-down(md) {
+    padding: 32px 20px;
+  }
+
+  .hd-3 {
+    color: #fff;
+    font-family: $font-family-title;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.35;
+    margin: 0 0 28px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn,
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.12), 8px 8px 0px rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 12px 28px;
+    text-transform: none;
+    white-space: normal;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: rgba(255, 255, 255, 0.95);
+      color: $blue;
+      border-color: transparent;
+      box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.14), 12px 12px 0px rgba(255, 255, 255, 0.1);
+    }
+  }
 }
 
 ////////////////// "View this course as staff/learner/..."
