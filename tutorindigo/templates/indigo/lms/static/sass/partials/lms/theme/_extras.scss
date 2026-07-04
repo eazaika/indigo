@@ -380,6 +380,8 @@ header.global-header .nav-links .secondary .dropdown-user-menu {
 $login-glass-bg: rgba(255, 255, 255, 0.14);
 $login-glass-border: rgba(255, 255, 255, 0.28);
 $login-glass-highlight: rgba(255, 255, 255, 0.22);
+$login-accent-alert: #ff6b6b;
+$login-accent-alert-hover: #ff9e9e;
 
 %login-glass-panel {
   background: $login-glass-bg;
@@ -409,16 +411,28 @@ body:has(.section-bkg-wrapper) {
   }
 }
 
+$lk-sidebar-width: 720px;
+$lk-sidebar-height: 680px;
+
 .login-register-content {
   background: transparent !important;
   max-width: 1320px;
   margin: 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: 48px;
+
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
 
   h1 {
     color: #fff;
@@ -451,15 +465,16 @@ body:has(.section-bkg-wrapper) {
   padding: 32px 40px;
   margin: 0;
   max-width: 520px;
-  flex: 0 0 520px;
+  width: 520px;
+  flex: 0 1 520px;
   min-width: 0;
-  width: auto;
   box-sizing: border-box;
 
-  @include media-breakpoint-down(md) {
+  @media (max-width: 767px) {
     padding: 24px 20px;
-    flex: 1 1 100%;
+    width: 100%;
     max-width: 100%;
+    flex: 1 1 auto;
   }
 
   .header {
@@ -507,8 +522,19 @@ body:has(.section-bkg-wrapper) {
     font-size: 0.85em;
   }
 
-  .form-field label {
-    color: #fff;
+  .form-field [id$="-validation-error-msg"],
+  .form-field [id$="-validation-error-msg"] li {
+    color: $login-accent-alert !important;
+    font-weight: 600;
+  }
+
+  .form-field label,
+  .form-field label.error,
+  .form-field label.error .label-text,
+  .form-field label.error .label-required,
+  .form-field .label-required,
+  .form-field .label-required.error {
+    color: #fff !important;
     font-weight: 600;
   }
 
@@ -631,19 +657,27 @@ body:has(.section-bkg-wrapper) {
   @extend %login-glass-panel;
 
   padding: 28px 32px;
-  max-width: 620px;
-  min-width: 0;
-  min-height: 0;
-  flex: 1 1 560px;
-  order: 2;
+  flex: 0 0 $lk-sidebar-width;
+  width: $lk-sidebar-width;
+  max-width: $lk-sidebar-width;
+  height: $lk-sidebar-height;
+  min-height: $lk-sidebar-height;
+  max-height: $lk-sidebar-height;
+  align-self: flex-start;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
-  @include media-breakpoint-down(md) {
+  @media (max-width: 767px) {
+    flex: 1 1 auto;
+    width: 100%;
     max-width: 100%;
-    flex: 1 1 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
     padding: 20px 16px;
+    overflow: visible;
   }
 
   .profile-sidebar {
@@ -651,7 +685,8 @@ body:has(.section-bkg-wrapper) {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    min-height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .user-info {
@@ -661,22 +696,64 @@ body:has(.section-bkg-wrapper) {
   > .profile-sidebar > a,
   .profile-sidebar > a {
     display: block;
-    margin-top: auto;
+    margin-top: 20px;
     flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .lk-example-image {
     display: block;
     width: 100%;
     max-width: 100%;
-    min-height: 300px;
     height: 100%;
-    margin-top: 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    max-height: 100%;
+    margin-top: 0;
+    border: none;
+    box-shadow: none;
     object-fit: contain;
     object-position: center top;
+  }
+}
+
+// Keep LK sidebar height fixed regardless of registration form height.
+.section-bkg-wrapper #content-container.login-register-content {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  align-content: flex-start !important;
+
+  @media (max-width: 767px) {
+    flex-direction: column !important;
+    flex-wrap: wrap !important;
+  }
+
+  > .login-register {
+    align-self: flex-start;
+    flex: 0 1 520px;
+    width: 520px;
+    max-width: 520px;
+    min-width: 0;
+  }
+
+  > .side-container {
+    height: $lk-sidebar-height !important;
+    min-height: $lk-sidebar-height !important;
+    max-height: $lk-sidebar-height !important;
+    align-self: flex-start !important;
+    flex: 0 0 $lk-sidebar-width;
+    width: $lk-sidebar-width;
+    max-width: $lk-sidebar-width;
+
+    @media (max-width: 767px) {
+      flex: 1 1 auto;
+      width: 100%;
+      max-width: 100%;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+    }
   }
 }
 
@@ -690,7 +767,8 @@ body:has(.section-bkg-wrapper) {
   .status-title a {
     color: #fff;
     font-weight: 600;
-    font-size: 1.1em;
+    font-size: 16px;
+    line-height: 1.25;
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-color: rgba(255, 255, 255, 0.9);
@@ -705,8 +783,8 @@ body:has(.section-bkg-wrapper) {
 
   .status-note {
     color: rgba(255, 255, 255, 0.88);
-    font-size: 0.9em;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.25;
     padding-top: 8px !important;
     margin-top: 0;
 
@@ -721,15 +799,15 @@ body:has(.section-bkg-wrapper) {
     }
 
     &.recovery-password a {
-      color: #ff6b6b !important;
+      color: $login-accent-alert !important;
       border-bottom: 1px dashed rgba(255, 107, 107, 0.8);
       text-decoration: none !important;
       font-weight: 600;
 
       &:hover,
       &:focus {
-        color: #ff9e9e !important;
-        border-bottom-color: #ff9e9e;
+        color: $login-accent-alert-hover !important;
+        border-bottom-color: $login-accent-alert-hover;
         text-decoration: none !important;
       }
     }
@@ -737,15 +815,15 @@ body:has(.section-bkg-wrapper) {
 }
 
 .login-register-content .side-container .recovery-password a {
-  color: #ff6b6b !important;
+  color: $login-accent-alert !important;
   border-bottom: 1px dashed rgba(255, 107, 107, 0.8);
   text-decoration: none !important;
   font-weight: 600;
 
   &:hover,
   &:focus {
-    color: #ff9e9e !important;
-    border-bottom-color: #ff9e9e;
+    color: $login-accent-alert-hover !important;
+    border-bottom-color: $login-accent-alert-hover;
     text-decoration: none !important;
   }
 }
@@ -1844,7 +1922,7 @@ nav.wrapper-preview-menu {
       .icon {
         padding: 0;
         margin: 0 6px 0 0;
-        font-size: 18px;
+        font-size: 16px;
         opacity: 1;
         color: $blue;
       }
