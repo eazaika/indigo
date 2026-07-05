@@ -510,6 +510,11 @@ $lk-sidebar-height: 680px;
     }
   }
 
+  .section-title,
+  .action-label {
+    color: #fff;
+  }
+
   .form-field {
     button.enterprise-login {
       display: none;
