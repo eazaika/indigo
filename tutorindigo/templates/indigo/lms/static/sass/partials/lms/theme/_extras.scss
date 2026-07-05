@@ -284,6 +284,121 @@ header.global-header .logo {
   line-height: 1;
 }
 
+.global-header .header-language-widget {
+  float: right;
+  margin: 16px 8px 0 0;
+  padding: 0;
+  z-index: 5;
+
+  @include media-breakpoint-down(md) {
+    margin-right: 8px;
+  }
+}
+
+.global-header .header-language-dropdown {
+  position: relative;
+}
+
+.global-header .header-language-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgb(51, 107, 156);
+  border: 1px dashed rgb(92, 135, 173);
+  color: #fff !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+
+  &:hover,
+  &:focus {
+    background: rgb(26, 83, 137);
+    color: #fff !important;
+    text-decoration: none !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+    outline: none;
+  }
+
+  &.open {
+    background: rgb(26, 83, 137);
+  }
+}
+
+.global-header .header-language-link__icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.global-header .header-language-link__code {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.global-header .dropdown-language-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: rgb(0, 64, 124);
+  border: 1px solid rgb(51, 107, 156);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 20;
+  overflow: hidden;
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover,
+    &:focus {
+      background: rgb(51, 107, 156);
+      color: #fff;
+      outline: none;
+    }
+
+    &.is-active {
+      background: rgb(51, 107, 156);
+      font-weight: 600;
+    }
+  }
+}
+
+.global-header .header-language-option__code {
+  flex: 0 0 auto;
+  min-width: 1.8em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.global-header .header-language-option__name {
+  flex: 1 1 auto;
+}
+
 .global-header .hamburger-menu .line {
   background: #fff;
   height: 1px;

@@ -1,0 +1,64 @@
+## mako
+<%page expression_filter="h"/>
+<%!
+from django.urls import reverse
+from django.utils.translation import ugettext as _
+
+from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_enabled, released_languages
+%>
+
+% if header_language_selector_is_enabled():
+    <% languages = released_languages() %>
+    % if len(languages) > 1:
+        <%
+            current_lang_code = LANGUAGE_CODE.split('-')[0].split('_')[0].upper()
+        %>
+        <form action="/i18n/setlang/" method="post" class="settings-language-form header-language-widget nav-item" id="language-settings-form">
+            <input type="hidden" id="csrf_token" name="csrfmiddlewaretoken" value="${csrf_token}">
+            % if user.is_authenticated:
+                <input title="preference api" type="hidden" class="url-endpoint" value="${reverse('preferences_api', kwargs={'username': user.username})}" data-user-is-authenticated="true">
+            % else:
+                <input title="session update url" type="hidden" class="url-endpoint" value="${reverse('session_language')}" data-user-is-authenticated="false">
+            % endif
+            <label class="sr">
+                <span>${_("Choose Language")}</span>
+                <select class="language-selector" id="settings-language-value" name="language" tabindex="-1" aria-hidden="true">
+                    % for language in languages:
+                        % if language[0] == LANGUAGE_CODE:
+                            <option value="${language[0]}" selected="selected">${language[1]}</option>
+                        % else:
+                            <option value="${language[0]}">${language[1]}</option>
+                        % endif
+                    % endfor
+                </select>
+            </label>
+            <div class="header-language-dropdown">
+                <button type="button"
+                        class="toggle-language-dropdown header-language-link"
+                        aria-label="${_("Choose Language")}"
+                        aria-expanded="false"
+                        aria-controls="header-language-menu"
+                        aria-haspopup="true">
+                    <span class="header-language-link__icon fa fa-globe" aria-hidden="true"></span>
+                    <span class="header-language-link__code" aria-hidden="true">${current_lang_code}</span>
+                </button>
+                <div class="dropdown-language-menu hidden" id="header-language-menu" role="menu" aria-label="${_("Choose Language")}">
+                    % for language in languages:
+                        <%
+                            lang_code = language[0].split('-')[0].split('_')[0].upper()
+                            is_current = language[0] == LANGUAGE_CODE
+                        %>
+                        <button type="button"
+                                class="dropdown-item header-language-option${' is-active' if is_current else ''}"
+                                role="menuitem"
+                                data-lang="${language[0]}"
+                                aria-current="${'true' if is_current else 'false'}">
+                            <span class="header-language-option__code">${lang_code}</span>
+                            <span class="header-language-option__name">${language[1]}</span>
+                        </button>
+                    % endfor
+                </div>
+            </div>
+        </form>
+    % endif
+% endif
