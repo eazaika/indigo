@@ -7,17 +7,23 @@
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
+from lms.djangoapps.ccx.overrides import get_current_ccx
 %>
 
 <%
   show_explore_courses = settings.FEATURES.get('COURSES_ARE_BROWSABLE')
   self.real_user = getattr(user, 'real_user', user)
-
+  is_course_about = course and request.path.rstrip('/').endswith('/about')
+  course_display_name = course.display_name_with_default if course else ''
+  if course and settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
+    ccx = get_current_ccx(course.id)
+    if ccx:
+      course_display_name = ccx.display_name
 %>
 
-<div class="nav-links">
+<div class="nav-links${' nav-links--course-about hidden' if is_course_about else ''}">
   <div class="main">
-    % if show_dashboard_tabs:
+    % if show_dashboard_tabs and not is_course_about:
       <div class="mobile-nav-item hidden-mobile nav-item nav-tab">
         <a class="${'active ' if reverse('dashboard') == request.path else ''}tab-nav-link" href="${reverse('dashboard')}"
              aria-current="${'page' if reverse('dashboard') == request.path else 'false'}">
@@ -33,7 +39,7 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
         </div>
       % endif
     % endif
-    % if show_explore_courses:
+    % if show_explore_courses and not is_course_about:
       <div class="mobile-nav-item hidden-mobile nav-item nav-tab">
           <a class="tab-nav-link discover-new-link" href="${marketing_link('COURSES')}"
              aria-current="${'page' if '/courses' in request.path else 'false'}">
@@ -42,5 +48,4 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
       </div>
     % endif
   </div>
-  <%include file="user_dropdown.html"/>
 </div>

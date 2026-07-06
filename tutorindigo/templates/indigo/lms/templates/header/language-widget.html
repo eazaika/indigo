@@ -34,12 +34,11 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
             </label>
             <div class="header-language-dropdown">
                 <button type="button"
-                        class="toggle-language-dropdown header-language-link"
+                        class="toggle-language-dropdown header-language-link header-action-link"
                         aria-label="${_("Choose Language")}"
                         aria-expanded="false"
                         aria-controls="header-language-menu"
                         aria-haspopup="true">
-                    <span class="header-language-link__icon fa fa-globe" aria-hidden="true"></span>
                     <span class="header-language-link__code" aria-hidden="true">${current_lang_code}</span>
                 </button>
                 <div class="dropdown-language-menu hidden" id="header-language-menu" role="menu" aria-label="${_("Choose Language")}">

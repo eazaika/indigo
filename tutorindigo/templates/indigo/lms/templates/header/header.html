@@ -23,6 +23,7 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
 
 <%
   unsupported_browser_alert_versions = configuration_helpers.get_value('UNSUPPORTED_BROWSER_ALERT_VERSIONS', settings.FEATURES.get('UNSUPPORTED_BROWSER_ALERT_VERSIONS'))
+  is_course_about = course and request.path.rstrip('/').endswith('/about')
 %>
 % if waffle.switch_is_active('enable_unsupported_browser_alert'):
   <script>
@@ -49,21 +50,28 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
             props={}
         )}
     % endif
-    <div class="main-header">
+    <div class="main-header${' main-header--course-about' if is_course_about else ''}">
         <%include file="navbar-logo-header.html" args="online_help_token=online_help_token"/>
-        <%include file="accessibility-widget.html"/>
-        <%include file="language-widget.html"/>
-        <div class="hamburger-menu" role="button" aria-label=${_("Options Menu")} aria-expanded="false" aria-controls="mobile-menu" tabindex="0">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
-        </div>
         % if user.is_authenticated:
             <%include file="navbar-authenticated.html" args="online_help_token=online_help_token"/>
-        % else:
+        % elif not is_course_about:
             <%include file="navbar-not-authenticated.html" args="online_help_token=online_help_token"/>
         % endif
+        <div class="header-toolbar${' header-toolbar--authenticated' if user.is_authenticated else ''}">
+            <%include file="accessibility-widget.html"/>
+            <%include file="language-widget.html"/>
+            % if user.is_authenticated:
+                <%include file="user_dropdown.html"/>
+            % elif is_course_about:
+                <%include file="header-guest-auth.html"/>
+            % endif
+            <div class="hamburger-menu" role="button" aria-label=${_("Options Menu")} aria-expanded="false" aria-controls="mobile-menu" tabindex="0">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </div>
+        </div>
     </div>
     <div class="mobile-menu hidden" aria-label=${_("More Options")} role="menu" id="mobile-menu"></div>
 </header>

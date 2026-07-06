@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _
 from six import text_type
 
 from openedx.core.djangoapps.user_authn.toggles import should_redirect_to_authn_microfrontend
+from lms.djangoapps.ccx.overrides import get_current_ccx
 %>
 
 <%
@@ -21,10 +22,16 @@ from openedx.core.djangoapps.user_authn.toggles import should_redirect_to_authn_
   can_discover_courses = settings.FEATURES.get('ENABLE_COURSE_DISCOVERY')
   allow_public_account_creation = static.get_value('ALLOW_PUBLIC_ACCOUNT_CREATION', settings.FEATURES.get('ALLOW_PUBLIC_ACCOUNT_CREATION'))
   should_redirect_to_authn_mfe = should_redirect_to_authn_microfrontend()
+  is_course_about = course and request.path.rstrip('/').endswith('/about')
+  course_display_name = course.display_name_with_default if course else ''
+  if course and settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
+    ccx = get_current_ccx(course.id)
+    if ccx:
+      course_display_name = ccx.display_name
 %>
-<nav class="nav-links" aria-label=${_("Supplemental Links")}>
+<nav class="nav-links${' nav-links--course-about hidden' if is_course_about else ''}" aria-label=${_("Supplemental Links")}>
   <div class="main">
-  % if mktg_site_enabled:
+  % if mktg_site_enabled and not is_course_about:
     <div class="mobile-nav-item hidden-mobile nav-item">
       <a href="${marketing_link('HOW_IT_WORKS')}">${_("How it Works")}</a>
     </div>
@@ -38,7 +45,7 @@ from openedx.core.djangoapps.user_authn.toggles import should_redirect_to_authn_
     </div>
   % endif
   % if allows_login:
-    % if can_discover_courses:
+    % if can_discover_courses and not is_course_about:
       <div class="mobile-nav-item hidden-mobile nav-item">
         <a href="/courses" class="explore-courses">${_('Explore courses')}</a>
       </div>
