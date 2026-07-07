@@ -2675,87 +2675,188 @@ nav.wrapper-preview-menu {
 }
 
 ////////////////// Footer
+@mixin footer-text-link {
+  display: inline;
+  color: #717171;
+  background: transparent;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &:hover,
+  &:focus {
+    color: #454545;
+    background: transparent;
+    border-bottom: 1px solid #a8abaf;
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+@mixin footer-inline-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    float: none;
+    margin: 0;
+    padding: 0;
+
+    &:not(:last-child)::after {
+      content: '|';
+      color: #a8abaf;
+      margin: 0 12px;
+      font-weight: 300;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+}
+
 .wrapper-footer {
   box-shadow: none;
   padding: 25px 40px;
   background-color: #dededf;
 
   .wrapper-logo {
-      a {
-          float: none;
+    a {
+      float: none;
 
-          &.leti-footer-logo {
-            padding-right: 13px;
-          }
-          &.edx-footer-logo {
-            padding-left: 13px;
-            padding-right: 13px;
-          }
-          &.tutor-footer-logo {
-            padding-left: 13px;
-            padding-right: 13px;
-          }
-          &.program-5-100-footer-logo {
-            padding-left: 13px;
-          }
+      &.leti-footer-logo {
+        padding-right: 13px;
       }
-  }
-  .nav-legal ul {
-      display: inline-block;
-  }
-  footer#footer-openedx a {
-    color: #717171;
-    &:hover {
-      color: #454545;
-      border-bottom: none;
+      &.edx-footer-logo {
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+      &.tutor-footer-logo {
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+      &.program-5-100-footer-logo {
+        padding-left: 13px;
+      }
     }
   }
-  footer#footer-openedx .colophon {
-      width: auto;
 
-      .nav-colophon li a {
-        color: #717171;
-        padding: 29px 5px 4px 5px;
-        background: #fbfafa;
-        font-size: 15px;
-        border: none;
+  footer#footer-openedx {
+    a:not([class*='footer-logo']) {
+      @include footer-text-link;
+    }
 
-        @include media-breakpoint-up(lg) {
-          &:hover {
-            color: #454545;
-            border: none;
-            background: #ededed;
-          }
-        }
-
-        @include media-breakpoint-up(md) {
-          &:hover {
-            color: #454545;
-            border: none;
-            background: #ededed;
-          }
-        }
-      }
+    .copyright {
+      margin: 16px 0 12px;
+      color: #808080;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: left;
+    }
   }
-  footer#footer-openedx .footer-about-openedx {
-      a {
-          float: none;
 
-          &.leti-footer-logo {
-            border-right: 1px solid $gray;
-            padding-right: 20px;
-          }
-          &.edx-footer-logo {
-            border-right: 1px solid $gray;
-            padding-left: 20px;
-            padding-right: 20px;
-          }
-          &.program-5-100-footer-logo {
-            padding-left: 20px;
-          }
+  footer#footer-openedx .colophon {
+    width: 100%;
+    max-width: 100%;
+    float: none;
+    text-align: left;
+
+    .nav-colophon {
+      margin-bottom: 8px;
+      float: none;
+
+      ol {
+        @include footer-inline-nav-list;
+        float: none;
       }
-      p {
-          text-align: right;
+
+      li {
+        float: none;
       }
+
+      li a {
+        @include footer-text-link;
+      }
+    }
+
+    .nav-legal {
+      text-align: left;
+    }
+
+    .nav-legal ul {
+      @include footer-inline-nav-list;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .nav-legal li a {
+      @include footer-text-link;
+      font-size: 14px;
+    }
+  }
+
+  .site-nav,
+  .legal-nav {
+    padding: 0;
+    justify-content: flex-start;
+  }
+
+  .site-nav .navbar-nav,
+  .legal-nav .navbar-nav {
+    @include footer-inline-nav-list;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .site-nav .nav-item,
+  .legal-nav .nav-item {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .site-nav .nav-link,
+  .legal-nav .nav-link {
+    @include footer-text-link;
+    padding: 0;
+  }
+
+  .legal-nav .nav-link {
+    font-size: 14px;
+  }
+
+  footer#footer-openedx .footer-about-openedx {
+    a {
+      float: none;
+
+      &.leti-footer-logo {
+        border-right: 1px solid $gray;
+        padding-right: 20px;
+      }
+      &.edx-footer-logo {
+        border-right: 1px solid $gray;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      &.program-5-100-footer-logo {
+        padding-left: 20px;
+      }
+    }
+
+    p {
+      text-align: right;
+    }
   }
 }

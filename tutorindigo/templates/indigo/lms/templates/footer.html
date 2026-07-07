@@ -15,32 +15,33 @@
     <footer>
       <div class="row">
         <div class="col-md-9">
-          {% if INDIGO_FOOTER_NAV_LINKS %}
           <nav class="navbar site-nav navbar-expand-sm" aria-label="${_('About')}">
             <ul class="navbar-nav">
-              {% for link in INDIGO_FOOTER_NAV_LINKS %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ link['url'] }}">{{ link['title'] }}</a>
-                </li>
-              {% endfor %}
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.etu.ru/ru/on-line-obuchenie/">${_('About')}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/helpdesk">${_('Help Centre')}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/contact">${_('Contact')}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/requirements">${_('Technical requirements')}</a>
+              </li>
             </ul>
           </nav>
-          {% endif %}
 
         ## Site operators: Please do not remove this paragraph! This attributes back to edX and makes your acknowledgement of edX's trademarks clear.
-        <p class="copyright">${u" | {icp}".format(icp=icp_license_info)}</p>
+        <p class="copyright">${_('© LETIteach. All rights reserved except where noted. edX, Open edX and their respective logos are registered trademarks of edX Inc.')}</p>
 
-          {% if INDIGO_FOOTER_LEGAL_LINKS %}
           <nav class="navbar legal-nav navbar-expand-sm" aria-label="${_('Legal')}">
             <ul class="navbar-nav">
-              {% for link in INDIGO_FOOTER_LEGAL_LINKS %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ link['url'] }}">{{ link['title'] }}</a>
-                </li>
-              {% endfor %}
+              <li class="nav-item">
+                <a class="nav-link" href="/tos">${_('Terms of Use')}</a>
+              </li>
             </ul>
           </nav>
-          {% endif %}
         </div>
       </div>
     </footer>
@@ -56,17 +57,22 @@
       % endif
     >
       <div class="colophon">
-        {% if INDIGO_FOOTER_NAV_LINKS %}
         <nav class="nav-colophon" aria-label="${_('About')}">
           <ol>
-              {% for link in INDIGO_FOOTER_NAV_LINKS %}
               <li>
-                <a href="{{ link['url'] }}">{{ link['title'] }}</a>
+                <a href="https://www.etu.ru/ru/on-line-obuchenie/">${_('About')}</a>
               </li>
-              {% endfor %}
+              <li>
+                <a href="/helpdesk">${_('Help Centre')}</a>
+              </li>
+              <li>
+                <a href="/contact">${_('Contact')}</a>
+              </li>
+              <li>
+                <a href="/requirements">${_('Technical requirements')}</a>
+              </li>
           </ol>
         </nav>
-        {% endif %}
         % if context.get('include_language_selector', footer_language_selector_is_enabled()):
             <%include file="${static.get_template_path('widgets/footer-language-selector.html')}"/>
         % endif
@@ -96,19 +102,15 @@
         </div>
 
         ## Site operators: Please do not remove this paragraph! This attributes back to edX and makes your acknowledgement of edX's trademarks clear.
-        <p class="copyright">{{ ICP_LICENSE_INFO }}</p>
+        <p class="copyright">${_('© LETIteach. All rights reserved except where noted. edX, Open edX and their respective logos are registered trademarks of edX Inc.')}</p>
 
-        {% if INDIGO_FOOTER_LEGAL_LINKS %}
         <nav class="nav-legal" aria-label="${_('Legal')}">
           <ul>
-            {% for link in INDIGO_FOOTER_LEGAL_LINKS %}
-              <li>
-                <a href="{{ link['url'] }}">{{ link['title'] }}</a>
-              </li>
-            {% endfor %}
+            <li>
+              <a href="/tos">${_('Terms of Use')}</a>
+            </li>
           </ul>
         </nav>
-        {% endif %}
       </div>
 
     </footer>
