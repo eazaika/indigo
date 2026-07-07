@@ -52,30 +52,4 @@ from lms.djangoapps.ccx.overrides import get_current_ccx
     %endif
   % endif
   </div>
-  <div class="secondary">
-    <div>
-      % if allows_login:
-        % if allow_public_account_creation:
-          % if should_redirect_to_authn_mfe:
-            <div class="mobile-nav-item hidden-mobile nav-item">
-                <a class="register-btn btn" href="${settings.AUTHN_MICROFRONTEND_URL}/register${login_query()}">${_("Register")}</a>
-            </div>
-          % else:
-            <div class="mobile-nav-item hidden-mobile nav-item">
-                <a class="register-btn btn" href="/register${login_query()}">${_("Register")}</a>
-            </div>
-          % endif
-        % endif
-        % if should_redirect_to_authn_mfe:
-          <div class="mobile-nav-item hidden-mobile nav-item">
-              <a class="sign-in-btn btn" href="${settings.AUTHN_MICROFRONTEND_URL}/login${login_query()}">${_("Sign in")}</a>
-          </div>
-        % else:
-          <div class="mobile-nav-item hidden-mobile nav-item">
-              <a class="sign-in-btn btn" href="/login${login_query()}">${_("Sign in")}</a>
-          </div>
-        % endif
-      % endif
-    </div>
-  </div>
 </nav>
