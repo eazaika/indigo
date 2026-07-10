@@ -5,13 +5,60 @@ $content-padding-bottom: 10px;
 $header-height: 71px;
 $footer-height: 125.5px;
 
-body, body.view-profile {
+body {
   min-height: initial;
   background-color: #fff;
 }
 
 body.view-dashboard {
   background-color: #00417d;
+}
+
+body.view-profile {
+  background-color: #f5f5f5;
+}
+
+body.view-dashboard,
+body.view-profile {
+  header.global-header {
+    background-color: #00407c;
+    position: absolute;
+    height: 72px;
+
+    .nav-links .main {
+      @include media-breakpoint-up(lg) {
+        margin: 0 0 0 10px;
+      }
+    }
+
+    .nav-links .main .nav-tab a {
+      color: #fff;
+      padding: 23px 6px 24px;
+      font-weight: 300;
+      background: rgb(51, 107, 156);
+      border-bottom: 1px dashed rgb(92, 135, 173);
+      margin-bottom: 0;
+
+      &.active {
+        background: rgb(51, 107, 156);
+        border-bottom: 1px dashed rgb(92, 135, 173);
+      }
+
+      &:hover {
+        background: rgb(26, 83, 137);
+        border-bottom: 1px solid rgb(109, 145, 180);
+        color: #fff;
+      }
+    }
+
+    .nav-links .nav-item a {
+      color: #fff;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
 }
 
 %btn-pl-default-base {
@@ -78,6 +125,24 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
   padding-left: 0 !important;
   padding-right: 0 !important;
   box-sizing: border-box;
+}
+
+:not(.courseware) > #content.content-wrapper:has(.wrapper-profile) {
+  background-image: none;
+  background-color: #f5f5f5;
+  background-attachment: scroll;
+  margin-top: $header-height;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 32px 48px 48px 24px !important;
+  box-sizing: border-box;
+  min-height: calc(100vh - #{$header-height + $content-padding-top + $content-padding-bottom + $footer-height});
+
+  @include media-breakpoint-down(md) {
+    padding: 16px 12px 32px !important;
+  }
 }
 
 ////////////////// Fonts
@@ -2641,18 +2706,7 @@ nav.wrapper-preview-menu {
   }
 }
 
-/////////////////// User profile
-.view-profile .profile-self .wrapper-profile-field-account-privacy {
-  margin-top: -$content-padding-top;
-}
-.view-profile .wrapper-profile {
-  background-color: #fff;
-}
-
-.view-profile .wrapper-profile-section-container-one .wrapper-profile-section-one {
-  border: solid $primary;
-  border-width: 5px 1px 1px 1px;
-}
+/////////////////// User profile — see sass/profile/_profile.scss
 
 // Account settings
 .wrapper-account-settings .wrapper-header {
@@ -2860,3 +2914,5 @@ nav.wrapper-preview-menu {
     }
   }
 }
+
+@import '../../../profile/profile';
