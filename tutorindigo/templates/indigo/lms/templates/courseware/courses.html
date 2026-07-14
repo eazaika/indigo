@@ -13,11 +13,19 @@
 
 % if course_discovery_enabled:
 <%block name="header_extras">
-  % for template_name in ["course_card", "filter_bar", "filter", "facet", "facet_option"]:
+  % for template_name in ["course_card"]:
   <script type="text/template" id="${template_name}-tpl">
       <%static:include path="discovery/${template_name}.underscore" />
   </script>
   % endfor
+  <%doc>
+  Расширенный поиск (фильтры и фасеты) — раскомментировать блок ниже для включения:
+  % for template_name in ["filter_bar", "filter", "facet", "facet_option"]:
+  <script type="text/template" id="${template_name}-tpl">
+      <%static:include path="discovery/${template_name}.underscore" />
+  </script>
+  % endfor
+  </%doc>
   <%static:require_module module_name="js/discovery/discovery_factory" class_name="DiscoveryFactory">
     DiscoveryFactory(
       ${course_discovery_meanings | n, dump_js_escaped_json},
@@ -52,11 +60,13 @@
           </form>
         </div>
 
+        <%doc>
         <div id="filter-bar" class="filters hide-phone is-collapsed">
         </div>
+        </%doc>
         % endif
 
-        <div class="courses${'' if course_discovery_enabled else ' no-course-discovery'}" role="region" aria-label="${_('List of Courses')}">
+        <div class="courses no-course-discovery" role="region" aria-label="${_('List of Courses')}">
           <ul class="courses-listing courses-list">
             %for course in courses:
             <li class="courses-listing-item">
@@ -66,20 +76,8 @@
           </ul>
         </div>
 
-        % if course_discovery_enabled:
-        <nav class="courses-pagination" aria-label="${_('Course catalog pages')}" style="display: none;">
-          <button type="button" class="pagination-prev" aria-label="${_('Previous page')}">
-            <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
-          </button>
-          <span class="pagination-info">
-            <span class="pagination-current">1</span> / <span class="pagination-total">1</span>
-          </span>
-          <button type="button" class="pagination-next" aria-label="${_('Next page')}">
-            <span class="icon fa fa-chevron-right" aria-hidden="true"></span>
-          </button>
-        </nav>
-        % elif courses_page is not None and courses_page.paginator.num_pages > 1:
-        <nav class="courses-pagination" aria-label="${_('Course catalog pages')}">
+        % if courses_page is not None and courses_page.paginator.num_pages > 1:
+        <nav class="courses-pagination courses-pagination-server" aria-label="${_('Course catalog pages')}">
           % if courses_page.has_previous():
           <a class="pagination-prev" href="?page=${courses_page.previous_page_number()}" aria-label="${_('Previous page')}">
             <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
@@ -105,12 +103,28 @@
         % endif
 
         % if course_discovery_enabled:
+        <nav class="courses-pagination courses-pagination-discovery" aria-label="${_('Course search pages')}" style="display: none;">
+          <button type="button" class="pagination-prev" aria-label="${_('Previous page')}">
+            <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
+          </button>
+          <span class="pagination-info">
+            <span class="pagination-current">1</span> / <span class="pagination-total">1</span>
+          </span>
+          <button type="button" class="pagination-next" aria-label="${_('Next page')}">
+            <span class="icon fa fa-chevron-right" aria-hidden="true"></span>
+          </button>
+        </nav>
+        % endif
+
+        <%doc>
+        % if course_discovery_enabled:
         <aside aria-label="${_('Refine Your Search')}" class="search-facets phone-menu">
           <h2 class="header-search-facets color-header-search">${_('Refine Your Search')}</h2>
           <section class="search-facets-lists">
           </section>
         </aside>
         % endif
+        </%doc>
 
       </section>
     </section>

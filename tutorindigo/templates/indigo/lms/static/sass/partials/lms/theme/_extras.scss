@@ -14,12 +14,14 @@ body.view-dashboard {
   background-color: #00417d;
 }
 
-body.view-profile {
+body.view-profile,
+body.view-account-settings {
   background-color: #f5f5f5;
 }
 
 body.view-dashboard,
-body.view-profile {
+body.view-profile,
+body.view-account-settings {
   header.global-header {
     background-color: #00407c;
     position: absolute;
@@ -142,6 +144,24 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
 
   @include media-breakpoint-down(md) {
     padding: 16px 12px 32px !important;
+  }
+}
+
+:not(.courseware) > #content.content-wrapper:has(.wrapper-account-settings) {
+  background-image: none;
+  background-color: #f5f5f5;
+  background-attachment: scroll;
+  margin-top: $header-height;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 32px 48px 48px !important;
+  box-sizing: border-box;
+  min-height: calc(100vh - #{$header-height + $content-padding-top + $content-padding-bottom + $footer-height});
+
+  @include media-breakpoint-down(md) {
+    padding: 16px 16px 32px !important;
   }
 }
 
@@ -1645,7 +1665,8 @@ body.view-contact {
   background-position: center;
   background-attachment: fixed;
   width: 100%;
-  height: 130%;
+  min-height: 100%;
+  padding-bottom: 60px;
 }
 
 .find-courses .wrapper-search-context .search-status-label {
@@ -2708,17 +2729,8 @@ nav.wrapper-preview-menu {
 
 /////////////////// User profile — see sass/profile/_profile.scss
 
-// Account settings
-.wrapper-account-settings .wrapper-header {
-  height: 100px;
-}
-.wrapper-account-settings .wrapper-header .header-title {
-  padding-top: 0;
-}
-.wrapper-account-settings .wrapper-header .account-nav button.active {
-  border-bottom-color: $primary;
-}
-
+@import '../../../profile/profile';
+@import '../../../account/account-settings';
 
 .container.about {
   color: #fff;
@@ -2914,5 +2926,3 @@ nav.wrapper-preview-menu {
     }
   }
 }
-
-@import '../../../profile/profile';

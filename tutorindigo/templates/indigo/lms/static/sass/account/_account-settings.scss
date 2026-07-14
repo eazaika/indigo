@@ -1,0 +1,514 @@
+// LETIteach — Account Settings (aligned with profile / course about page)
+
+$account-container-max-width: 1280px;
+$account-card-radius: 10px;
+$account-card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$account-muted-color: #313131;
+$account-secondary-color: #717171;
+$account-bg: #f5f5f5;
+$account-surface: #fff;
+$account-accent: $blue;
+$account-border: #e8e8e8;
+$account-body-font-stack: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+body.view-account-settings {
+    background-color: $account-bg;
+
+    .account-settings-section-body .u-field-dropdown {
+        select {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        button.u-field-value-display {
+            display: none !important;
+        }
+    }
+
+    .window-wrap {
+        background-color: $account-bg;
+    }
+
+    .wrapper-account-settings {
+        background: transparent;
+        width: 100%;
+        font: normal 1em/1.6em $account-body-font-stack;
+        color: $account-muted-color;
+    }
+
+    .account-settings-container {
+        max-width: $account-container-max-width;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    #main,
+    main#main {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        float: none;
+    }
+
+    .wrapper-header {
+        max-width: none;
+        width: 100%;
+        height: auto;
+        border-bottom: none;
+        margin-bottom: 32px;
+        padding-bottom: 0;
+        float: none;
+        clear: both;
+        overflow: hidden;
+    }
+
+    .header-title {
+        margin: 0 0 8px;
+        padding-top: 0;
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.25;
+        color: $account-accent;
+        font-family: $font-family-title;
+        text-align: left;
+        float: none;
+        width: 100%;
+    }
+
+    .account-nav,
+    .account-nav.left,
+    .account-nav.list-inline {
+        float: none !important;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        width: 100%;
+        margin: 16px 0 0;
+        padding: 0;
+        border-bottom: 2px solid $account-border;
+        list-style: none;
+        clear: both;
+
+        .account-nav-link {
+            float: none !important;
+            font-size: 1rem;
+            font-family: $account-body-font-stack;
+            font-weight: 600;
+            color: $account-secondary-color;
+            padding: 12px 20px;
+            margin: 0;
+            border: none;
+            border-bottom: 3px solid transparent;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            cursor: pointer;
+            transition: color 0.15s ease, border-color 0.15s ease;
+
+            &:hover,
+            &:focus {
+                color: $account-accent;
+                border-bottom-color: rgba($account-accent, 0.35);
+                text-decoration: none;
+            }
+
+            &.active {
+                color: $account-accent;
+                border-bottom-color: $account-accent;
+            }
+        }
+    }
+
+    .account-settings-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        float: none;
+        clear: both;
+
+        .account-settings-tabpanels {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+            float: none;
+            clear: both;
+
+            &:not(:last-child) {
+                margin-bottom: 0;
+            }
+        }
+
+        .section {
+            background: $account-surface;
+            margin: 0 0 24px 0 !important;
+            padding: 0;
+            width: 100%;
+            max-width: none;
+            float: none;
+            clear: both;
+            border: 2px solid $account-accent;
+            border-radius: $account-card-radius;
+            box-shadow: $account-card-shadow;
+            overflow: hidden;
+            box-sizing: border-box;
+
+            &:last-child {
+                margin-bottom: 0 !important;
+            }
+
+            .section-header {
+                margin: 0;
+                padding: 18px 24px;
+                background: $account-accent;
+                color: #fff;
+                font-family: $font-family-title;
+                font-size: 1.15em;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                border-bottom: none;
+            }
+
+            .account-settings-header-subtitle,
+            .account-settings-header-subtitle-warning {
+                margin: 0;
+                padding: 16px 24px 0;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                color: $account-secondary-color;
+                font-family: $account-body-font-stack;
+                font-weight: 400;
+            }
+
+            .account-settings-header-subtitle-warning {
+                color: #b91c1c;
+            }
+
+            .account-settings-section-message {
+                margin: 16px 24px 0;
+            }
+
+            .account-settings-section-body {
+                padding: 24px 32px 32px;
+                box-sizing: border-box;
+
+                @include media-breakpoint-down(md) {
+                    padding: 20px 16px 24px;
+                }
+
+                .u-field {
+                    display: block;
+                    width: 100%;
+                    border-bottom: 1px solid $account-border;
+                    padding: 20px 0;
+                    margin: 0;
+                    float: none;
+                    clear: both;
+
+                    &:last-child {
+                        border-bottom: none;
+                        margin-bottom: 0;
+                        padding-bottom: 0;
+                    }
+
+                    .field,
+                    .u-field-value,
+                    .u-field-message {
+                        width: 100% !important;
+                        max-width: none;
+                        float: none;
+                        display: block;
+                        vertical-align: top;
+                        position: static;
+                        box-sizing: border-box;
+                    }
+
+                    .field {
+
+                        .field-label,
+                        .u-field-title {
+                            display: block;
+                            margin: 0 0 8px;
+                            font-family: $font-family-title;
+                            font-size: 1em;
+                            font-weight: 600;
+                            color: $account-accent;
+                            line-height: 1.4;
+                        }
+
+                        .field-input,
+                        select,
+                        .u-field-value-readonly,
+                        .u-field-value-editable {
+                            font-family: $account-body-font-stack;
+                            font-size: 1rem;
+                            line-height: 1.5;
+                            color: $account-muted-color;
+                        }
+
+                        .field-input,
+                        select {
+                            max-width: 480px;
+                            width: 100%;
+                            padding: 10px 14px;
+                            border: 1px solid $account-border;
+                            border-radius: 5px;
+                            background: #fff;
+                            height: auto;
+                            box-shadow: none;
+
+                            &:focus {
+                                border-color: $account-accent;
+                                outline: none;
+                                box-shadow: 0 0 0 2px rgba($account-accent, 0.12);
+                            }
+                        }
+
+                        .u-field-link {
+                            display: inline-block;
+                            width: auto;
+                            padding: 10px 24px;
+                            font: 600 0.95rem/1.4 $account-body-font-stack;
+                            color: #fff;
+                            background: $account-accent;
+                            border: 1px solid $account-accent;
+                            border-radius: 5px;
+                            text-align: center;
+
+                            &:hover,
+                            &:focus {
+                                background: darken($account-accent, 8%);
+                                border-color: darken($account-accent, 8%);
+                                color: #fff;
+                            }
+                        }
+                    }
+
+                    .u-field-message {
+                        position: relative;
+                        width: 100% !important;
+                        padding: 8px 0 0;
+                        margin: 0;
+                        font-size: 0.875rem;
+                        line-height: 1.5;
+                        color: $account-secondary-color;
+
+                        .u-field-message-notification {
+                            position: relative;
+                            left: auto;
+                            top: auto;
+                            bottom: auto;
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+
+                    &.u-field-readonly {
+                        .u-field-title {
+                            font-size: 1em;
+                            color: $account-accent;
+                            padding: 0;
+                            margin-bottom: 8px;
+                        }
+
+                        .u-field-value {
+                            font-size: 1rem;
+                            color: $account-muted-color;
+                            line-height: 1.5;
+                            padding: 0;
+                            white-space: normal;
+                        }
+                    }
+
+                    &.u-field-dropdown {
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: flex-start;
+                        gap: 8px 32px;
+
+                        &.mode-display select,
+                        &.mode-edit select,
+                        &.mode-placeholder select {
+                            display: block !important;
+                        }
+
+                        button.u-field-value-display {
+                            display: none !important;
+                        }
+
+                        .u-field-value.field {
+                            flex: 0 1 320px;
+                            width: auto !important;
+                            max-width: 100%;
+                            position: relative;
+
+                            select {
+                                appearance: none;
+                                -webkit-appearance: none;
+                                -moz-appearance: none;
+                                display: block;
+                                width: 100%;
+                                max-width: 320px;
+                                min-height: 44px;
+                                padding: 10px 36px 10px 14px;
+                                border: 1px solid $account-border;
+                                border-radius: 5px;
+                                background: #fff;
+                                color: $account-muted-color;
+                                font-family: $account-body-font-stack;
+                                font-size: 1rem;
+                                line-height: 1.5;
+                                cursor: pointer;
+
+                                &:focus {
+                                    border-color: $account-accent;
+                                    outline: none;
+                                    box-shadow: 0 0 0 2px rgba($account-accent, 0.12);
+                                }
+                            }
+
+                            .icon-caret-down {
+                                position: absolute;
+                                right: 12px;
+                                bottom: 14px;
+                                pointer-events: none;
+
+                                &::after {
+                                    content: '';
+                                    display: block;
+                                    border-left: 6px solid transparent;
+                                    border-right: 6px solid transparent;
+                                    border-top: 7px solid $account-accent;
+                                }
+                            }
+                        }
+
+                        .u-field-message {
+                            flex: 1 1 240px;
+                            width: auto !important;
+                            min-width: 0;
+                            padding: 28px 0 0;
+                            margin: 0;
+                            font-size: 0.875rem;
+                            line-height: 1.5;
+                            color: $account-secondary-color;
+
+                            @include media-breakpoint-down(md) {
+                                flex-basis: 100%;
+                                padding-top: 0;
+                            }
+                        }
+                    }
+                }
+
+                .social-field-linked,
+                .social-field-unlinked {
+                    background: #fafafa;
+                    border: 1px solid $account-border;
+                    border-radius: 8px;
+                    box-shadow: none;
+                    margin: 0 0 16px;
+                    padding: 20px;
+                    width: 100%;
+                    box-sizing: border-box;
+
+                    .field-label {
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: $account-accent;
+                        text-align: left;
+                    }
+
+                    .u-field-link {
+                        color: $account-accent;
+                        border: 1px solid $account-accent;
+                        background: transparent;
+
+                        &:hover,
+                        &:focus {
+                            background: $account-accent;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+
+            .account-deletion-details {
+                padding: 0 32px 32px;
+
+                @include media-breakpoint-down(md) {
+                    padding: 0 16px 24px;
+                }
+
+                .btn-outline-primary {
+                    padding: 10px 24px;
+                    font: 600 0.95rem/1.4 $account-body-font-stack;
+                    color: #fff;
+                    background: $account-accent;
+                    border: 1px solid $account-accent;
+                    border-radius: 5px;
+
+                    &:hover,
+                    &:focus {
+                        background: darken($account-accent, 8%);
+                        border-color: darken($account-accent, 8%);
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    .account-settings-message {
+        margin-bottom: 24px;
+
+        .alert-message {
+            border-radius: 8px;
+            padding: 16px 20px;
+
+            .btn-alert-primary {
+                background: $account-accent;
+                border-color: $account-accent;
+                border-radius: 5px;
+                color: #fff;
+            }
+
+            .btn-alert-secondary {
+                color: $account-accent;
+                border: 1px solid $account-accent;
+                border-radius: 5px;
+                background: #fff;
+            }
+        }
+    }
+
+    .ui-loading-indicator,
+    .ui-loading-error {
+        text-align: center;
+        padding: 48px 0;
+        color: $account-secondary-color;
+        font-family: $account-body-font-stack;
+    }
+
+    .ui-loading-error {
+        margin-top: 16px;
+        padding: 16px 20px;
+        background: #fff5f5;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        color: #b91c1c;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+}

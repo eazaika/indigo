@@ -55,3 +55,50 @@ hooks.Filters.CONFIG_UNIQUE.add_items(
     [(f"INDIGO_{key}", value) for key, value in config["unique"].items()]
 )
 hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
+
+# Course catalog: simple search (no facet sidebar). Must run after edx-settings plugin patches.
+hooks.Filters.ENV_PATCHES.add_items(
+    [
+        (
+            "openedx-common-settings",
+            """
+FEATURES["ENABLE_COURSE_DISCOVERY"] = True
+# Расширенный поиск (фасеты) — раскомментировать для включения:
+# COURSE_DISCOVERY_FILTERS = ["org", "language", "zet"]
+COURSE_DISCOVERY_FILTERS = []
+""",
+        ),
+        (
+            "openedx-lms-development-settings",
+            """
+# Переопределяет plugins/edx-settings.yml (должно быть последним в development.py)
+FEATURES["ENABLE_COURSE_DISCOVERY"] = True
+COURSE_DISCOVERY_FILTERS = []
+""",
+        ),
+        (
+            "openedx-lms-production-settings",
+            """
+FEATURES["ENABLE_COURSE_DISCOVERY"] = True
+COURSE_DISCOVERY_FILTERS = []
+""",
+        ),
+    ]
+)
+
+_DISCOVERY_FACTORY = "lms/static/js/discovery/discovery_factory.js"
+_THEME_DISCOVERY_FACTORY = f"/openedx/themes/indigo/{_DISCOVERY_FACTORY}"
+_EDX_DISCOVERY_FACTORY = f"/openedx/edx-platform/{_DISCOVERY_FACTORY}"
+
+hooks.Filters.ENV_PATCHES.add_items(
+    [
+        (
+            "openedx-dockerfile",
+            f"RUN cp {_THEME_DISCOVERY_FACTORY} {_EDX_DISCOVERY_FACTORY}\n",
+        ),
+        (
+            "openedx-dev-dockerfile-post-python-requirements",
+            f"RUN cp {_THEME_DISCOVERY_FACTORY} {_EDX_DISCOVERY_FACTORY}\n",
+        ),
+    ]
+)
