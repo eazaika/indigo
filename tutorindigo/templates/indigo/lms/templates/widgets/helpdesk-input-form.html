@@ -127,20 +127,33 @@
     height: 30px;
     font-size: 14px;
     letter-spacing: 1px;
-    color: #fff;
-    border: none;
+    color: #fff !important;
+    border: 1px solid #01306e !important;
     border-radius: 5px;
     font-weight: 400;
     padding: 0;
-    text-shadow: none;
-    background: #01306e;
+    text-shadow: none !important;
+    background: #01306e !important;
+    background-image: none !important;
+    box-shadow: none !important;
     left: 20px;
     bottom: 40px;
     position: absolute;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
-  .helpdesk-widget .helpdesk-next-btn:hover {
-    box-shadow: 0 0 5px #05316e;
+  .helpdesk-widget .helpdesk-next-btn:hover,
+  .helpdesk-widget .helpdesk-next-btn:focus,
+  .helpdesk-widget .helpdesk-next-btn:hover:not(:disabled),
+  .helpdesk-widget .helpdesk-next-btn:focus:not(:disabled) {
+    background: #fff !important;
+    background-image: none !important;
+    color: #01306e !important;
+    border: 1px solid #01306e !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 
   .helpdesk-widget .helpdesk-step-3 {
@@ -348,13 +361,19 @@
             next.style.display = 'none';
             steps.innerHTML = stepLabel3;
 
-            fetch('/helpdesk/', {
+            fetch('/helpdesk/tickets/submit/', {
                 credentials: 'include',
-                referrer: '/helpdesk/',
+                referrer: '/helpdesk/tickets/submit/',
                 referrerPolicy: 'no-referrer-when-downgrade',
                 body: formatBody(),
                 method: 'POST',
                 mode: 'cors'
+            }).then(function (response) {
+                if (!response.ok && response.status !== 302) {
+                    console.error('Helpdesk submit failed', response.status);
+                }
+            }).catch(function (err) {
+                console.error('Helpdesk submit error', err);
             });
         }
     });
