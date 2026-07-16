@@ -1636,6 +1636,192 @@ body.view-contact {
   word-break: break-all;
 }
 
+/////////////////// Contact directory
+.contact-page {
+  max-width: 1080px;
+}
+
+.contact-directory {
+  width: 100%;
+  color: #fff;
+  font-family: $f-sans-serif;
+
+  a {
+    color: #fff !important;
+    text-decoration: underline !important;
+    text-decoration-color: rgba(255, 255, 255, 0.65) !important;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus {
+      color: #fff !important;
+      text-decoration-color: #fff !important;
+    }
+  }
+}
+
+.contact-directory__header {
+  margin-bottom: 36px;
+}
+
+.contact-directory__org {
+  color: #fff;
+  font-family: $font-family-title;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1.3;
+  margin: 0 0 22px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.contact-directory__meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-directory__meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.95);
+  font-family: $font-family-title;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.5;
+
+  a {
+    font-family: inherit;
+    font-weight: inherit;
+  }
+}
+
+.contact-directory__meta-icon {
+  flex: 0 0 1.25rem;
+  width: 1.25rem;
+  margin-top: 3px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.contact-directory__section-title {
+  color: #fff;
+  font-family: $font-family-title;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin: 0 0 22px;
+}
+
+.contact-people {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-person {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 0;
+  padding: 20px 22px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.contact-person__avatar {
+  flex: 0 0 100px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-title;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.contact-person__body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.contact-person__name {
+  color: #fff;
+  font-family: $font-family-title;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+
+.contact-person__role {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.98rem;
+  line-height: 1.4;
+  margin: 0 0 2px;
+}
+
+.contact-person__note {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0 0 10px;
+}
+
+.contact-person__details {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    margin: 0;
+
+    .fa {
+      flex: 0 0 1rem;
+      width: 1rem;
+      margin-top: 3px;
+      text-align: center;
+      opacity: 0.85;
+    }
+
+    a {
+      word-break: break-word;
+    }
+  }
+}
+
 /////////////////// Search courses catalog
 .find-courses .discovery-submit {
   background: transparent;
