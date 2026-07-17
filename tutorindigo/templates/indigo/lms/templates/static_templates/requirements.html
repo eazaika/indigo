@@ -4,8 +4,29 @@
 
 <%block name="pagetitle">${_("Requirements")}</%block>
 
+<%block name="headextra">
+<style type="text/css">
+.container.about.requirements-page {
+    font-size: 18px;
+    line-height: 1.65;
+}
+.container.about.requirements-page h1 {
+    font-size: 2em;
+    margin-bottom: 0.75em;
+}
+.container.about.requirements-page p,
+.container.about.requirements-page li {
+    font-size: 18px;
+    line-height: 1.65;
+}
+.container.about.requirements-page ul {
+    margin: 0.75em 0 1.25em 1.5em;
+}
+</style>
+</%block>
+
 <main id="main" aria-label="Content" tabindex="-1">
-    <section class="container about">
+    <section class="container about requirements-page">
         <h1>Технические требования</h1>
 <p><strong>ОБЩИЕ</strong></p>
 <p>Поддерживаемые браузеры и операционные системы для работы с курсом (в роли учащегося):</p>

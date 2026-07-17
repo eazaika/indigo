@@ -59,13 +59,15 @@
                         <ul>
                             <li class="status status-verification is-accepted">
                                 <span class="title status-title"><a target="_blank" href="https://lk.etu.ru">lk.etu.ru</a></span>
-                                <p style="padding-top:0" class="status-note">${_("(students only)")}</p>
-                                <p style="padding-top:0" class="status-note">${_("If you already have ETU Student's personal account just visit ")}<a href="/login" >${_("Login page")}</a>${_(" and enter your email and password from lk.etu.ru (no need registration on LETIteach)")}</p>
-                                <p style="padding-top:0; margin-top:5px" class="status-note recovery-password"><a target="_blank" href="https://lk.etu.ru/password/reset">${_("Recovery password for LK")}</a></p>
+                                <p class="status-note">${_("(students only)")}</p>
+                                <p class="status-note">${_("For ETU students: use the same email and password as on lk.etu.ru. Registration on LETIteach is not required.")}</p>
+                                <p class="status-note recovery-password"><a target="_blank" href="https://lk.etu.ru/password/reset">${_("Recovery password for LK")}</a></p>
                             </li>
                         </ul>
                     </div>
-                <a href="${static.url("images/lk_etu_ru_example.png")}"><img width="360px" align="right" src="${static.url("images/lk_etu_ru_example.png")}"></a>
+                <a href="${static.url("images/lk_etu_ru_example.png")}" target="_blank" rel="noopener noreferrer">
+                    <img class="lk-example-image" src="${static.url("images/lk_etu_ru_example.png")}" alt="${_("ETU personal account login example")}">
+                </a>
                 </div>
             </div>
         </div>

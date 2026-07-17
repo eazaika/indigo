@@ -1,0 +1,381 @@
+<%page expression_filter="h"/>
+<%! from django.utils.translation import ugettext as _ %>
+<%! import json %>
+<%namespace name='static' file='../static_content.html'/>
+
+<style type="text/css">
+  #hider,
+  #helpdesk-hider,
+  .helpdesk-widget-hider {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  .helpdesk-widget {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    transition: .25s;
+    font: normal 1em/1em "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    right: 15px;
+    bottom: 15px;
+    position: fixed;
+    z-index: 99999;
+  }
+
+  .helpdesk-widget h2 {
+    color: #646464;
+  }
+
+  .helpdesk-widget h3 {
+    margin-bottom: 10px;
+    font: inherit;
+    font-size: 1em;
+  }
+
+  .helpdesk-widget form {
+    height: 240px;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 100;
+    box-sizing: initial;
+  }
+
+  .helpdesk-widget .helpdesk-inner-frame {
+    width: 350px;
+    height: 270px;
+    border-bottom-right-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(115,115,115,0.75);
+    background-color: #fff;
+    position: fixed;
+    right: 15px;
+    bottom: 85px;
+    z-index: 100000;
+  }
+
+  .helpdesk-widget .header-line {
+    height: 15px;
+    padding: 10px 0 10px 20px;
+    background-color: #01306E;
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 60px;
+    box-sizing: initial;
+  }
+
+  .helpdesk-widget .helpdesk-step-2 > span {
+    padding: 5px;
+    font-size: 12px;
+    color: #666;
+  }
+  .helpdesk-widget .helpdesk-step-2 > input {
+    margin-top: 4px;
+  }
+
+  .helpdesk-widget select,
+  .helpdesk-widget input,
+  .helpdesk-widget .helpdesk-textarea {
+    font-size: 14px;
+    line-height: 1.4;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .helpdesk-widget select {
+    margin-bottom: 10px;
+    width: 92%;
+    display: block;
+    height: 20px;
+    padding: 6px 12px;
+  }
+
+  .helpdesk-widget select:focus {
+    border-color: #66afe9;
+  }
+
+  .helpdesk-widget select > option {
+    color: #333;
+  }
+
+  .helpdesk-widget input,
+  .helpdesk-widget .helpdesk-textarea {
+    user-select: text;
+  }
+
+  .helpdesk-widget input {
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+  }
+
+  .helpdesk-widget input:focus {
+    border-color: #66afe9;
+  }
+
+  .helpdesk-widget .helpdesk-textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    display: block;
+    padding: 6px 12px;
+  }
+
+  .helpdesk-widget .helpdesk-next-btn {
+    width: 100px;
+    height: 30px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #fff !important;
+    border: 1px solid #01306e !important;
+    border-radius: 5px;
+    font-weight: 400;
+    padding: 0;
+    text-shadow: none !important;
+    background: #01306e !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    left: 20px;
+    bottom: 40px;
+    position: absolute;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .helpdesk-widget .helpdesk-next-btn:hover,
+  .helpdesk-widget .helpdesk-next-btn:focus,
+  .helpdesk-widget .helpdesk-next-btn:hover:not(:disabled),
+  .helpdesk-widget .helpdesk-next-btn:focus:not(:disabled) {
+    background: #fff !important;
+    background-image: none !important;
+    color: #01306e !important;
+    border: 1px solid #01306e !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .helpdesk-widget .helpdesk-step-3 {
+    padding-top: 40px;
+    text-align: center;
+  }
+
+  .helpdesk-widget .helpdesk-open-btn {
+    width: 60px;
+    height: 60px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    background: url('${static.url("images/support_icon_100.gif")}');
+    background-size: cover;
+    box-shadow:
+      0 0 0 3px rgba(255, 255, 255, 0.95),
+      0 0 18px 6px rgba(255, 255, 255, 0.85),
+      0 0 32px 12px rgba(255, 255, 255, 0.45);
+    position: fixed;
+    z-index: 100000;
+    cursor: pointer;
+  }
+
+  .helpdesk-widget .helpdesk-open-btn:hover {
+    box-shadow:
+      0 0 0 3px rgba(255, 255, 255, 1),
+      0 0 22px 8px rgba(255, 255, 255, 0.95),
+      0 0 40px 14px rgba(255, 255, 255, 0.55);
+  }
+</style>
+
+<div class="helpdesk-widget" id="helpdesk-widget-root"
+     data-step-1="${_('1 of 3')}"
+     data-step-2="${_('2 of 3')}"
+     data-step-3="${_('3 of 3')}"
+     data-user-email="${user.email | h}">
+  <div class="helpdesk-inner-frame" style="display: none">
+    <div class="header-line"><p>${_('Helpdesk')}</p><span class="helpdesk-steps-indicator">${_('1 of 3')}</span></div>
+    <form>
+      <div class="helpdesk-step-1">
+        <h3>${_('Create Ticket')}</h3>
+        <select class="helpdesk-select-type">
+          <option value="">${_('-')}</option>
+          <option value="1">${_('While taking course')}</option>
+          <option value="2">${_('While creating course')}</option>
+          <option value="3">${_('Technical problems')}</option>
+          <option value="4">${_('Correspondence learning')}</option>
+        </select>
+        <textarea class="helpdesk-textarea" placeholder="${_('Problem description')}"></textarea>
+      </div>
+
+      <div class="helpdesk-step-2" style="display: none">
+        <h3>${_('Create Ticket')}</h3>
+        <select class="helpdesk-select-priority">
+          <option value="">${_('-')}</option>
+          <option value="1">${_('1. Critical')}</option>
+          <option value="2">${_('2. High')}</option>
+          <option value="3">${_('3. Normal')}</option>
+          <option value="4">${_('4. Low')}</option>
+          <option value="5">${_('5. Very Low')}</option>
+        </select>
+        <input class="helpdesk-summary" type="text" placeholder="${_('Got an 403 error')}">
+        <span>${_('Summary of the problem')}</span>
+        <input class="helpdesk-email" type="email" placeholder="example@domain.com">
+        <span>${_('Email')}</span>
+      </div>
+
+      <div class="helpdesk-step-3" style="display: none">
+        <h2>${_('Ready! If you not received a email notification, contact cnot@etu.ru')}</h2>
+      </div>
+
+      <button class="helpdesk-next-btn" type="button">${_('Next')}</button>
+    </form>
+  </div>
+  <div class="helpdesk-open-btn" role="button" aria-label="${_('Helpdesk')}"></div>
+</div>
+
+<script type="text/javascript">
+(function () {
+    var d = document;
+
+    d.querySelectorAll('#hider, #helpdesk-hider, .helpdesk-widget-hider').forEach(function (el) {
+        el.parentNode.removeChild(el);
+    });
+
+    var widgets = d.querySelectorAll('.helpdesk-widget');
+    for (var i = 0; i < widgets.length - 1; i++) {
+        widgets[i].parentNode.removeChild(widgets[i]);
+    }
+
+    var widget = d.getElementById('helpdesk-widget-root');
+    if (!widget) {
+        return;
+    }
+
+    var frame = widget.querySelector('.helpdesk-inner-frame');
+    var btn = widget.querySelector('.helpdesk-open-btn');
+    var steps = widget.querySelector('.helpdesk-steps-indicator');
+    var step1 = widget.querySelector('.helpdesk-step-1');
+    var step2 = widget.querySelector('.helpdesk-step-2');
+    var step3 = widget.querySelector('.helpdesk-step-3');
+    var next = widget.querySelector('.helpdesk-next-btn');
+    var stepLabel1 = widget.getAttribute('data-step-1');
+    var stepLabel2 = widget.getAttribute('data-step-2');
+    var stepLabel3 = widget.getAttribute('data-step-3');
+    var userEmail = widget.getAttribute('data-user-email') || '';
+
+    if (!frame || !btn) {
+        return;
+    }
+
+    var redColor = 'rgb(153, 22, 22)';
+    var blueColor = 'rgb(1, 48, 110)';
+    var redShadow = 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(153, 22, 22,.6)';
+    var blueShadow = 'inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(1,48,110,.6)';
+
+    function isHidden(el) {
+        return el.style.display === 'none' || window.getComputedStyle(el).display === 'none';
+    }
+
+    function formatBody() {
+        var formData = new FormData();
+        formData.append('queue', widget.querySelector('.helpdesk-select-type').value);
+        formData.append('title', widget.querySelector('.helpdesk-summary').value);
+        formData.append('attachment', '');
+        formData.append('body', widget.querySelector('.helpdesk-textarea').value);
+        formData.append('priority', widget.querySelector('.helpdesk-select-priority').value);
+        formData.append('due_date', '');
+        formData.append('submitter_email', widget.querySelector('.helpdesk-email').value);
+        formData.append('csrfmiddlewaretoken', '${ csrf_token }');
+        return formData;
+    }
+
+    btn.addEventListener('click', function () {
+        if (isHidden(frame)) {
+            frame.style.display = 'block';
+            steps.innerHTML = stepLabel1;
+        } else {
+            step1.style.display = 'block';
+            frame.style.display = 'none';
+            step2.style.display = 'none';
+            step3.style.display = 'none';
+        }
+    });
+
+    next.addEventListener('click', function () {
+        var queue = widget.querySelector('.helpdesk-select-type');
+        var description = widget.querySelector('.helpdesk-textarea');
+        var priority = widget.querySelector('.helpdesk-select-priority');
+        var summary = widget.querySelector('.helpdesk-summary');
+        var email = widget.querySelector('.helpdesk-email');
+
+        if (!isHidden(step1)) {
+            if (!queue.value.trim()) {
+                queue.style.borderColor = redColor;
+                queue.style.boxShadow = redShadow;
+                return;
+            }
+            queue.style.borderColor = blueColor;
+            queue.style.boxShadow = blueShadow;
+
+            if (!description.value.trim()) {
+                description.style.borderColor = redColor;
+                description.style.boxShadow = redShadow;
+                return;
+            }
+            description.style.borderColor = blueColor;
+            description.style.boxShadow = blueShadow;
+
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+            steps.innerHTML = stepLabel2;
+            email.value = userEmail;
+            return;
+        }
+
+        if (!isHidden(step2)) {
+            if (!priority.value.trim()) {
+                priority.style.borderColor = redColor;
+                priority.style.boxShadow = redShadow;
+                return;
+            }
+            priority.style.borderColor = blueColor;
+            priority.style.boxShadow = blueShadow;
+
+            if (!summary.value.trim()) {
+                summary.style.borderColor = redColor;
+                summary.style.boxShadow = redShadow;
+                return;
+            }
+            summary.style.borderColor = blueColor;
+            summary.style.boxShadow = blueShadow;
+
+            if (!email.value.trim()) {
+                email.style.borderColor = redColor;
+                email.style.boxShadow = redShadow;
+                return;
+            }
+            email.style.borderColor = blueColor;
+            email.style.boxShadow = blueShadow;
+
+            step3.style.display = 'block';
+            step2.style.display = 'none';
+            next.style.display = 'none';
+            steps.innerHTML = stepLabel3;
+
+            fetch('/helpdesk/tickets/submit/', {
+                credentials: 'include',
+                referrer: '/helpdesk/tickets/submit/',
+                referrerPolicy: 'no-referrer-when-downgrade',
+                body: formatBody(),
+                method: 'POST',
+                mode: 'cors'
+            }).then(function (response) {
+                if (!response.ok && response.status !== 302) {
+                    console.error('Helpdesk submit failed', response.status);
+                }
+            }).catch(function (err) {
+                console.error('Helpdesk submit error', err);
+            });
+        }
+    });
+}());
+</script>
