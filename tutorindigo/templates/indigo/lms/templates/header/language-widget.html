@@ -13,7 +13,7 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
         <%
             current_lang_code = LANGUAGE_CODE.split('-')[0].split('_')[0].upper()
         %>
-        <form action="/i18n/setlang/" method="post" class="settings-language-form header-language-widget nav-item" id="language-settings-form">
+        <form action="/i18n/setlang/" method="post" class="settings-language-form header-language-widget mobile-nav-item mobile-nav-widget nav-item" id="language-settings-form">
             <input type="hidden" id="csrf_token" name="csrfmiddlewaretoken" value="${csrf_token}">
             % if user.is_authenticated:
                 <input title="preference api" type="hidden" class="url-endpoint" value="${reverse('preferences_api', kwargs={'username': user.username})}" data-user-is-authenticated="true">

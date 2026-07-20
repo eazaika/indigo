@@ -83,11 +83,13 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
   margin: 30px 0 -10px;
   width: 100%;
   border-top: none;
+  background: transparent;
 }
 
 .mobile-menu a {
-  color: $primary;
+  color: #fff;
   font-family: Plex;
+  text-decoration: none;
 }
 
 // It is necessary to specify `:not(.courseware) >` in order to not affect the style
@@ -473,6 +475,12 @@ body:has(section.course-info) {
     margin: 0;
     z-index: 3;
   }
+
+  @include media-breakpoint-down(lg) {
+    header.global-header .header-about-meta {
+      display: none !important;
+    }
+  }
 }
 
 .fixed-header {
@@ -592,6 +600,34 @@ body:has(section.course-info) {
       display: none;
     }
   }
+
+  @include media-breakpoint-down(lg) {
+    .header-account-cluster,
+    .header-guest-auth {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    margin-right: 8px;
+
+    .header-accessibility-widget,
+    .header-language-widget,
+    .nav-item-help {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .header-accessibility-widget,
+    .header-language-widget {
+      display: flex !important;
+    }
+
+    .nav-item-help.hidden-mobile {
+      display: flex !important;
+    }
+  }
 }
 
 .global-header .header-action-link,
@@ -620,6 +656,9 @@ body:has(section.course-info) {
 }
 
 .global-header .header-toolbar .help-link {
+  text-decoration: none !important;
+  border-bottom: none !important;
+
   .icon.fa-question-circle {
     color: #fff;
     font-size: $header-action-icon-size;
@@ -918,6 +957,109 @@ body:has(section.course-info) {
   height: 1px;
 }
 
+.mobile-menu {
+  margin: 30px 0 -10px;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+
+  .mobile-nav-link:not(.mobile-nav-widget) {
+    a {
+      color: #fff;
+      background-color: rgba(0, 64, 124, 0.9);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        background: #336b9c;
+        color: #fff;
+        border-bottom: 1px dashed #fff;
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+  .mobile-menu-widgets {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 64, 124, 0.9);
+    box-sizing: border-box;
+
+    .mobile-nav-link,
+    .mobile-nav-widget {
+      float: none;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+    }
+
+    a,
+    .header-action-link,
+    .header-bvi-link,
+    .header-language-link,
+    .help-link {
+      min-width: 40px;
+      min-height: 40px;
+      color: #fff !important;
+      text-decoration: none !important;
+      border: none !important;
+      border-bottom: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+
+      &:hover,
+      &:focus {
+        text-decoration: none !important;
+        border-bottom: none !important;
+        background: transparent !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+      }
+
+      &::after {
+        content: none !important;
+      }
+    }
+
+    .header-bvi-link__icon,
+    .help-link .icon {
+      font-size: 22px;
+      color: #fff;
+      text-decoration: none !important;
+    }
+
+    .header-language-link__code {
+      color: #fff;
+      font-size: 0.9rem;
+      text-decoration: none !important;
+    }
+
+    .dropdown-language-menu {
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    display: none !important;
+  }
+}
+
 .global-header .nav-links .nav-item a {
   color: #fff;
 
@@ -931,10 +1073,11 @@ body:has(section.course-info) {
   overflow: inherit;
 }
 
-.mobile-menu .mobile-nav-link a {
+.mobile-menu .mobile-nav-link:not(.mobile-nav-widget) a {
   font-weight: 500;
   background-color: rgba(0, 64, 124, 0.9);
   color: #fff;
+  text-decoration: none;
 
   &:hover {
     background: #336b9c;
@@ -944,6 +1087,11 @@ body:has(section.course-info) {
   &:focus {
     background: #336796;
   }
+}
+
+.mobile-menu .mobile-menu-widgets a {
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 
@@ -2728,11 +2876,17 @@ nav.wrapper-preview-menu {
     max-width: 100% !important;
     padding: 32px 48px 48px 24px !important;
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       display: flex;
       flex-wrap: wrap;
       gap: 24px;
       align-items: flex-start;
+    }
+
+    @include media-breakpoint-down(lg) {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
     @include media-breakpoint-down(md) {
@@ -2749,12 +2903,19 @@ nav.wrapper-preview-menu {
     font: normal 1em/1.6em Open Sans;
     box-sizing: border-box;
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       flex: 1 1 0;
       float: none !important;
       width: auto !important;
       margin-right: 0 !important;
       min-width: 0;
+      order: 1;
+    }
+
+    @include media-breakpoint-down(lg) {
+      order: 2;
+      width: 100% !important;
+      float: none !important;
     }
 
     @include media-breakpoint-down(md) {
@@ -2820,16 +2981,19 @@ nav.wrapper-preview-menu {
   }
 
   .course-sidebar {
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       flex: 0 0 450px;
       float: none !important;
       width: 450px !important;
       margin-left: auto;
+      order: 2;
     }
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
+      order: 1;
       width: 100% !important;
       margin-left: 0;
+      float: none !important;
     }
 
     > section {
@@ -2918,16 +3082,38 @@ nav.wrapper-preview-menu {
     margin-left: 0;
     margin-right: 0;
 
+    @include media-breakpoint-down(lg) {
+      min-height: 0;
+    }
+
     .intro-inner-wrapper {
       border: none;
       background: transparent;
       box-shadow: none;
       min-height: 340px;
 
+      @include media-breakpoint-down(lg) {
+        min-height: 0;
+      }
+
+      > div.table {
+        @include media-breakpoint-down(lg) {
+          display: flex !important;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+      }
+
       .intro > .heading-group {
         box-shadow: none;
         text-align: center;
         border-bottom: none;
+
+        @include media-breakpoint-down(lg) {
+          margin-bottom: 12px;
+          padding-bottom: 0;
+        }
 
         h1 {
           font-weight: 200;
@@ -2943,6 +3129,21 @@ nav.wrapper-preview-menu {
 
       .intro {
         padding: 48px 20px 48px 32px;
+
+        @include media-breakpoint-down(lg) {
+          display: block !important;
+          width: 100% !important;
+          max-width: 720px;
+          float: none !important;
+          padding: 36px 24px 16px;
+          text-align: center;
+          order: 1;
+        }
+
+        @include media-breakpoint-down(md) {
+          max-width: 100%;
+          padding: 28px 16px 16px;
+        }
       }
 
       .intro .main-cta {
@@ -2953,6 +3154,11 @@ nav.wrapper-preview-menu {
         width: 100%;
         float: none;
         margin: 0;
+
+        @include media-breakpoint-down(lg) {
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
 
         .cta-status {
           display: flex;
@@ -3027,10 +3233,29 @@ nav.wrapper-preview-menu {
       .media {
         padding: 32px 48px 32px 8px;
 
+        @include media-breakpoint-down(lg) {
+          display: block !important;
+          width: 100% !important;
+          max-width: 720px;
+          float: none !important;
+          padding: 20px 24px 36px;
+          order: 2;
+        }
+
+        @include media-breakpoint-down(md) {
+          max-width: 100%;
+          padding: 18px 16px 28px;
+        }
+
         .hero {
           border: none;
           min-height: 280px;
           overflow: hidden;
+
+          @include media-breakpoint-down(lg) {
+            min-height: 0;
+            border-radius: 8px;
+          }
 
           img {
             display: block;
@@ -3040,6 +3265,18 @@ nav.wrapper-preview-menu {
             min-height: 280px;
             object-fit: cover;
             object-position: center center;
+
+            @include media-breakpoint-down(lg) {
+              width: 100%;
+              max-width: 100%;
+              margin-left: 0;
+              min-height: 220px;
+              height: auto;
+            }
+
+            @include media-breakpoint-down(md) {
+              min-height: 180px;
+            }
           }
         }
       }
