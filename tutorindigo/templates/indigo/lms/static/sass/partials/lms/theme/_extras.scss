@@ -2445,14 +2445,108 @@ body.view-contact {
 .home .courses-container .courses .courses-listing {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
   .courses-listing-item {
-    margin: 0 20px 30px 20px;
-    // Fix right margin
-    &:nth-child(4n), &:last-child {
-      margin-right: 20px;
-    }
+    box-sizing: border-box;
+    float: none !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 24px;
+    padding: 0 8px;
+  }
+}
+
+// Keep search above the course grid; neutralize Neat floats that pull cards up.
+.find-courses .courses-container {
+  #discovery-form,
+  .wrapper-search-context {
+    position: relative;
+    z-index: 2;
+    display: block;
+    float: none !important;
+    clear: both;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .courses.no-course-discovery {
+    float: none !important;
+    clear: both;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 16px 0 0 !important;
+    padding-top: 8px;
+    box-sizing: border-box;
+  }
+}
+
+.find-courses .courses-container .courses.no-course-discovery .courses-listing {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  float: none !important;
+  clear: both;
+
+  .courses-listing-item {
+    box-sizing: border-box;
+    float: none !important;
+    clear: none !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 24px !important;
+    padding: 0 8px;
+  }
+}
+
+// Default / phone portrait: 1 column
+.home .courses-container .courses .courses-listing .courses-listing-item,
+.find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+  width: 100%;
+  max-width: 100%;
+}
+
+// Phone landscape (short viewport height): 3 columns
+@media (orientation: landscape) and (max-height: 500px) {
+  .home .courses-container .courses .courses-listing .courses-listing-item,
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 33.333%;
+    max-width: 33.333%;
+  }
+}
+
+// Tablet portrait: 3 columns
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: portrait) {
+  .home .courses-container .courses .courses-listing .courses-listing-item,
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 33.333%;
+    max-width: 33.333%;
+  }
+}
+
+// Tablet landscape: 4 columns (exclude short phone landscape via min-height)
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: landscape) and (min-height: 501px) {
+  .home .courses-container .courses .courses-listing .courses-listing-item,
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 25%;
+    max-width: 25%;
+  }
+}
+
+// Desktop: 4 columns
+@media (min-width: 1200px) {
+  .home .courses-container .courses .courses-listing .courses-listing-item,
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 25%;
+    max-width: 25%;
   }
 }
 

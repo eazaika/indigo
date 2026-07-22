@@ -13,6 +13,7 @@
 
 % if course_discovery_enabled:
 <%block name="header_extras">
+  <script type="text/javascript" src="${static.url('js/courses_layout.js')}"></script>
   % for template_name in ["course_card"]:
   <script type="text/template" id="${template_name}-tpl">
       <%static:include path="discovery/${template_name}.underscore" />
@@ -36,6 +37,12 @@
   </%static:require_module>
 </%block>
 % endif
+
+<%block name="js_extra">
+  % if not course_discovery_enabled:
+  <script type="text/javascript" src="${static.url('js/courses_layout.js')}"></script>
+  % endif
+</%block>
 
 <%block name="pagetitle">${_("Courses")}</%block>
 
@@ -77,9 +84,13 @@
         </div>
 
         % if courses_page is not None and courses_page.paginator.num_pages > 1:
-        <nav class="courses-pagination courses-pagination-server" aria-label="${_('Course catalog pages')}">
+        <%
+          page_size_q = courses_page_size if courses_page_size is not None else 20
+          page_size_suffix = '&page_size={}'.format(page_size_q)
+        %>
+        <nav class="courses-pagination courses-pagination-server" aria-label="${_('Course catalog pages')}" data-page-size="${page_size_q}">
           % if courses_page.has_previous():
-          <a class="pagination-prev" href="?page=${courses_page.previous_page_number()}" aria-label="${_('Previous page')}">
+          <a class="pagination-prev" href="?page=${courses_page.previous_page_number()}${page_size_suffix}" aria-label="${_('Previous page')}">
             <span class="icon fa fa-chevron-left" aria-hidden="true"></span>
           </a>
           % else:
@@ -91,7 +102,7 @@
             <span class="pagination-current">${courses_page.number}</span> / <span class="pagination-total">${courses_page.paginator.num_pages}</span>
           </span>
           % if courses_page.has_next():
-          <a class="pagination-next" href="?page=${courses_page.next_page_number()}" aria-label="${_('Next page')}">
+          <a class="pagination-next" href="?page=${courses_page.next_page_number()}${page_size_suffix}" aria-label="${_('Next page')}">
             <span class="icon fa fa-chevron-right" aria-hidden="true"></span>
           </a>
           % else:
