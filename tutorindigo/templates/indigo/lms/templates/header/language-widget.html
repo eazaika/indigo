@@ -1,18 +1,128 @@
 ## mako
 <%page expression_filter="h"/>
 <%!
+from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-
-from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_enabled, released_languages
 %>
 
-% if header_language_selector_is_enabled():
-    <% languages = released_languages() %>
-    % if len(languages) > 1:
-        <%
-            current_lang_code = LANGUAGE_CODE.split('-')[0].split('_')[0].upper()
-        %>
+<%
+# Always build LETI language list (same as MFE). Do NOT call released_languages():
+# Mako <%! %> imports bind the stock function once, so settings monkeypatches
+# never reach this template.
+_default_codes = ['ru', 'en', 'fr', 'es-es', 'pt-pt']
+_default_labels = {
+    'ru': 'Russian',
+    'en': 'English',
+    'fr': 'French',
+    'es-es': 'Spanish',
+    'pt-pt': 'Portuguese',
+}
+_codes = list(getattr(settings, 'LETI_SITE_LANGUAGE_CODES', None) or _default_codes)
+_by_code = dict(_default_labels)
+try:
+    _by_code.update(dict(settings.LANGUAGES))
+except Exception:
+    pass
+try:
+    _cert = getattr(settings, 'CERTIFICATE_TEMPLATE_LANGUAGES', None) or {}
+    _by_code.update(dict(_cert))
+except Exception:
+    pass
+
+languages = []
+_seen = set()
+for code in _codes:
+    if not code or code in _seen:
+        continue
+    _seen.add(code)
+    languages.append((code, _by_code.get(code, code)))
+
+show_language_selector = len(languages) > 1
+
+current_lang = getattr(settings, 'LANGUAGE_CODE', 'ru') or 'ru'
+try:
+    from django.utils.translation import get_language
+    current_lang = get_language() or current_lang
+except Exception:
+    pass
+
+def _norm(code):
+    if not code:
+        return ''
+    return code.replace('_', '-').lower()
+
+_current_norm = _norm(current_lang)
+_matched = None
+for code, _name in languages:
+    if _norm(code) == _current_norm:
+        _matched = code
+        break
+if _matched is None:
+    _base = _current_norm.split('-')[0]
+    for code, _name in languages:
+        if _norm(code).split('-')[0] == _base:
+            _matched = code
+            break
+if _matched is None and languages:
+    _matched = languages[0][0]
+
+current_lang = _matched or current_lang
+current_lang_code = _norm(current_lang).split('-')[0].upper() or 'RU'
+%>
+
+% if show_language_selector:
+<style id="leti-language-no-glow">
+/* Kill white glow on language control (instructor + all LMS headers). */
+.global-header .header-language-link,
+.global-header .header-language-link:hover,
+.global-header .header-language-link:focus,
+.global-header .header-language-link:active,
+.global-header .header-language-link.open,
+.global-header .header-action-link.header-language-link,
+.global-header .header-action-link.header-language-link:hover,
+.global-header .header-action-link.header-language-link:focus,
+.global-header .header-action-link.header-language-link.open,
+.global-header .header-language-link .header-language-link__code,
+.mobile-menu .header-language-link,
+.mobile-menu .header-language-link:hover,
+.mobile-menu .header-language-link:focus,
+.mobile-menu .header-language-link.open,
+.mobile-menu .header-language-link .header-language-link__code {
+  text-shadow: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.global-header .dropdown-language-menu .header-language-option.is-active {
+  background: transparent !important;
+  text-shadow: none !important;
+}
+/* Phone hamburger: keep language control same size as BVI / help */
+.mobile-menu .mobile-menu-widgets .header-language-link,
+.mobile-menu .mobile-menu-widgets button.toggle-language-dropdown {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 6px 10px !important;
+  font-size: inherit !important;
+}
+.mobile-menu .mobile-menu-widgets .header-language-link__code {
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1 !important;
+}
+.mobile-menu .mobile-menu-widgets .dropdown-language-menu {
+  min-width: 180px !important;
+}
+.mobile-menu .mobile-menu-widgets .header-language-option {
+  min-width: 180px !important;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  font-size: 1rem !important;
+}
+</style>
+
         <form action="/i18n/setlang/" method="post" class="settings-language-form header-language-widget mobile-nav-item mobile-nav-widget nav-item" id="language-settings-form">
             <input type="hidden" id="csrf_token" name="csrfmiddlewaretoken" value="${csrf_token}">
             % if user.is_authenticated:
@@ -24,7 +134,7 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
                 <span>${_("Choose Language")}</span>
                 <select class="language-selector" id="settings-language-value" name="language" tabindex="-1" aria-hidden="true">
                     % for language in languages:
-                        % if language[0] == LANGUAGE_CODE:
+                        % if language[0] == current_lang:
                             <option value="${language[0]}" selected="selected">${language[1]}</option>
                         % else:
                             <option value="${language[0]}">${language[1]}</option>
@@ -34,7 +144,7 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
             </label>
             <div class="header-language-dropdown">
                 <button type="button"
-                        class="toggle-language-dropdown header-language-link header-action-link"
+                        class="toggle-language-dropdown header-language-link"
                         aria-label="${_("Choose Language")}"
                         aria-expanded="false"
                         aria-controls="header-language-menu"
@@ -44,8 +154,8 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
                 <div class="dropdown-language-menu hidden" id="header-language-menu" role="menu" aria-label="${_("Choose Language")}">
                     % for language in languages:
                         <%
-                            lang_code = language[0].split('-')[0].split('_')[0].upper()
-                            is_current = language[0] == LANGUAGE_CODE
+                            lang_code = language[0].replace('_', '-').split('-')[0].upper()
+                            is_current = language[0] == current_lang
                         %>
                         <button type="button"
                                 class="dropdown-item header-language-option${' is-active' if is_current else ''}"
@@ -59,5 +169,4 @@ from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_en
                 </div>
             </div>
         </form>
-    % endif
 % endif

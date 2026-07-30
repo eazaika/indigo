@@ -676,6 +676,7 @@ body.view-updates {
   @media (max-width: 767.98px) {
     margin-right: 8px;
 
+    // Phone: language lives in the hamburger (cloned), not the toolbar.
     .header-accessibility-widget,
     .header-language-widget,
     .nav-item-help {
@@ -696,8 +697,7 @@ body.view-updates {
 }
 
 .global-header .header-action-link,
-.global-header .header-bvi-link,
-.global-header .header-language-link {
+.global-header .header-bvi-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -717,6 +717,48 @@ body.view-updates {
 
   &.open {
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+  }
+}
+
+.global-header .header-language-link,
+.global-header .header-action-link.header-language-link,
+.global-header button.header-language-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: $header-action-hit-size;
+  min-height: $header-action-hit-size;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.open {
+    background: transparent !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    outline: none;
+  }
+
+  .header-language-link__code {
+    text-shadow: none !important;
+    filter: none !important;
   }
 }
 
@@ -942,14 +984,41 @@ body.view-updates {
   border-radius: 0;
   background: transparent !important;
   box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover,
   &:focus,
+  &:active,
   &.open {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
   }
+
+  .header-language-link__code,
+  &:hover .header-language-link__code,
+  &:focus .header-language-link__code,
+  &.open .header-language-link__code {
+    text-shadow: none !important;
+    filter: none !important;
+  }
+}
+
+// Keep phone hamburger language control same visual weight as BVI / help.
+.mobile-menu .mobile-menu-widgets .header-language-link,
+.mobile-menu .mobile-menu-widgets button.toggle-language-dropdown {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 6px 10px !important;
+}
+
+.mobile-menu .mobile-menu-widgets .header-language-link__code {
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
 }
 
 .global-header .header-language-link__code {
@@ -968,7 +1037,7 @@ body.view-updates {
   border: 1px solid rgb(51, 107, 156);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  z-index: 20;
+  z-index: 1100;
   overflow: hidden;
 
   .dropdown-item {
@@ -998,7 +1067,7 @@ body.view-updates {
     }
 
     &.is-active {
-      background: rgb(51, 107, 156);
+      background: transparent;
       font-weight: 600;
     }
   }
@@ -1029,6 +1098,7 @@ body.view-updates {
   background: rgb(0, 64, 124) !important;
   clear: both;
   box-sizing: border-box;
+  overflow: visible !important;
 
   // Stock LMS hides .mobile-menu at lg (≥992). Keep it available on tablets
   // (incl. landscape) until desktop width; respect the JS .hidden toggle.
@@ -1105,6 +1175,7 @@ body.view-updates {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     background: rgb(0, 64, 124);
     box-sizing: border-box;
+    overflow: visible !important;
 
     .mobile-nav-link,
     .mobile-nav-widget,
@@ -1123,13 +1194,30 @@ body.view-updates {
       border: none !important;
       visibility: visible !important;
       opacity: 1 !important;
+      position: relative;
+      overflow: visible !important;
+      flex: 0 0 auto;
+      order: 0;
+    }
+
+    // Explicit order: BVI → language → helpdesk
+    .header-accessibility-widget {
+      order: 1;
+    }
+
+    .header-language-widget,
+    form.settings-language-form {
+      order: 2;
+    }
+
+    .nav-item-help {
+      order: 3;
     }
 
     a,
-    button,
-    .header-action-link,
+    button:not(.header-language-link):not(.header-language-option):not(.toggle-language-dropdown),
+    .header-action-link:not(.header-language-link),
     .header-bvi-link,
-    .header-language-link,
     .help-link {
       min-width: 40px;
       min-height: 40px;
@@ -1153,6 +1241,74 @@ body.view-updates {
       }
     }
 
+    .header-language-link,
+    .header-language-link:hover,
+    .header-language-link:focus,
+    .header-language-link:active,
+    .header-language-link.open,
+    button.header-language-link,
+    button.toggle-language-dropdown {
+      min-width: 44px !important;
+      min-height: 44px !important;
+      padding: 6px 10px !important;
+      color: #fff !important;
+      text-decoration: none !important;
+      border: none !important;
+      background: transparent !important;
+      text-shadow: none !important;
+      filter: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent;
+      font-size: inherit;
+      line-height: 1;
+    }
+
+    .header-language-link .header-language-link__code,
+    .header-language-link__code {
+      color: #fff !important;
+      font-size: 1.15rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-decoration: none !important;
+      text-shadow: none !important;
+    }
+
+    button.header-language-option,
+    button.header-language-option:hover,
+    button.header-language-option:focus,
+    button.header-language-option.is-active {
+      min-width: 160px !important;
+      min-height: 44px !important;
+      width: 100%;
+      padding: 10px 14px !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent;
+      font-size: 1rem !important;
+    }
+
+    button.header-language-option:hover,
+    button.header-language-option:focus {
+      background: rgb(51, 107, 156) !important;
+    }
+
+    button.header-language-option.is-active {
+      background: transparent !important;
+      font-weight: 600;
+    }
+
+    .header-language-option__code {
+      font-size: 0.95rem !important;
+      font-weight: 700;
+    }
+
+    .header-language-option__name {
+      font-size: 1rem !important;
+    }
+
     .header-bvi-link__icon,
     .help-link .icon {
       font-size: 22px;
@@ -1160,16 +1316,27 @@ body.view-updates {
       text-decoration: none !important;
     }
 
-    .header-language-link__code {
-      color: #fff;
-      font-size: 0.9rem;
-      text-decoration: none !important;
+    .header-language-dropdown {
+      position: relative;
+      overflow: visible !important;
     }
 
     .dropdown-language-menu {
-      right: auto;
+      position: absolute;
+      top: calc(100% + 6px);
       left: 50%;
+      right: auto;
       transform: translateX(-50%);
+      z-index: 1200;
+      min-width: 180px;
+    }
+
+    .dropdown-language-menu.hidden {
+      display: none !important;
+    }
+
+    .dropdown-language-menu:not(.hidden) {
+      display: block !important;
     }
   }
 
