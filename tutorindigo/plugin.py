@@ -49,6 +49,7 @@ hooks.Filters.ENV_PATTERNS_INCLUDE.add_items(
         r"indigo/lms/static/sass/partials/lms/theme/",
         r"indigo/lms/static/sass/profile/",
         r"indigo/lms/static/sass/account/",
+        r"indigo/lms/static/sass/instructor/",
     ]
 )
 

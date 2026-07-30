@@ -273,120 +273,241 @@ body.view-instructordash {
 }
 
 // ---------------------------------------------------------------------------
-// Course tabs — same underline style as Learning MFE (Курс / Прогресс / …)
+// Course tabs — mirror Learning MFE (.course-tabs-navigation)
+// Structure: .leti-course-tabs-navigation > __inner > nav.leti-course-tabs > a.nav-link
+// No Bootstrap .navbar (white strip + width expands with tabs → no "More...")
 // ---------------------------------------------------------------------------
-body.view-instructordash {
-  .wrapper-course-material,
-  nav.navbar.course-tabs {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    margin: 16px 0 0 !important;
-    padding: 0;
-    max-width: none;
-    width: 100%;
+body.view-in-course {
+  // Gray canvas like Learning / instructor (not a white band behind tabs)
+  background-color: $instructor-bg;
+
+  .window-wrap {
+    background-color: $instructor-bg;
   }
 
-  .wrapper-course-material .course-material,
-  nav.navbar.course-tabs {
-    max-width: $instructor-container-max;
-    margin-left: unquote("max(8px, calc((100vw - #{$instructor-container-max}) / 4))");
-    margin-right: auto;
-    padding: 0 32px 0 0;
-    box-sizing: border-box;
-    border-bottom: 2px solid $instructor-border;
+  #content.content-wrapper {
+    background-color: $instructor-bg !important;
+    background-image: none !important;
+  }
 
-    @include media-breakpoint-down(md) {
-      margin-left: 0;
+  .leti-course-tabs-navigation {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: transparent !important;
+    border: none;
+    border-bottom: 2px solid $instructor-border;
+    box-shadow: none;
+  }
+
+  .leti-course-tabs-navigation__inner {
+    display: block;
+    width: 100%;
+    max-width: $instructor-container-max;
+    min-width: 0;
+    // Learning: centered container-xl
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 24px 0 12px;
+    box-sizing: border-box;
+
+    @include media-breakpoint-down(lg) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 0 16px;
     }
   }
 
-  .course-tabs,
-  nav.navbar.course-tabs .navbar-nav {
-    display: flex;
-    flex-wrap: wrap;
+  nav.leti-course-tabs,
+  .leti-course-tabs.nav {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch;
     gap: 0;
-    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 !important;
     padding: 0;
     list-style: none;
     border: none;
-    background: transparent;
+    background: transparent !important;
+    position: relative;
+    box-sizing: border-box;
+    justify-content: flex-start;
+
+    @include media-breakpoint-down(lg) {
+      justify-content: center;
+    }
   }
 
-  .course-tabs .tab,
-  .course-tabs .nav-item,
-  nav.navbar.course-tabs .nav-item {
+  .leti-course-tabs > .nav-item,
+  .leti-course-tabs > a.nav-link,
+  .leti-course-tabs > a.nav-item {
     display: inline-flex;
-    margin: 0;
-    padding: 0;
+    flex: 0 0 auto;
+    align-items: center;
     float: none;
-    border: none;
-    background: transparent;
+    margin: 0;
+    padding: 0.85rem 1rem !important;
+    white-space: nowrap;
+    font-family: $instructor-body-font;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.3;
+    color: $instructor-muted !important;
+    text-decoration: none !important;
+    border: none !important;
+    border-top: 3px solid transparent !important;
+    border-bottom: 3px solid transparent !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
 
-    a,
-    .nav-link {
-      display: inline-flex;
-      align-items: center;
-      font-family: $instructor-body-font;
-      font-weight: 600;
-      font-size: 1rem;
-      color: $instructor-muted !important;
-      padding: 0.85rem 1rem !important;
-      margin: 0;
-      border: none !important;
-      border-bottom: 3px solid transparent !important;
-      border-radius: 0 !important;
+    &:hover,
+    &:focus {
+      color: $instructor-accent !important;
       background: transparent !important;
-      box-shadow: none !important;
-      text-decoration: none !important;
-      line-height: 1.3;
-
-      &:hover,
-      &:focus {
-        color: $instructor-accent !important;
-        background: transparent !important;
-        border-bottom-color: rgba(0, 73, 124, 0.35) !important;
-      }
-
-      &.active {
-        color: $instructor-accent !important;
-        border-bottom-color: $instructor-accent !important;
-        background: transparent !important;
-        font-weight: 600;
-      }
+      border-bottom-color: rgba(0, 73, 124, 0.35) !important;
     }
 
-    &.active a,
-    &.active .nav-link {
+    &.active {
       color: $instructor-accent !important;
       border-bottom-color: $instructor-accent !important;
-      background: transparent !important;
       font-weight: 600;
-    }
-
-    &:first-child a,
-    &:first-child .nav-link {
-      padding-left: 0 !important;
     }
   }
 
-  // Override legacy Indigo pill tabs on this page
+  .leti-course-tabs > a.nav-link:first-child,
+  .leti-course-tabs > a.nav-item:first-child {
+    padding-left: 0 !important;
+  }
+
+  @include media-breakpoint-down(lg) {
+    .leti-course-tabs > a.nav-link,
+    .leti-course-tabs > a.nav-item,
+    .leti-course-tabs > a.nav-link:first-child,
+    .leti-course-tabs > a.nav-item:first-child,
+    .leti-course-tabs__more-btn {
+      padding-left: 0.85rem !important;
+      padding-right: 0.85rem !important;
+    }
+  }
+
+  // Custom menu (avoid Bootstrap .dropdown-menu — LMS often shows those open)
+  .leti-course-tabs__more {
+    display: inline-flex;
+    align-items: stretch;
+    position: relative;
+    flex: 0 0 auto;
+  }
+
+  .leti-course-tabs__more-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0.85rem 1rem !important;
+    white-space: nowrap;
+    font-family: $instructor-body-font;
+    font-weight: 600;
+    font-size: 1rem;
+    color: $instructor-muted !important;
+    background: transparent !important;
+    border: none !important;
+    border-top: 3px solid transparent !important;
+    border-bottom: 3px solid transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    text-decoration: none !important;
+
+    &::after {
+      content: '';
+      display: inline-block;
+      margin-left: 0.4em;
+      vertical-align: 0.15em;
+      border-top: 0.3em solid currentColor;
+      border-right: 0.3em solid transparent;
+      border-bottom: 0;
+      border-left: 0.3em solid transparent;
+      opacity: 0.75;
+    }
+
+    &:hover,
+    &:focus {
+      color: $instructor-accent !important;
+      border-bottom-color: rgba(0, 73, 124, 0.35) !important;
+    }
+  }
+
+  .leti-course-tabs__menu {
+    display: none !important;
+    position: absolute !important;
+    top: 100%;
+    right: 0;
+    left: auto;
+    z-index: 1050;
+    min-width: 12rem;
+    margin: 0;
+    padding: 0.35rem 0;
+    border: 1px solid $instructor-border;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    background: #fff;
+
+    a {
+      display: block;
+      font-family: $instructor-body-font;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: $instructor-muted !important;
+      padding: 0.55rem 1rem;
+      border: none;
+      background: transparent !important;
+      text-decoration: none !important;
+      white-space: nowrap;
+
+      &:hover,
+      &:focus,
+      &.active {
+        color: $instructor-accent !important;
+        background: $instructor-active-bg !important;
+      }
+    }
+  }
+
+  .leti-course-tabs__more.is-open .leti-course-tabs__menu,
+  .leti-course-tabs__menu.is-open {
+    display: block !important;
+  }
+
+  .wrapper-course-material,
+  nav.navbar.course-tabs {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
   .content-wrapper .course-tabs .nav-item.active .nav-link,
   .content-wrapper .course-tabs .nav-item:hover .nav-link,
-  .content-wrapper .course-tabs .tab a.active,
-  .content-wrapper .course-tabs .tab a:hover {
+  .content-wrapper .leti-course-tabs a.active,
+  .content-wrapper .leti-course-tabs a:hover {
     border: none !important;
     border-bottom: 3px solid $instructor-accent !important;
     color: $instructor-accent !important;
     background: transparent !important;
   }
 
-  .content-wrapper .course-tabs .tab a:hover {
+  .content-wrapper .leti-course-tabs a:hover {
     border-bottom-color: rgba(0, 73, 124, 0.35) !important;
   }
 
-  .content-wrapper .course-tabs .tab a.active {
+  .content-wrapper .leti-course-tabs a.active {
     border-bottom-color: $instructor-accent !important;
   }
 }
@@ -1225,28 +1346,47 @@ body.view-instructordash {
       }
 
       .auth-list-container {
-        margin-left: 28px !important;
-        margin-right: 28px !important;
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
 
         &.active {
-          margin-bottom: 24px !important;
+          display: block !important;
+          height: auto !important;
+          min-height: 0 !important;
+          overflow: visible !important;
+          margin-left: 28px !important;
+          margin-right: 28px !important;
+          margin-bottom: 16px !important;
+          padding: 0 !important;
         }
       }
 
       .member-list-widget {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+
         .header {
           background: transparent !important;
           border: none !important;
         }
 
         .info {
-          margin: 0 0 16px;
+          margin: 0 0 12px !important;
           padding: 0 !important;
           border: none !important;
           background: transparent !important;
           color: $instructor-muted !important;
           font-size: 0.95rem;
-          line-height: 1.55;
+          line-height: 1.45;
         }
 
         .member-list {
@@ -1254,6 +1394,9 @@ body.view-instructordash {
           border-radius: 8px;
           overflow: hidden;
           background: #fff;
+          margin: 0 !important;
+          min-height: 0 !important;
+          height: auto !important;
 
           table {
             width: 100%;
@@ -1306,9 +1449,12 @@ body.view-instructordash {
           align-items: center;
           gap: 12px;
           flex-wrap: wrap;
-          position: relative;
-          margin-top: 28px !important;
+          position: relative !important;
+          margin-top: 12px !important;
+          margin-bottom: 0 !important;
           padding: 0 !important;
+          min-height: 0 !important;
+          height: auto !important;
           border: none !important;
           background: transparent !important;
           box-shadow: none !important;
@@ -1330,6 +1476,7 @@ body.view-instructordash {
             flex: 0 0 auto;
             position: static !important;
             right: auto !important;
+            bottom: auto !important;
             top: auto !important;
             margin: 0 !important;
             white-space: nowrap;
@@ -1518,6 +1665,22 @@ body.view-instructordash {
         text-shadow: none !important;
       }
     }
+
+    // Empty shells under «Add Cohort» — hide white card placeholders
+    .cohort-management-add-form:empty,
+    .cohort-management-group:empty,
+    .cohort-management-add-form:not(:has(*)),
+    .cohort-management-group:not(:has(*)) {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -1694,11 +1857,13 @@ body.view-instructordash {
         box-sizing: border-box;
       }
 
-      // Content inset under blue title (skip the title itself)
+      // Content inset under blue title (skip the title itself).
+      // max-width + margins keeps width:100% children inside the card.
       > *:not(h4):not(.hd-4):not(h3):not(.hd-3):not(br):not(hr) {
         margin-left: 28px !important;
         margin-right: 28px !important;
-        box-sizing: border-box;
+        max-width: calc(100% - 56px) !important;
+        box-sizing: border-box !important;
       }
 
       > *:nth-child(2),
@@ -1733,13 +1898,17 @@ body.view-instructordash {
         color: $instructor-muted;
         font-weight: 400;
         font-size: 0.85rem;
+        word-break: break-all;
       }
 
-      input[type="text"] {
-        display: block;
-        width: 100%;
-        max-width: 480px;
+      input[type="text"],
+      input[type="number"] {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
         margin: 0 0 20px !important;
+        box-sizing: border-box !important;
       }
 
       h5,
@@ -1811,7 +1980,7 @@ body.view-instructordash {
       margin: 8px 0 4px;
     }
 
-    // Grade adjustment & other action buttons
+    // Grade adjustment & other action buttons — stay inside card, wrap long labels
     input[type="button"],
     input[name="reset-attempts-single"],
     input[name="rescore-problem-single"],
@@ -1831,8 +2000,21 @@ body.view-instructordash {
     input[name="task-history-all"],
     .molly-guard {
       @include leti-instructor-btn-primary;
-      display: inline-flex !important;
-      margin: 10px 8px 16px 0 !important;
+      display: block !important;
+      float: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      margin: 10px 0 16px !important;
+      padding: 10px 14px !important;
+      height: auto !important;
+      min-height: 42px;
+      white-space: normal !important;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      line-height: 1.35 !important;
+      text-align: center;
+      box-sizing: border-box !important;
       background: $instructor-accent !important;
       background-color: $instructor-accent !important;
       background-image: none !important;
@@ -1848,6 +2030,27 @@ body.view-instructordash {
         background-color: #01306e !important;
         border-color: #01306e !important;
         color: #fff !important;
+      }
+    }
+
+    // Rescore / override button groups — stack full-width
+    span[name="rescore-actions-single"],
+    span[name="rescore-actions-entrance-exam"],
+    span[name="rescore-actions-all"],
+    span[name="override-actions-single"] {
+      display: flex !important;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+
+      input[type="button"],
+      .molly-guard {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
       }
     }
 
@@ -1874,6 +2077,39 @@ body.view-instructordash {
       .hd-5 {
         margin-top: 32px;
       }
+
+      span[name="rescore-actions-single"],
+      span[name="rescore-actions-entrance-exam"],
+      span[name="rescore-actions-all"],
+      span[name="override-actions-single"] {
+        input[type="button"],
+        .molly-guard {
+          margin-top: 0 !important;
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+
+    // Extra white space under «Показать состояние процесса»
+    .student-grade-container,
+    .course-specific-container {
+      padding-bottom: 28px !important;
+
+      input[name="task-history-single"],
+      input[name="task-history-all"] {
+        margin-bottom: 12px !important;
+      }
+
+      .task-history-single-table,
+      .task-history-all-table {
+        margin-bottom: 20px !important;
+
+        &:empty {
+          display: block;
+          min-height: 0;
+          margin-bottom: 20px !important;
+        }
+      }
     }
 
     .student-enrollment-status-container,
@@ -1885,6 +2121,45 @@ body.view-instructordash {
 
       label {
         margin-top: 20px;
+      }
+    }
+
+    // Pending Tasks — shorter white body; center «Нет задач»
+    .running-tasks-container {
+      .running-tasks-section {
+        min-height: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
+      }
+
+      .no-pending-tasks-message {
+        min-height: 88px;
+        margin-top: 8px !important;
+        margin-bottom: 20px !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+        color: $instructor-muted;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        &:empty {
+          display: none !important;
+          min-height: 0;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+
+      .running-tasks-table {
+        min-height: 0;
       }
     }
   }
@@ -2118,26 +2393,50 @@ body.view-instructordash {
       }
     }
 
-    // Pending tasks: push «Нет задач» lower
+    // Pending tasks — compact white body when empty
     .running-tasks-container {
+      .running-tasks-section {
+        margin-top: 16px;
+        margin-bottom: 0;
+        min-height: 0;
+      }
+
       .no-pending-tasks-message {
-        margin-top: 28px !important;
-        margin-bottom: 24px !important;
-        padding-top: 8px;
+        min-height: 64px;
+        margin-top: 8px !important;
+        margin-bottom: 16px !important;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: $instructor-muted;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        box-sizing: border-box;
+
+        &:empty {
+          display: none !important;
+          min-height: 0;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
 
         p {
-          margin-top: 0;
+          margin: 0;
         }
       }
 
-      .running-tasks-section {
-        margin-top: 20px;
+      .running-tasks-table {
+        min-height: 0;
       }
     }
 
-    // Sent messages: push intro text lower under the blue header
+    // Sent messages — extra white space under «Отправленные сообщения»
     #section-task-history,
     .email-background {
+      padding-bottom: 12px !important;
+
       br {
         display: none !important;
       }
@@ -2145,6 +2444,9 @@ body.view-instructordash {
       > div:first-of-type {
         margin-top: 28px !important;
         padding-top: 4px;
+        padding-bottom: 28px !important;
+        margin-bottom: 0 !important;
+        box-sizing: border-box;
 
         > p:first-child {
           margin-top: 0;
@@ -2154,6 +2456,13 @@ body.view-instructordash {
         > input[type="button"],
         > input[name="task-history-email-content"] {
           margin-top: 0 !important;
+          margin-bottom: 28px !important;
+        }
+
+        > .content-request-response-error,
+        > .content-history-email-table,
+        > .email-messages-wrapper {
+          margin-bottom: 8px;
         }
 
         // Second block («task history») keeps a bit more space from the first
@@ -2166,6 +2475,12 @@ body.view-instructordash {
         > input[name="task-history-email"] {
           margin-top: 0 !important;
         }
+      }
+
+      > div:last-of-type {
+        margin-bottom: 24px !important;
+        padding-bottom: 8px;
+        box-sizing: border-box;
       }
     }
 
@@ -2335,7 +2650,72 @@ body.view-instructordash {
       }
     }
 
-    // 3) «Reports Available for Download» — separate card look, rounded top
+    // Reports + Pending Tasks cards — rounded corners, enough bottom padding
+    .reports-download-container,
+    .running-tasks-container {
+      border-radius: $instructor-card-radius !important;
+      overflow: hidden !important;
+      box-shadow: $instructor-card-shadow !important;
+
+      > .hd-3,
+      > h3.hd-3,
+      > .hd-4,
+      > h4.hd-4,
+      > h3,
+      > h4 {
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+      }
+    }
+
+    .reports-download-container {
+      padding-bottom: 28px !important;
+
+      // White space under the last report action (before «Reports Available…»)
+      > p:has(+ #report-request-response),
+      > p:has(+ .request-response),
+      > p:has(+ .request-response-error) {
+        margin-bottom: 32px !important;
+      }
+
+      input.async-report-btn[data-endpoint*="submission"],
+      input.async-report-btn[data-endpoint*="Submission"],
+      input[name="export-ora2-data"][data-endpoint*="submission"] {
+        margin-bottom: 8px !important;
+      }
+
+      > .request-response,
+      > .request-response-error,
+      > #report-request-response,
+      > #report-request-response-error {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+
+        &:empty {
+          display: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          min-height: 0 !important;
+        }
+      }
+
+      > .report-downloads-table,
+      > #report-downloads-table {
+        margin-bottom: 8px !important;
+      }
+
+      > *:last-child {
+        margin-bottom: 8px !important;
+      }
+    }
+
+    .running-tasks-container {
+      > .hd-3,
+      > h3.hd-3 {
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+      }
+    }
+
+    // 3) «Reports Available for Download» — visually separate card within the same wrapper
     .reports-download-container {
       > .hd-3:nth-of-type(2),
       > h3.hd-3:nth-of-type(2) {
@@ -2343,7 +2723,8 @@ body.view-instructordash {
         position: relative;
         width: calc(100% + 56px) !important;
         max-width: none !important;
-        margin: 48px -28px 20px !important;
+        // 56px = ~28px white under last button + 28px page-bg gap
+        margin: 56px -28px 20px !important;
         padding: 14px 28px !important;
         background: $instructor-accent !important;
         color: #fff !important;
@@ -2356,14 +2737,14 @@ body.view-instructordash {
         box-sizing: border-box;
         box-shadow: none !important;
 
-        // Gray page gap so it doesn't look glued to content above
+        // Narrow page-bg gap so the two sections read as separate cards
         &::before {
           content: '';
           position: absolute;
           left: 0;
           right: 0;
-          top: -48px;
-          height: 48px;
+          top: -28px;
+          height: 28px;
           background: $instructor-bg;
         }
       }
@@ -2374,11 +2755,13 @@ body.view-instructordash {
 
   // data_download_2: downloads container is its own card
   #data_download_2.idash-section {
-    .reports-download-container {
+    .reports-download-container,
+    .running-tasks-container {
       margin-top: 28px !important;
       border-radius: $instructor-card-radius !important;
-      overflow: hidden;
+      overflow: hidden !important;
       padding: 0 !important;
+      box-shadow: $instructor-card-shadow !important;
 
       > hr {
         display: none !important;
@@ -2406,9 +2789,14 @@ body.view-instructordash {
         margin-top: 20px;
       }
 
-      > div:last-child {
+      > div:last-child,
+      > *:last-child {
         margin-bottom: 24px;
       }
+    }
+
+    .reports-download-container {
+      padding-bottom: 28px !important;
     }
   }
 
@@ -3132,16 +3520,20 @@ body.view-instructordash {
       }
     }
 
-    // Bulk exceptions: file upload | Add to Exception List
+    // Bulk exceptions: file picker on row 1, «Добавить в список исключений» on row 2
     #bulk-allowlist-exception-form {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items: end;
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 12px;
+      align-items: stretch;
       margin: 12px 0 0;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
 
       .customBrowseBtn {
-        grid-column: 1;
+        grid-column: 1 !important;
+        grid-row: 1;
         display: grid !important;
         grid-template-columns: 1fr auto;
         grid-template-rows: auto auto;
@@ -3162,7 +3554,8 @@ body.view-instructordash {
           color: $instructor-accent;
         }
 
-        .enhanced-input-file {
+        .enhanced-input-file,
+        .browse-file {
           grid-column: 1;
           grid-row: 2;
           display: block;
@@ -3245,22 +3638,21 @@ body.view-instructordash {
       .upload-csv-button,
       button.upload-csv-button,
       button.btn-blue.upload-csv-button {
-        grid-column: 2;
+        grid-column: 1 !important;
+        grid-row: 2;
         @include leti-instructor-btn-primary;
-        align-self: end;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        align-self: stretch;
         margin: 0 !important;
-        height: 42px;
-        white-space: nowrap;
-      }
-
-      @include media-breakpoint-down(sm) {
-        grid-template-columns: 1fr;
-
-        .upload-csv-button,
-        button.upload-csv-button {
-          grid-column: 1;
-          width: 100%;
-        }
+        height: auto !important;
+        min-height: 42px;
+        white-space: normal !important;
+        word-break: break-word;
+        line-height: 1.35 !important;
+        text-align: center;
+        box-sizing: border-box !important;
       }
     }
 
@@ -3962,5 +4354,576 @@ body.view-instructordash.view-updates {
     color: $instructor-muted;
     font-size: 0.95rem;
     line-height: 1.5;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Phone + tablet — keep cards/buttons/forms inside the viewport
+// ---------------------------------------------------------------------------
+@mixin leti-instructor-btn-fit {
+  max-width: 100% !important;
+  width: auto;
+  height: auto !important;
+  min-height: 42px;
+  white-space: normal !important;
+  word-break: break-word;
+  line-height: 1.35 !important;
+  text-align: center;
+  box-sizing: border-box !important;
+}
+
+body.view-instructordash {
+  @include media-breakpoint-down(md) {
+    .leti-instructor-page,
+    .container.leti-instructor-page {
+      padding: 12px 12px 28px !important;
+    }
+
+    // Tighter card insets so width:100% + margins do not overflow
+    .idash-section {
+      .membership-section,
+      fieldset.batch-enrollment,
+      fieldset.batch-beta-testers,
+      .auto_enroll_csv,
+      .member-lists-management,
+      .action-type-container,
+      .student-enrollment-status-container,
+      .student-progress-container,
+      .student-grade-container,
+      .entrance-exam-grade-container,
+      .course-specific-container,
+      .leti-email-card,
+      .leti-cert-card,
+      .certificate-exception-container,
+      .wrap {
+        overflow: visible !important;
+
+        > legend,
+        > .hd-3,
+        > .hd-4,
+        > h3,
+        > h4 {
+          padding-left: 16px !important;
+          padding-right: 16px !important;
+        }
+
+        > *:not(h3):not(.hd-3):not(h4):not(.hd-4):not(legend):not(br):not(hr) {
+          margin-left: 16px !important;
+          margin-right: 16px !important;
+          max-width: calc(100% - 32px) !important;
+          box-sizing: border-box !important;
+        }
+      }
+
+      // Keep overflow hidden so card corner radius clips the blue title
+      .running-tasks-container,
+      .data-download-container,
+      .reports-download-container {
+        overflow: hidden !important;
+        border-radius: $instructor-card-radius !important;
+
+        > legend,
+        > .hd-3,
+        > .hd-4,
+        > h3,
+        > h4 {
+          padding-left: 16px !important;
+          padding-right: 16px !important;
+          border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        }
+
+        > *:not(h3):not(.hd-3):not(h4):not(.hd-4):not(legend):not(br):not(hr) {
+          margin-left: 16px !important;
+          margin-right: 16px !important;
+          max-width: calc(100% - 32px) !important;
+          box-sizing: border-box !important;
+        }
+      }
+    }
+
+    // ---------------------------------------------------------------
+    // 1) Membership — CSV upload stacked; team table headers readable
+    // ---------------------------------------------------------------
+    #membership.idash-section {
+      #student-auto-enroll-form {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+
+        // Keep filename + Browse on one row; Upload CSV on the next
+        #submitBtn-auto_enroll_csv,
+        button[name="enrollment_signup_button"] {
+          grid-column: 1 !important;
+          width: 100% !important;
+          @include leti-instructor-btn-fit;
+        }
+
+        .enroll-option {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .member-lists-management {
+        .auth-list-container {
+          display: none !important;
+          margin: 0 !important;
+          height: 0 !important;
+          overflow: hidden !important;
+
+          &.active {
+            display: block !important;
+            height: auto !important;
+            overflow: visible !important;
+            margin-left: 12px !important;
+            margin-right: 12px !important;
+            margin-bottom: 12px !important;
+            max-width: calc(100% - 24px) !important;
+          }
+        }
+
+        .member-list-widget {
+          .info {
+            margin-bottom: 10px !important;
+          }
+
+          .bottom-bar {
+            flex-direction: column;
+            align-items: stretch;
+            margin-top: 10px !important;
+
+            input[type="button"].add,
+            .add-field,
+            input[type="text"].add-field {
+              width: 100% !important;
+              max-width: 100% !important;
+              position: static !important;
+            }
+          }
+        }
+
+        .member-list {
+          overflow-x: auto;
+
+          table {
+            width: 100%;
+            min-width: 0;
+            table-layout: auto;
+          }
+
+          thead th,
+          thead .label {
+            font-size: 0.72rem !important;
+            font-weight: 700 !important;
+            line-height: 1.25 !important;
+            padding: 8px 6px !important;
+            white-space: normal !important;
+            word-break: break-word;
+            hyphens: auto;
+            vertical-align: bottom;
+          }
+
+          tbody td {
+            font-size: 0.8rem !important;
+            padding: 8px 6px !important;
+            word-break: break-word;
+          }
+        }
+      }
+    }
+
+    // ---------------------------------------------------------------
+    // 2) Grades — tighter inset on phone/tablet; reinforce fit
+    // ---------------------------------------------------------------
+    #student_admin.idash-section {
+      .action-type-container,
+      .student-enrollment-status-container,
+      .student-progress-container,
+      .student-grade-container,
+      .entrance-exam-grade-container,
+      .course-specific-container,
+      .running-tasks-container {
+        overflow: visible !important;
+
+        > *:not(h4):not(.hd-4):not(h3):not(.hd-3):not(br):not(hr) {
+          margin-left: 16px !important;
+          margin-right: 16px !important;
+          max-width: calc(100% - 32px) !important;
+        }
+
+        > .hd-4,
+        > h4.hd-4,
+        > h4,
+        > .hd-3,
+        > h3 {
+          padding-left: 16px !important;
+          padding-right: 16px !important;
+        }
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      input[type="button"],
+      .molly-guard,
+      a.gradebook-link,
+      a.enrollment-status-link,
+      a.progress-link {
+        @include leti-instructor-btn-fit;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        font-size: 0.88rem !important;
+        padding: 10px 12px !important;
+      }
+
+      span[name="rescore-actions-single"],
+      span[name="rescore-actions-entrance-exam"],
+      span[name="rescore-actions-all"],
+      span[name="override-actions-single"] {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+
+        input[type="button"],
+        .molly-guard {
+          width: 100% !important;
+          margin: 0 !important;
+        }
+      }
+
+      .running-tasks-container {
+        .running-tasks-section {
+          min-height: 0;
+        }
+
+        .no-pending-tasks-message {
+          min-height: 80px;
+          margin-top: 8px !important;
+          margin-bottom: 16px !important;
+          padding: 0 !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+
+          &:empty {
+            display: none !important;
+            min-height: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+        }
+      }
+
+      .student-grade-container,
+      .course-specific-container {
+        padding-bottom: 24px !important;
+      }
+
+      .location-example {
+        word-break: break-all;
+      }
+    }
+
+    // ---------------------------------------------------------------
+    // 3) Data download — full-width wrapping action buttons + card chrome
+    // ---------------------------------------------------------------
+    #data_download.idash-section,
+    #data_download_2.idash-section {
+      .reports-download-container,
+      .running-tasks-container {
+        border-radius: $instructor-card-radius !important;
+        overflow: hidden !important;
+
+        > .hd-3,
+        > h3.hd-3,
+        > h3 {
+          border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        }
+      }
+
+      .reports-download-container {
+        padding-bottom: 24px !important;
+
+        > .hd-3:nth-of-type(2),
+        > h3.hd-3:nth-of-type(2) {
+          margin-top: 52px !important;
+
+          &::before {
+            display: block !important;
+            content: '' !important;
+            top: -24px;
+            height: 24px;
+            background: $instructor-bg;
+          }
+        }
+
+        > p:has(+ #report-request-response),
+        > p:has(+ .request-response) {
+          margin-bottom: 28px !important;
+        }
+      }
+
+      input[type="button"],
+      input.async-report-btn,
+      input.csv,
+      button.btn,
+      button.btn-primary,
+      .btn-primary,
+      .btn-brand,
+      .pgn__btn,
+      .btn {
+        @include leti-instructor-btn-fit;
+        display: block !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .issued_certificates p {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        input[type="button"] {
+          margin: 0 !important;
+        }
+      }
+    }
+
+    // ---------------------------------------------------------------
+    // 4) Email — send + history buttons fit; compact pending / taller sent
+    // ---------------------------------------------------------------
+    #send_email.idash-section,
+    #section-send-email {
+      input[type="text"],
+      #id_subject {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      input[type="button"],
+      input[name="send"],
+      input[name="task-history-email-content"],
+      input[name="task-history-email"] {
+        @include leti-instructor-btn-fit;
+        display: block !important;
+        width: 100% !important;
+        float: none !important;
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+        max-width: calc(100% - 32px) !important;
+      }
+
+      .leti-email-card--compose > input[name="send"] {
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+      }
+
+      .running-tasks-container {
+        .no-pending-tasks-message {
+          min-height: 56px;
+          margin-top: 4px !important;
+          margin-bottom: 12px !important;
+        }
+      }
+
+      #section-task-history,
+      .email-background {
+        padding-bottom: 8px !important;
+
+        > div:first-of-type {
+          padding-bottom: 24px !important;
+
+          > input[name="task-history-email-content"] {
+            margin-bottom: 24px !important;
+          }
+        }
+      }
+    }
+
+    // ---------------------------------------------------------------
+    // 5) Special exams — tables scroll; allowance tip stacks
+    // ---------------------------------------------------------------
+    #special_exams.idash-section {
+      span.tip {
+        flex-wrap: wrap;
+        justify-content: flex-start !important;
+        gap: 8px;
+
+        > span,
+        a#add-allowance,
+        a.blue-button {
+          width: 100%;
+        }
+
+        a#add-allowance,
+        a.blue-button {
+          @include leti-instructor-btn-fit;
+          justify-content: center;
+        }
+      }
+
+      .leti-table-scroll,
+      .exam-attempts-content,
+      .exam-allowances-content,
+      .onboarding-status-content {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        th {
+          font-size: 0.72rem !important;
+          padding: 8px 8px !important;
+          white-space: normal !important;
+          word-break: break-word;
+          line-height: 1.25 !important;
+        }
+
+        td {
+          font-size: 0.8rem !important;
+          padding: 8px !important;
+        }
+      }
+    }
+
+    // ---------------------------------------------------------------
+    // 6) Certificates — enable CTA, history table, bulk upload
+    // ---------------------------------------------------------------
+    #certificates.idash-section {
+      .leti-certificates-page-header {
+        align-items: stretch;
+      }
+
+      .leti-certificates-enable {
+        width: 100%;
+
+        form,
+        input[type="submit"],
+        button {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        input[type="submit"],
+        button {
+          @include leti-instructor-btn-fit;
+        }
+      }
+
+      .leti-certificates-title {
+        font-size: 1.35rem !important;
+      }
+
+      .certificate-generation-history-content {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+        padding: 0 16px 16px;
+
+        table {
+          width: 100%;
+          min-width: 0;
+          table-layout: fixed;
+          border-collapse: collapse;
+
+          th,
+          td {
+            font-size: 0.75rem !important;
+            line-height: 1.3 !important;
+            padding: 8px 6px !important;
+            white-space: normal !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            vertical-align: top;
+          }
+
+          th.task-name { width: 28%; }
+          th.task-date { width: 28%; }
+          th.task-details { width: 44%; }
+        }
+      }
+
+      input[type="button"],
+      input[type="submit"],
+      button.btn-blue,
+      #generate-exception-certificates,
+      #invalidate-certificate {
+        @include leti-instructor-btn-fit;
+        max-width: 100% !important;
+      }
+
+      #bulk-allowlist-exception-form {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  }
+}
+
+// Add Allowance / Edit modal — fit phone & tablet viewports
+body.view-instructordash #modalContainer {
+  @include media-breakpoint-down(md) {
+    .modal {
+      position: fixed !important;
+      top: 12px !important;
+      left: 12px !important;
+      right: 12px !important;
+      bottom: auto !important;
+      width: auto !important;
+      max-width: calc(100vw - 24px) !important;
+      max-height: calc(100vh - 24px) !important;
+      margin: 0 !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-header {
+      font-size: 1rem !important;
+      padding: 12px 14px !important;
+    }
+
+    .modal-body,
+    .modal-content,
+    form,
+    .inner-wrapper {
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    form input[type="text"],
+    form input[type="number"],
+    form select,
+    form textarea {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    #addNewAllowance,
+    input[type="submit"],
+    input[type="button"],
+    button[type="submit"] {
+      float: none !important;
+      display: block !important;
+      width: 100% !important;
+      margin: 12px 0 0 !important;
+      @include leti-instructor-btn-fit;
+    }
   }
 }

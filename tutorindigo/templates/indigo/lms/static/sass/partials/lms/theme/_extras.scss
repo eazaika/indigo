@@ -3212,11 +3212,8 @@ nav.wrapper-preview-menu.leti-instructor-toolbar {
   border-radius: 0;
 }
 
-.content-wrapper .course-tabs .nav-item.active .nav-link, .content-wrapper .course-tabs .nav-item:hover .nav-link {
-  border: none;
-  color: #fff;
-  background: rgba(0, 64, 124, 0.5);
-}
+// Legacy pill tabs removed — in-course tabs use Learning underline style
+// (see sass/instructor/_instructor.scss, body.view-in-course).
 
 ////////////////// Course about page
 .content-wrapper {
