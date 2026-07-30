@@ -1,0 +1,3966 @@
+// LETIteach — Instructor Dashboard (aligned with profile / account / learning MFE)
+
+$instructor-container-max: 1400px;
+$instructor-card-radius: 10px;
+$instructor-card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+$instructor-bg: #f5f5f5;
+$instructor-surface: #fff;
+$instructor-accent: $blue;
+$instructor-border: #e8e8e8;
+$instructor-text: #313131;
+$instructor-muted: #717171;
+$instructor-body-font: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$instructor-nav-width: 200px;
+$instructor-active-bg: rgba(0, 73, 124, 0.12);
+
+@mixin leti-instructor-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: $instructor-accent !important;
+  border: 1px solid $instructor-accent !important;
+  color: #fff !important;
+  border-radius: 5px !important;
+  box-shadow: 4px 4px 0 rgba(0, 73, 124, 0.25);
+  font-family: $instructor-body-font;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  padding: 10px 18px !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+  text-transform: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #01306e !important;
+    border-color: #01306e !important;
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+@mixin leti-instructor-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: transparent !important;
+  border: 1px solid $instructor-accent !important;
+  color: $instructor-accent !important;
+  border-radius: 5px !important;
+  box-shadow: none;
+  font-family: $instructor-body-font;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  padding: 10px 18px !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+  text-transform: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: $instructor-accent !important;
+    border-color: $instructor-accent !important;
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+}
+
+@mixin leti-instructor-card {
+  background: $instructor-surface;
+  border: none;
+  border-radius: $instructor-card-radius;
+  box-shadow: $instructor-card-shadow;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@mixin leti-instructor-card-title {
+  display: block;
+  width: calc(100% + 56px);
+  max-width: none;
+  margin: -24px -28px 20px;
+  padding: 14px 28px;
+  background: $instructor-accent;
+  color: #fff !important;
+  border: none;
+  border-radius: 0;
+  font-family: $font-family-title;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  box-sizing: border-box;
+}
+
+// ---------------------------------------------------------------------------
+// Page chrome — gray bg like profile / account / learning home
+// ---------------------------------------------------------------------------
+body.view-instructordash {
+  background-color: $instructor-bg;
+
+  .window-wrap {
+    background-color: $instructor-bg;
+  }
+
+  header.global-header {
+    background-color: #00407c;
+    position: absolute;
+    height: auto;
+    min-height: 72px;
+  }
+}
+
+:not(.courseware) > #content.content-wrapper:has(.instructor-dashboard-wrapper-2),
+:not(.courseware) > #content.content-wrapper:has(.leti-instructor-page) {
+  background-image: none;
+  background-color: $instructor-bg;
+  background-attachment: scroll;
+  margin-top: $header-height;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  padding: 40px 0 0 !important;
+  box-sizing: border-box;
+  min-height: calc(100vh - #{$header-height + $content_padding_top + $content-padding-bottom + $footer-height});
+}
+
+// About-style header layout also on instructor
+body.view-instructordash {
+  header.global-header {
+    padding-bottom: 0;
+    overflow: visible;
+  }
+
+  header.global-header .main-header--course-about {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 72px;
+    min-height: 72px;
+    padding: 0 6px;
+    box-sizing: border-box;
+  }
+
+  header.global-header .header-about-meta {
+    flex: 1 1 0;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    min-width: 0;
+    max-width: calc(50% - 80px);
+    height: 72px;
+    padding-left: 0;
+    z-index: 3;
+
+    @include media-breakpoint-down(md) {
+      max-width: calc(50% - 56px);
+      padding-left: 0;
+    }
+  }
+
+  header.global-header .course-catalog-link {
+    display: inline-flex;
+    align-items: center;
+    align-self: stretch;
+    flex: 0 0 auto;
+    height: 72px;
+    color: #fff;
+    font-size: inherit;
+    font-weight: 300;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    background: rgb(51, 107, 156);
+    border-bottom: 1px dashed rgb(92, 135, 173);
+    padding: 0 14px;
+    margin-left: 8px;
+    box-sizing: border-box;
+
+    @include media-breakpoint-down(md) {
+      margin-left: 44px;
+      padding: 0 10px;
+    }
+
+    &:hover,
+    &:focus {
+      color: #fff;
+      text-decoration: none;
+      background: rgb(26, 83, 137);
+      border-bottom: 1px solid rgb(109, 145, 180);
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  header.global-header .course-header--about {
+    flex: 1 1 auto;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    height: 72px;
+    float: none;
+    margin: 0;
+    padding: 0 0 0 14px;
+    font-size: 0.875rem;
+    color: #fff;
+    line-height: 1.3;
+    box-sizing: border-box;
+    overflow: visible;
+
+    @include media-breakpoint-down(md) {
+      padding-left: 10px;
+    }
+
+    .provider,
+    .course-number {
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .course-name {
+      display: block;
+      margin-top: 5px;
+      font-size: 1rem;
+      font-weight: normal;
+      color: #fff;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  header.global-header .nav-links--course-about.hidden {
+    display: none !important;
+  }
+
+  header.global-header .main-header--course-about .header-toolbar {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: stretch;
+    height: 72px;
+    float: none;
+    margin: 0;
+    z-index: 3;
+  }
+
+  @include media-breakpoint-down(lg) {
+    header.global-header .header-about-meta {
+      display: none !important;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Course tabs — same underline style as Learning MFE (Курс / Прогресс / …)
+// ---------------------------------------------------------------------------
+body.view-instructordash {
+  .wrapper-course-material,
+  nav.navbar.course-tabs {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 16px 0 0 !important;
+    padding: 0;
+    max-width: none;
+    width: 100%;
+  }
+
+  .wrapper-course-material .course-material,
+  nav.navbar.course-tabs {
+    max-width: $instructor-container-max;
+    margin-left: unquote("max(8px, calc((100vw - #{$instructor-container-max}) / 4))");
+    margin-right: auto;
+    padding: 0 32px 0 0;
+    box-sizing: border-box;
+    border-bottom: 2px solid $instructor-border;
+
+    @include media-breakpoint-down(md) {
+      margin-left: 0;
+      padding: 0 16px;
+    }
+  }
+
+  .course-tabs,
+  nav.navbar.course-tabs .navbar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: none;
+    background: transparent;
+  }
+
+  .course-tabs .tab,
+  .course-tabs .nav-item,
+  nav.navbar.course-tabs .nav-item {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    float: none;
+    border: none;
+    background: transparent;
+
+    a,
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      font-family: $instructor-body-font;
+      font-weight: 600;
+      font-size: 1rem;
+      color: $instructor-muted !important;
+      padding: 0.85rem 1rem !important;
+      margin: 0;
+      border: none !important;
+      border-bottom: 3px solid transparent !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      text-decoration: none !important;
+      line-height: 1.3;
+
+      &:hover,
+      &:focus {
+        color: $instructor-accent !important;
+        background: transparent !important;
+        border-bottom-color: rgba(0, 73, 124, 0.35) !important;
+      }
+
+      &.active {
+        color: $instructor-accent !important;
+        border-bottom-color: $instructor-accent !important;
+        background: transparent !important;
+        font-weight: 600;
+      }
+    }
+
+    &.active a,
+    &.active .nav-link {
+      color: $instructor-accent !important;
+      border-bottom-color: $instructor-accent !important;
+      background: transparent !important;
+      font-weight: 600;
+    }
+
+    &:first-child a,
+    &:first-child .nav-link {
+      padding-left: 0 !important;
+    }
+  }
+
+  // Override legacy Indigo pill tabs on this page
+  .content-wrapper .course-tabs .nav-item.active .nav-link,
+  .content-wrapper .course-tabs .nav-item:hover .nav-link,
+  .content-wrapper .course-tabs .tab a.active,
+  .content-wrapper .course-tabs .tab a:hover {
+    border: none !important;
+    border-bottom: 3px solid $instructor-accent !important;
+    color: $instructor-accent !important;
+    background: transparent !important;
+  }
+
+  .content-wrapper .course-tabs .tab a:hover {
+    border-bottom-color: rgba(0, 73, 124, 0.35) !important;
+  }
+
+  .content-wrapper .course-tabs .tab a.active {
+    border-bottom-color: $instructor-accent !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Instructor page layout
+// ---------------------------------------------------------------------------
+body.view-instructordash {
+  .leti-instructor-page,
+  .container.leti-instructor-page {
+    max-width: $instructor-container-max;
+    width: 100%;
+    // Was centered (equal side gaps). Left gap ≈ half of that distance.
+    margin-left: unquote("max(8px, calc((100vw - #{$instructor-container-max}) / 4))");
+    margin-right: auto;
+    padding: 24px 32px 48px 0;
+    box-sizing: border-box;
+    float: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    @include media-breakpoint-down(md) {
+      margin-left: 0;
+      padding: 16px 16px 32px;
+    }
+
+    // Stock LMS: .container > div { border + shadow + display:table }
+    > .instructor-dashboard-wrapper-2,
+    > div {
+      display: block !important;
+      width: 100% !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      outline: none !important;
+    }
+  }
+
+  .instructor-dashboard-wrapper-2 {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-family: $instructor-body-font;
+    color: $instructor-text;
+  }
+
+  .instructor-dashboard-content-2 {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 !important;
+    float: none;
+    background: transparent;
+    box-sizing: border-box;
+  }
+
+  .leti-instructor-topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 0 0 24px;
+  }
+
+  .instructor-dashboard-title {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: $font-family-title;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: $instructor-accent;
+  }
+
+  .wrap-instructor-info.studio-view {
+    display: block;
+    position: static;
+    top: auto;
+    float: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .instructor-info-action,
+  a.instructor-info-action.btn,
+  a.instructor-info-action.btn-primary,
+  a.instructor-info-action.btn-outline-primary {
+    @include leti-instructor-btn-outline;
+  }
+
+  // Left vertical section nav
+  .leti-instructor-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 128px;
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  .instructor-nav {
+    flex: 0 0 $instructor-nav-width;
+    width: $instructor-nav-width;
+    max-width: 100%;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    border: none;
+    border-bottom: none;
+    background: transparent;
+    position: sticky;
+    top: 88px;
+    align-self: flex-start;
+
+    @include media-breakpoint-down(md) {
+      flex: 1 1 auto;
+      width: 100%;
+      position: static;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: $instructor-surface;
+      border: none;
+      border-radius: $instructor-card-radius;
+      box-shadow: $instructor-card-shadow;
+      padding: 8px;
+    }
+
+    .nav-item {
+      display: block;
+      width: 100%;
+      margin: 0 0 4px;
+      padding: 0;
+      float: none;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .btn-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      margin: 0;
+      padding: 10px 14px 10px 12px !important;
+      border: none !important;
+      border-bottom: none !important;
+      border-radius: 8px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+      text-align: left;
+      font-family: $instructor-body-font;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: $instructor-muted !important;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+      &::before {
+        content: '';
+        flex: 0 0 6px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.55;
+      }
+
+      &:hover,
+      &:focus {
+        color: $instructor-accent !important;
+        background: rgba(0, 73, 124, 0.06) !important;
+        border: none !important;
+        text-decoration: none !important;
+        outline: none;
+      }
+
+      &.active-section {
+        color: $instructor-accent !important;
+        background: $instructor-active-bg !important;
+        border: none !important;
+        font-weight: 700;
+
+        &::before {
+          opacity: 1;
+          background: $instructor-accent;
+        }
+      }
+    }
+  }
+
+  .leti-instructor-panels {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+
+  // Active panel
+  .idash-section {
+    display: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+
+    &.active-section {
+      display: block;
+    }
+
+    // Section title (duplicate of left nav) — keep light
+    > .hd-3,
+    > h3.hd-3 {
+      margin: 0 0 16px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: $instructor-accent;
+      font-family: $font-family-title;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.3;
+      box-shadow: none;
+    }
+
+    // ------------------------------------------------------------------
+    // Logical blocks = white card + blue title (like «Основная информация»)
+    // ------------------------------------------------------------------
+    .enrollment-wrapper,
+    .basic-wrapper,
+    .membership-section,
+    fieldset.batch-enrollment,
+    fieldset.batch-beta-testers,
+    .auto_enroll,
+    .member-lists-management,
+    .batch-enrollment,
+    .course-errors-wrapper,
+    .grade-analytics-wrapper,
+    .enrollment-code-wrapper,
+    .sso_warning,
+    .wrapper-content,
+    .cohort-management,
+    .cohort-management-group,
+    .cohort-management-nav,
+    .cohort-management-group-header,
+    .cohort-management-group-add,
+    .cohort-management-supplemental,
+    .division-scheme-container,
+    .certificate-invalidation,
+    .student-admin-section,
+    .extensions-section,
+    .list-fields,
+    .email-content,
+    .email-background,
+    .send-email,
+    .running-tasks-container,
+    .reports-download-container,
+    .data-download-container,
+    .ora-content,
+    .special-exams-content,
+    .student-enrollment-status-container,
+    .student-progress-container,
+    .student-grade-container,
+    .entrance-exam-grade-container,
+    .course-specific-container,
+    #set-extension,
+    #view-granted-extensions,
+    #reset-extension,
+    #section-send-email,
+    #section-task-history {
+      @include leti-instructor-card;
+      margin: 0 0 20px;
+      padding: 24px 28px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      // Leading <hr> before title inside a block
+      > hr:first-child {
+        display: none;
+      }
+
+      > legend,
+      > .hd-3,
+      > h3,
+      > h3.hd-3,
+      > .hd-4,
+      > h4,
+      > h4.hd-4,
+      > .title,
+      > .toggle-wrapper > .hd-4,
+      > .toggle-wrapper > h4,
+      > hr:first-child + .hd-3,
+      > hr:first-child + h3,
+      > hr:first-child + .hd-4,
+      > hr:first-child + h4 {
+        @include leti-instructor-card-title;
+      }
+
+      > .toggle-wrapper {
+        display: block;
+        width: calc(100% + 56px);
+        margin: -24px -28px 20px;
+        padding: 0;
+        background: $instructor-accent;
+
+        .hd-4,
+        h4,
+        .title {
+          display: block;
+          margin: 0;
+          padding: 14px 28px;
+          background: transparent;
+          color: #fff !important;
+          font-family: $font-family-title;
+          font-size: 1.05rem;
+          font-weight: 600;
+        }
+
+        .triangle {
+          display: none;
+        }
+      }
+    }
+
+    // Enrollment: title sits *before* .enrollment-wrapper in markup
+    > .hd-4,
+    > h4.hd-4 {
+      @include leti-instructor-card;
+      margin: 0;
+      padding: 14px 28px;
+      border-radius: $instructor-card-radius $instructor-card-radius 0 0;
+      box-shadow: none;
+      background: $instructor-accent;
+      color: #fff !important;
+      font-family: $font-family-title;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    > .hd-4 + .enrollment-wrapper,
+    > h4.hd-4 + .enrollment-wrapper {
+      border-radius: 0 0 $instructor-card-radius $instructor-card-radius;
+      margin-top: 0;
+      box-shadow: $instructor-card-shadow;
+
+      // title already rendered as sibling above
+      > .hd-4,
+      > h4 {
+        display: none;
+      }
+    }
+
+    // Hide separator lines between top-level cards
+    > hr,
+    > hr.divider {
+      display: none;
+    }
+
+    hr,
+    hr.divider {
+      border: none;
+      border-top: 1px solid $instructor-border;
+      margin: 20px 0;
+    }
+
+    label,
+    .label-text,
+    .tip,
+    p,
+    .copy,
+    .hint p {
+      color: $instructor-text;
+      font-family: $instructor-body-font;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: $instructor-body-font;
+
+      th,
+      td {
+        padding: 10px 12px;
+        border-bottom: 1px solid $instructor-border;
+        text-align: left;
+        color: $instructor-text;
+      }
+
+      th {
+        color: $instructor-accent;
+        font-weight: 600;
+      }
+
+      caption {
+        caption-side: bottom;
+        padding-top: 8px;
+        color: $instructor-muted;
+        font-size: 0.85rem;
+        text-align: left;
+      }
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    textarea,
+    select,
+    .form-control {
+      max-width: 100%;
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid $instructor-border;
+      border-radius: 5px;
+      background: #fff;
+      color: $instructor-text;
+      font-family: $instructor-body-font;
+      font-size: 1rem;
+      line-height: 1.5;
+      box-shadow: none;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: $instructor-accent;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 73, 124, 0.15);
+      }
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+  }
+
+  // Unified buttons (Studio stays outline)
+  .instructor-dashboard-content-2 {
+    input[type="button"],
+    input[type="submit"],
+    .btn,
+    .btn-blue,
+    .btn-primary,
+    .enrollment-button,
+    .action-primary,
+    .file-browse.btn .browse,
+    .customBrowseBtn .browse,
+    button.btn-primary,
+    button.btn-blue {
+      @include leti-instructor-btn-primary;
+      margin: 0 8px 8px 0;
+    }
+
+    .btn-outline-primary,
+    .btn-secondary,
+    a.btn-outline-primary,
+    a.instructor-info-action,
+    a.instructor-info-action.btn,
+    a.instructor-info-action.btn-outline-primary,
+    a.instructor-info-action.btn-primary {
+      @include leti-instructor-btn-outline;
+      margin: 0 8px 8px 0;
+    }
+
+    a.file-download-link,
+    .file-download-link a {
+      color: $instructor-accent;
+      font-weight: 600;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        color: #01306e;
+      }
+    }
+  }
+
+  // Nested secondary navs (e.g. data download)
+  .data-download-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+    border: none;
+
+    .nav-item {
+      display: block;
+      margin: 0;
+    }
+
+    .btn-link {
+      @include leti-instructor-btn-outline;
+      padding: 8px 14px !important;
+
+      &.active-section {
+        @include leti-instructor-btn-primary;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Membership tab
+  // -------------------------------------------------------------------------
+  #membership.idash-section {
+    > .hd-3,
+    > h3.hd-3 {
+      margin: 0 0 28px;
+    }
+
+    // Cards: avoid fieldset/legend negative-margin overlap
+    .membership-section,
+    fieldset.batch-enrollment,
+    fieldset.batch-beta-testers,
+    .auto_enroll_csv,
+    .member-lists-management {
+      clear: both;
+      display: block;
+      float: none;
+      position: relative;
+      margin: 0 0 28px !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: $instructor-card-radius !important;
+      min-inline-size: 0;
+      overflow: hidden;
+      background: $instructor-surface;
+      box-shadow: $instructor-card-shadow;
+
+      &:last-child {
+        margin-bottom: 0 !important;
+      }
+
+      > legend,
+      > .hd-3,
+      > h3,
+      > h3.hd-3 {
+        display: block !important;
+        float: none !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 14px 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border: none !important;
+        // Fieldset legends ignore parent radius — round the title itself
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        font-family: $font-family-title;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.35;
+        box-sizing: border-box;
+      }
+
+      > label,
+      > p,
+      > div,
+      > form,
+      > .enroll-option,
+      > .request-response,
+      > .request-response-error,
+      > .wrapper-member-select,
+      > .auth-list-container,
+      > .results {
+        margin-left: 28px;
+        margin-right: 28px;
+        box-sizing: border-box;
+      }
+
+      > label:first-of-type,
+      > p:first-of-type,
+      > .wrapper-member-select,
+      > form {
+        margin-top: 20px;
+      }
+
+      > div:last-child,
+      > form,
+      > .auth-list-container.active,
+      > .results {
+        margin-bottom: 24px;
+      }
+
+      label {
+        display: block;
+      }
+
+      textarea {
+        display: block;
+        width: 100% !important;
+        max-width: 100%;
+        margin-top: 8px;
+      }
+    }
+
+    // Checkboxes — accent blue
+    input[type="checkbox"] {
+      width: 1.05em !important;
+      height: 1.05em !important;
+      margin: 0 8px 0 0 !important;
+      padding: 0 !important;
+      vertical-align: middle;
+      accent-color: $instructor-accent;
+      cursor: pointer;
+    }
+
+    .enroll-option {
+      position: relative;
+      margin: 12px 28px !important;
+
+      .label-text {
+        color: $instructor-text;
+        font-weight: 600;
+      }
+
+      .hint {
+        z-index: 5;
+      }
+    }
+
+    // Primary action buttons — solid dark blue (defeat stock idashbutton)
+    input[type="button"],
+    input[type="submit"],
+    input.enrollment-button,
+    input[name="enrollment-button"],
+    input[name="beta-testers"],
+    input[type="button"].add,
+    input.add,
+    button.btn-blue,
+    button.btn-primary,
+    .enrollment-button,
+    .btn-blue,
+    .file-browse .browse,
+    .member-list-widget input[type="button"].add,
+    .member-list-widget .add {
+      @include leti-instructor-btn-primary;
+      position: static !important;
+      right: auto !important;
+      top: auto !important;
+      margin: 0 8px 8px 0 !important;
+      background-image: none !important;
+      text-shadow: none !important;
+      filter: none !important;
+    }
+
+    a.instructor-info-action,
+    a.instructor-info-action.btn-outline-primary {
+      @include leti-instructor-btn-outline;
+    }
+
+    // CSV upload row: file picker (left) | Upload CSV (right)
+    #student-auto-enroll-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: end;
+      margin: 20px 28px 8px !important;
+
+      .customBrowseBtn {
+        grid-column: 1;
+        display: grid !important;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        align-items: stretch;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        position: relative;
+        vertical-align: top;
+
+        > label {
+          grid-column: 1 / -1;
+          grid-row: 1;
+          display: block;
+          margin: 0 0 8px !important;
+          font-weight: 600;
+          color: $instructor-accent;
+        }
+
+        .enhanced-input-file {
+          grid-column: 1;
+          grid-row: 2;
+          display: block;
+          position: relative;
+          z-index: 1;
+          width: 100% !important;
+          max-width: none;
+          min-height: 42px;
+          margin: 0 !important;
+          padding: 10px 14px !important;
+          border: 1px solid $instructor-border !important;
+          border-right: none !important;
+          border-radius: 5px 0 0 5px !important;
+          background: #fff !important;
+          box-sizing: border-box;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          cursor: default;
+        }
+
+        .file-browse,
+        .file-browse.btn,
+        .file-browse.btn-primary {
+          grid-column: 2;
+          grid-row: 2;
+          position: relative !important;
+          left: auto !important;
+          right: auto !important;
+          bottom: auto !important;
+          top: auto !important;
+          display: block !important;
+          width: auto !important;
+          min-width: 110px;
+          height: 42px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          border-radius: 0 !important;
+          background: transparent !important;
+          background-image: none !important;
+          box-shadow: none !important;
+          overflow: hidden !important;
+          align-self: stretch;
+
+          .browse {
+            @include leti-instructor-btn-primary;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 42px;
+            margin: 0 !important;
+            margin-left: 0 !important;
+            border-radius: 0 5px 5px 0 !important;
+            padding: 0 18px !important;
+            font-size: 0.9rem !important;
+            box-shadow: none !important;
+            background-image: none !important;
+            pointer-events: none; // clicks go to the file input
+          }
+
+          .file_field,
+          input.file_field,
+          input[type="file"] {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 0 !important;
+            filter: alpha(opacity=0);
+            font-size: 24px; // enlarge hit area in some browsers
+            cursor: pointer !important;
+            z-index: 10 !important;
+            border: none !important;
+            background: transparent !important;
+          }
+        }
+      }
+
+      #submitBtn-auto_enroll_csv,
+      button[name="enrollment_signup_button"] {
+        grid-column: 2;
+        width: 100%;
+        max-width: none;
+        margin: 0 !important;
+        min-height: 42px;
+        align-self: end;
+      }
+
+      .enroll-option {
+        grid-column: 1 / -1;
+        margin: 8px 0 0 !important;
+      }
+    }
+
+    // Course team management
+    .member-lists-management {
+      .wrapper-member-select {
+        margin-top: 20px !important;
+        margin-bottom: 16px;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+
+        label {
+          margin: 0 !important;
+          font-weight: 600;
+          color: $instructor-accent;
+        }
+
+        select,
+        .member-lists-selector {
+          display: block;
+          width: 100%;
+          max-width: 420px;
+          margin-top: 8px;
+          padding: 10px 14px;
+          border: 1px solid $instructor-border;
+          border-radius: 5px;
+          background: #fff;
+        }
+      }
+
+      .auth-list-container {
+        margin-left: 28px !important;
+        margin-right: 28px !important;
+
+        &.active {
+          margin-bottom: 24px !important;
+        }
+      }
+
+      .member-list-widget {
+        .header {
+          background: transparent !important;
+          border: none !important;
+        }
+
+        .info {
+          margin: 0 0 16px;
+          padding: 0 !important;
+          border: none !important;
+          background: transparent !important;
+          color: $instructor-muted !important;
+          font-size: 0.95rem;
+          line-height: 1.55;
+        }
+
+        .member-list {
+          border: 1px solid $instructor-border;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #fff;
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+          }
+
+          thead {
+            background: rgba(0, 73, 124, 0.12) !important;
+
+            th,
+            .label {
+              background: transparent !important;
+              color: $instructor-accent !important;
+              font-weight: 700 !important;
+              border: none !important;
+              border-bottom: 1px solid rgba(0, 73, 124, 0.2) !important;
+              padding: 12px 14px !important;
+              text-align: left;
+            }
+          }
+
+          tbody {
+            tr {
+              border-bottom: 1px solid $instructor-border !important;
+              background: #fff;
+
+              &:last-child {
+                border-bottom: none !important;
+              }
+
+              &:hover {
+                background: rgba(0, 73, 124, 0.03);
+              }
+            }
+
+            td {
+              border: none !important;
+              border-left: none !important;
+              border-right: none !important;
+              padding: 12px 14px !important;
+              color: $instructor-text;
+              vertical-align: middle;
+            }
+          }
+        }
+
+        .bottom-bar {
+          display: flex !important;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+          position: relative;
+          margin-top: 28px !important;
+          padding: 0 !important;
+          border: none !important;
+          background: transparent !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
+
+          label {
+            flex: 1 1 220px;
+            margin: 0 !important;
+            min-width: 0;
+          }
+
+          .add-field,
+          input[type="text"].add-field {
+            width: 100% !important;
+            margin: 0 !important;
+          }
+
+          input[type="button"].add {
+            flex: 0 0 auto;
+            position: static !important;
+            right: auto !important;
+            top: auto !important;
+            margin: 0 !important;
+            white-space: nowrap;
+          }
+        }
+
+        .revoke {
+          color: $instructor-accent;
+          font-weight: 600;
+
+          &:hover,
+          &:focus {
+            color: #b20610;
+          }
+        }
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Cohort management tab
+  // -------------------------------------------------------------------------
+  #cohort_management.idash-section {
+    // Checkbox «Enable Cohorts» / discussion checkboxes
+    input[type="checkbox"],
+    input.cohorts-state,
+    .check-discussion-category,
+    .check-discussion-subcategory-inline,
+    .check-discussion-subcategory-course-wide,
+    input[type="checkbox"].check-discussion-category {
+      width: 1.05em !important;
+      height: 1.05em !important;
+      margin: 0 8px 0 0 !important;
+      padding: 0 !important;
+      vertical-align: middle;
+      accent-color: $instructor-accent !important;
+      cursor: pointer;
+    }
+
+    // Radio bullets — Automatic / Manual, content groups
+    input[type="radio"],
+    input.type-random,
+    input.type-manual,
+    input.radio-no,
+    input.radio-yes {
+      width: 1.05em !important;
+      height: 1.05em !important;
+      margin: 0 8px 0 0 !important;
+      padding: 0 !important;
+      vertical-align: middle;
+      accent-color: $instructor-accent !important;
+      cursor: pointer;
+    }
+
+    .cohorts-state-section {
+      label {
+        font-weight: 600;
+        color: $instructor-text;
+        cursor: pointer;
+      }
+    }
+
+    .field-radio label,
+    .cohort-management-assignment-type-settings label,
+    .cohort-management-details-association-course label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 8px 0;
+      font-weight: 500;
+      color: $instructor-text;
+      cursor: pointer;
+    }
+
+    // Primary buttons: Add Cohort, Save, View, form-submit
+    button.action-create,
+    button.action-primary,
+    button.form-submit,
+    button.action-save,
+    button.action-view,
+    .button.action-primary,
+    .button.action-create,
+    .form-submit,
+    .action-create,
+    .action-save {
+      @include leti-instructor-btn-primary;
+      position: static !important;
+      float: none !important;
+      margin: 0 8px 8px 0 !important;
+      background-image: none !important;
+      text-shadow: none !important;
+      filter: none !important;
+
+      .icon,
+      .fa {
+        margin-right: 6px;
+      }
+    }
+
+    // Cancel — same solid primary style
+    a.form-cancel,
+    a.action-cancel,
+    .form-cancel.action-secondary,
+    .action-cancel {
+      @include leti-instructor-btn-primary;
+      display: inline-flex !important;
+      margin: 0 8px 8px 0 !important;
+      vertical-align: middle;
+      background-image: none !important;
+      text-shadow: none !important;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    // «Добавить группу» — force same look as Save/Cancel (beat stock idashbutton)
+    .cohort-management-nav {
+      .action-create,
+      button.action-create,
+      button.button.action-primary.action-create,
+      .button.action-primary.action-create {
+        @include leti-instructor-btn-primary;
+        float: none !important;
+        position: static !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        text-align: center !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 0 8px 0 !important;
+        padding: 10px 18px !important;
+        background: $instructor-accent !important;
+        background-color: $instructor-accent !important;
+        background-image: none !important;
+        border: 1px solid $instructor-accent !important;
+        border-radius: 5px !important;
+        box-shadow: 4px 4px 0 rgba(0, 73, 124, 0.25) !important;
+        color: #fff !important;
+        font-family: $instructor-body-font !important;
+        font-size: 0.95rem !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+        text-shadow: none !important;
+        text-decoration: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: #01306e !important;
+          background-color: #01306e !important;
+          background-image: none !important;
+          border-color: #01306e !important;
+          color: #fff !important;
+        }
+
+        .icon,
+        .fa {
+          margin-right: 6px;
+          color: #fff !important;
+        }
+      }
+
+      &.is-disabled .action-create {
+        opacity: 0.55 !important;
+      }
+    }
+
+    .cohort-management,
+    .cohort-management-group,
+    .cohort-management-add-form,
+    .cohort-management-settings {
+      .form-submit,
+      .action-primary,
+      .action-save {
+        @include leti-instructor-btn-primary;
+        background: $instructor-accent !important;
+        background-image: none !important;
+        text-shadow: none !important;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Extensions tab
+  // -------------------------------------------------------------------------
+  #extensions.idash-section {
+    #set-extension,
+    #view-granted-extensions,
+    #reset-extension {
+      input[type="text"] {
+        display: inline-block;
+        width: auto;
+        max-width: 100%;
+        margin: 0 0 8px;
+        vertical-align: middle;
+        box-sizing: border-box;
+      }
+
+      input[name="student"] {
+        width: 420px !important;
+        max-width: 100%;
+      }
+
+      select {
+        display: inline-block;
+        width: auto;
+        min-width: 220px;
+        max-width: 100%;
+        margin: 0 0 8px;
+        vertical-align: middle;
+        box-sizing: border-box;
+      }
+    }
+
+    // 1) Individual extensions: gap between date and reason
+    #set-extension {
+      input[name="due_datetime"] {
+        margin-right: 24px !important;
+      }
+
+      input[name="reason"] {
+        margin-left: 0 !important;
+      }
+    }
+
+    // 2) Viewing granted extensions: gap between controls and buttons
+    #view-granted-extensions {
+      select[name="url"] {
+        margin-right: 24px !important;
+      }
+
+      input[name="student"] {
+        margin-right: 24px !important;
+      }
+
+      input[name="show-unit-extensions"],
+      input[name="show-student-extensions"] {
+        margin-left: 0 !important;
+        white-space: normal;
+        vertical-align: middle;
+      }
+    }
+
+    // 3) Reset extensions: gap between subsection select and reason
+    #reset-extension {
+      select[name="url"] {
+        margin-right: 24px !important;
+      }
+
+      input[name="reason"] {
+        margin-left: 0 !important;
+      }
+    }
+
+    // 4) Action buttons — solid dark blue
+    input[type="button"],
+    input[name="change-due-date"],
+    input[name="show-unit-extensions"],
+    input[name="show-student-extensions"],
+    input[name="reset-due-date"] {
+      @include leti-instructor-btn-primary;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      margin: 0 8px 8px 0 !important;
+      vertical-align: middle;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Student admin tab
+  // -------------------------------------------------------------------------
+  #student_admin.idash-section {
+    > .hd-3,
+    > h3.hd-3 {
+      margin: 0 0 28px !important;
+      padding: 0 !important;
+      background: transparent !important;
+      color: $instructor-accent !important;
+      box-shadow: none !important;
+      border: none !important;
+      font-family: $font-family-title;
+      font-size: 1.75rem !important;
+      font-weight: 700 !important;
+      line-height: 1.25 !important;
+    }
+
+    .action-type-container,
+    .student-enrollment-status-container,
+    .student-progress-container,
+    .student-grade-container,
+    .entrance-exam-grade-container,
+    .course-specific-container,
+    .running-tasks-container {
+      @include leti-instructor-card;
+      clear: both;
+      display: block !important;
+      float: none !important;
+      position: relative;
+      margin: 0 0 28px !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: $instructor-card-radius !important;
+      overflow: hidden;
+      background: $instructor-surface !important;
+      box-shadow: $instructor-card-shadow !important;
+
+      // Kill stock <br>/<hr> spacing that creates white strip + gray lines
+      > br,
+      br {
+        display: none !important;
+      }
+
+      hr {
+        display: none !important;
+        border: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      > .hd-4,
+      > h4.hd-4,
+      > h4,
+      > .hd-3,
+      > h3 {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 14px 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        font-family: $font-family-title;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.35;
+        box-sizing: border-box;
+      }
+
+      // Content inset under blue title (skip the title itself)
+      > *:not(h4):not(.hd-4):not(h3):not(.hd-3):not(br):not(hr) {
+        margin-left: 28px !important;
+        margin-right: 28px !important;
+        box-sizing: border-box;
+      }
+
+      > *:nth-child(2),
+      > h4 + *,
+      > .hd-4 + * {
+        margin-top: 20px !important;
+      }
+
+      > *:last-child {
+        margin-bottom: 24px !important;
+      }
+
+      label {
+        display: block;
+        margin: 20px 0 10px;
+        color: $instructor-text;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      // First label after title / error — still give breathing room above input
+      > .hd-4 + label,
+      > h4 + label,
+      > .hd-4 + .request-response-error + label,
+      > h4 + .request-response-error + label {
+        margin-top: 8px;
+      }
+
+      .location-example {
+        display: block;
+        margin-top: 4px;
+        color: $instructor-muted;
+        font-weight: 400;
+        font-size: 0.85rem;
+      }
+
+      input[type="text"] {
+        display: block;
+        width: 100%;
+        max-width: 480px;
+        margin: 0 0 20px !important;
+      }
+
+      h5,
+      .hd-5 {
+        margin: 28px 0 10px;
+        padding: 0;
+        color: $instructor-accent;
+        font-family: $font-family-title;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      blockquote.student-enrollment-status {
+        margin: 12px 0 20px;
+        padding: 12px 16px;
+        border: none;
+        border-left: 3px solid $instructor-accent;
+        background: rgba(0, 73, 124, 0.04);
+        color: $instructor-text;
+
+        &:empty {
+          display: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: none !important;
+        }
+      }
+    }
+
+    // Gradebook-only shell: hide empty wrapper when no gradebook links
+    > .action-type-container:not(:has(h4)):not(:has(.hd-4)) {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+
+    // Links → primary buttons
+    a.gradebook-link,
+    a.enrollment-status-link,
+    a.progress-link,
+    span[name="gradebook-link"] a,
+    span[name="enrollment-status-link"] a,
+    span[name="progress-link"] a {
+      @include leti-instructor-btn-primary;
+      display: inline-flex !important;
+      margin: 8px 8px 16px 0 !important;
+      background: $instructor-accent !important;
+      background-image: none !important;
+      color: #fff !important;
+      text-decoration: none !important;
+      text-shadow: none !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        color: #fff !important;
+        text-decoration: none !important;
+      }
+    }
+
+    .enrollment-status-link-wrapper,
+    .progress-link-wrapper,
+    span[name="gradebook-link"] {
+      display: block;
+      margin: 8px 0 4px;
+    }
+
+    // Grade adjustment & other action buttons
+    input[type="button"],
+    input[name="reset-attempts-single"],
+    input[name="rescore-problem-single"],
+    input[name="rescore-problem-if-higher-single"],
+    input[name="override-problem-score-single"],
+    input[name="delete-state-single"],
+    input[name="task-history-single"],
+    input[name="reset-entrance-exam-attempts"],
+    input[name="skip-entrance-exam"],
+    input[name="rescore-entrance-exam"],
+    input[name="rescore-entrance-exam-if-higher"],
+    input[name="delete-entrance-exam-state"],
+    input[name="entrance-exam-task-history"],
+    input[name="reset-attempts-all"],
+    input[name="rescore-problem-all"],
+    input[name="rescore-problem-all-if-higher"],
+    input[name="task-history-all"],
+    .molly-guard {
+      @include leti-instructor-btn-primary;
+      display: inline-flex !important;
+      margin: 10px 8px 16px 0 !important;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+
+    // Extra breathing room above inputs/buttons inside grade container
+    .student-grade-container,
+    .entrance-exam-grade-container,
+    .course-specific-container {
+      label {
+        margin-top: 24px;
+      }
+
+      input[type="text"] {
+        margin-top: 4px !important;
+        margin-bottom: 24px !important;
+      }
+
+      input[type="button"],
+      .molly-guard {
+        margin-top: 12px !important;
+        margin-bottom: 20px !important;
+      }
+
+      h5,
+      .hd-5 {
+        margin-top: 32px;
+      }
+    }
+
+    .student-enrollment-status-container,
+    .student-progress-container {
+      input[type="text"] {
+        margin-top: 4px !important;
+        margin-bottom: 24px !important;
+      }
+
+      label {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Send email tab
+  // -------------------------------------------------------------------------
+  #send_email.idash-section {
+    // Hide duplicate section title — cards have their own headers
+    > .hd-3,
+    > h3.hd-3 {
+      display: none !important;
+    }
+
+    // Outer shell: no white underlay
+    #section-send-email,
+    .send-email,
+    .leti-send-email {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: visible !important;
+    }
+
+    // Three cards
+    .leti-email-card,
+    .leti-email-card--compose,
+    .running-tasks-container,
+    .email-background,
+    #section-task-history {
+      @include leti-instructor-card;
+      clear: both;
+      display: block !important;
+      float: none !important;
+      position: relative;
+      margin: 0 0 28px !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: $instructor-card-radius !important;
+      overflow: hidden;
+      background: $instructor-surface !important;
+      box-shadow: $instructor-card-shadow !important;
+
+      > hr,
+      hr {
+        display: none !important;
+      }
+
+      > br {
+        display: none !important;
+      }
+
+      > .hd-3,
+      > h3,
+      > h3.hd-3 {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 14px 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        font-family: $font-family-title;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.35;
+        box-sizing: border-box;
+      }
+
+      > .list-fields,
+      > .submit-email-action,
+      > .submit-email-warning,
+      > .running-tasks-section,
+      > .no-pending-tasks-message,
+      > div,
+      > p,
+      > input[type="button"],
+      > .request-response-error {
+        margin-left: 28px;
+        margin-right: 28px;
+        box-sizing: border-box;
+      }
+
+      > .list-fields {
+        margin-top: 20px;
+        padding: 0;
+        list-style: none;
+      }
+
+      > input[type="button"],
+      > .request-response-error {
+        margin-bottom: 24px;
+      }
+
+      > .running-tasks-section,
+      > div:last-child {
+        margin-bottom: 24px;
+      }
+    }
+
+    // Checkboxes — dark blue, tight to label, no gray highlight
+    input[type="checkbox"],
+    input[name="send_to"] {
+      float: none !important;
+      width: 1.05em !important;
+      height: 1.05em !important;
+      margin: 0 6px 0 0 !important;
+      padding: 0 !important;
+      vertical-align: middle;
+      accent-color: $instructor-accent !important;
+      cursor: pointer;
+    }
+
+    input[name="send_to"] + label {
+      display: inline !important;
+      padding-left: 0 !important;
+      margin: 0 !important;
+      background: transparent !important;
+      text-shadow: none !important;
+    }
+
+    input[name="send_to"]:checked + label,
+    input[name="send_to"]:focus + label,
+    input[name="send_to"]:hover:not([disabled]) + label,
+    input[name="send_to"]:disabled + label {
+      background: transparent !important;
+      background-color: transparent !important;
+      text-shadow: none !important;
+
+      * {
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+    }
+
+    .email-targets-primary,
+    .email-targets-secondary {
+      display: block !important;
+      list-style: none;
+      margin: 0 0 16px;
+      padding: 0;
+      width: auto !important;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin: 6px 0;
+        background: transparent !important;
+      }
+
+      label {
+        font-weight: 500;
+        color: $instructor-text;
+        cursor: pointer;
+        background: transparent !important;
+      }
+
+      .subheading {
+        color: $instructor-muted;
+        font-size: 0.85rem;
+      }
+    }
+
+    .send_to_list {
+      font-weight: 700;
+      color: $instructor-accent;
+      margin-bottom: 8px;
+    }
+
+    .list-fields {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      margin-top: 20px;
+      margin-bottom: 0;
+
+      .field {
+        margin-bottom: 16px;
+      }
+
+      fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      input[type="text"],
+      #id_subject {
+        display: block;
+        width: 100%;
+        max-width: 640px;
+        margin-top: 8px;
+      }
+
+      .tip {
+        display: block;
+        margin-top: 6px;
+        color: $instructor-muted;
+        font-size: 0.85rem;
+      }
+    }
+
+    .submit-email-action,
+    .submit-email-warning {
+      margin-top: 12px;
+      margin-bottom: 12px;
+
+      .copy {
+        color: $instructor-text;
+        line-height: 1.55;
+      }
+    }
+
+    // Send button — align right
+    .leti-email-card--compose {
+      > input[name="send"] {
+        display: block !important;
+        float: none !important;
+        margin-left: auto !important;
+        margin-right: 28px !important;
+        margin-top: 12px !important;
+        margin-bottom: 24px !important;
+      }
+    }
+
+    // Pending tasks: push «Нет задач» lower
+    .running-tasks-container {
+      .no-pending-tasks-message {
+        margin-top: 28px !important;
+        margin-bottom: 24px !important;
+        padding-top: 8px;
+
+        p {
+          margin-top: 0;
+        }
+      }
+
+      .running-tasks-section {
+        margin-top: 20px;
+      }
+    }
+
+    // Sent messages: push intro text lower under the blue header
+    #section-task-history,
+    .email-background {
+      br {
+        display: none !important;
+      }
+
+      > div:first-of-type {
+        margin-top: 28px !important;
+        padding-top: 4px;
+
+        > p:first-child {
+          margin-top: 0;
+          margin-bottom: 10px;
+        }
+
+        > input[type="button"],
+        > input[name="task-history-email-content"] {
+          margin-top: 0 !important;
+        }
+
+        // Second block («task history») keeps a bit more space from the first
+        > div + p,
+        > div ~ p {
+          margin-top: 24px;
+          margin-bottom: 10px;
+        }
+
+        > input[name="task-history-email"] {
+          margin-top: 0 !important;
+        }
+      }
+    }
+
+    // Buttons — solid dark blue
+    input[type="button"],
+    input[name="send"],
+    input[name="task-history-email-content"],
+    input[name="task-history-email"] {
+      @include leti-instructor-btn-primary;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      margin: 12px 8px 16px 0 !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Data download tab (v1 + v2)
+  // -------------------------------------------------------------------------
+  #data_download.idash-section,
+  #data_download_2.idash-section {
+    // 1) All action buttons — solid dark blue
+    input[type="button"],
+    input.async-report-btn,
+    input.csv,
+    button.btn,
+    button.btn-primary,
+    button.btn-brand,
+    .btn-primary,
+    .btn-brand,
+    .download-report,
+    .problem-browser .btn,
+    .problem-browser button,
+    .pgn__btn,
+    .btn {
+      @include leti-instructor-btn-primary;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      margin: 0 8px 12px 0 !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+
+    // Keep secondary tab nav as underline-style links, not solid buttons
+    .data-download-nav {
+      .btn-link,
+      button.btn-link {
+        @include leti-instructor-btn-outline;
+        background: transparent !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+
+        &.active-section {
+          @include leti-instructor-btn-primary;
+          background: $instructor-active-bg !important;
+          color: $instructor-accent !important;
+          border-color: transparent !important;
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    // 2) Problem browser: [Select…] [input] on one row, Create report below with gap
+    .problem-browser-container {
+      margin: 16px 0 28px;
+    }
+
+    .problem-browser {
+      display: grid !important;
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      gap: 12px 16px;
+      align-items: center;
+      position: relative;
+
+      > .btn:first-child,
+      > button:first-of-type,
+      > .pgn__btn:first-child {
+        grid-column: 1;
+        grid-row: 1;
+        margin: 0 !important;
+        white-space: nowrap;
+      }
+
+      > input[name="problem-location"],
+      > input[type="text"] {
+        grid-column: 2;
+        grid-row: 1;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+      }
+
+      > .btn:last-of-type,
+      > button[name="list-problem-responses-csv"],
+      > button:last-of-type,
+      > .pgn__btn:last-of-type,
+      > input[name="problem-location"] + .btn,
+      > input[name="problem-location"] + button,
+      > input[name="problem-location"] + .pgn__btn {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: start;
+        margin: 28px 0 0 !important;
+      }
+
+      .block-browser {
+        grid-column: 1 / -1;
+        position: absolute;
+        top: 52px;
+        left: 0;
+        right: 0;
+        z-index: 5;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: $instructor-card-shadow;
+        padding: 12px 16px;
+      }
+
+      .report-status,
+      [class*="ReportStatus"] {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .problems {
+      margin-bottom: 24px;
+    }
+
+    // Hide stock <hr>/<br> glue
+    .data-download-container,
+    .reports-download-container,
+    .running-tasks-container {
+      > hr,
+      hr {
+        display: none !important;
+      }
+
+      > br,
+      br {
+        display: none !important;
+      }
+    }
+
+    // 3) «Reports Available for Download» — separate card look, rounded top
+    .reports-download-container {
+      > .hd-3:nth-of-type(2),
+      > h3.hd-3:nth-of-type(2) {
+        display: block !important;
+        position: relative;
+        width: calc(100% + 56px) !important;
+        max-width: none !important;
+        margin: 48px -28px 20px !important;
+        padding: 14px 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        font-family: $font-family-title;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.35;
+        box-sizing: border-box;
+        box-shadow: none !important;
+
+        // Gray page gap so it doesn't look glued to content above
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: -48px;
+          height: 48px;
+          background: $instructor-bg;
+        }
+      }
+    }
+
+    // data_download_2 reports card handled below
+  }
+
+  // data_download_2: downloads container is its own card
+  #data_download_2.idash-section {
+    .reports-download-container {
+      margin-top: 28px !important;
+      border-radius: $instructor-card-radius !important;
+      overflow: hidden;
+      padding: 0 !important;
+
+      > hr {
+        display: none !important;
+      }
+
+      > .hd-3,
+      > h3.hd-3 {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 14px 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+      }
+
+      > p,
+      > div,
+      > ul {
+        margin-left: 28px;
+        margin-right: 28px;
+      }
+
+      > p:first-of-type {
+        margin-top: 20px;
+      }
+
+      > div:last-child {
+        margin-bottom: 24px;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Special exams tab — always-open cards (no accordion)
+  // -------------------------------------------------------------------------
+  #special_exams.idash-section {
+    > .hd-3,
+    > h3.hd-3 {
+      display: none !important;
+    }
+
+    .proctoring-wrapper,
+    .leti-special-exams {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .leti-special-exams-sections,
+    #proctoring-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    // Kill jQuery UI accordion chrome if JS still runs somehow
+    .ui-accordion,
+    .ui-accordion-header,
+    .ui-accordion-content {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .ui-accordion-header-icon,
+    .ui-icon {
+      display: none !important;
+    }
+
+    .ui-accordion-content {
+      display: block !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    .wrap,
+    .leti-exam-card {
+      @include leti-instructor-card;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: $instructor-card-radius !important;
+      overflow: hidden;
+      background: $instructor-surface !important;
+      box-shadow: $instructor-card-shadow !important;
+
+      > .hd-3,
+      > h3,
+      > h3.hd-3,
+      > .special-exam-header {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 14px 28px !important;
+        padding-left: 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        font-family: $font-family-title;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.35;
+        cursor: default !important;
+        box-sizing: border-box;
+
+        &:hover,
+        &:focus {
+          background: $instructor-accent !important;
+          color: #fff !important;
+        }
+      }
+
+      > .special-allowance-container,
+      > .student-onboarding-status-container,
+      > .student-proctored-exam-container,
+      > .student-review-dashboard-container {
+        padding: 20px 28px 24px;
+        box-sizing: border-box;
+      }
+    }
+
+    // Kill nested cards from global `.wrapper-content` / stock `.content` rules
+    .wrapper-content,
+    .wrapper,
+    .content,
+    .exam-attempts-content,
+    .exam-allowances-content,
+    .onboarding-status-content {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      float: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box;
+    }
+
+    .wrapper-content,
+    .wrapper,
+    .content {
+      display: block !important;
+    }
+
+    .escalation-email-container {
+      margin: 0 0 16px;
+      color: $instructor-accent;
+      font-weight: 600;
+    }
+
+    // Allowance tip bar — no beige underlay; just the action row
+    span.tip {
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin: 0 0 16px !important;
+      padding: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      color: transparent !important;
+      font-size: 0 !important;
+      line-height: 1.4 !important;
+      float: none !important;
+
+      > span {
+        float: none !important;
+        display: inline-flex;
+        font-size: 0.95rem !important;
+        color: $instructor-text;
+      }
+    }
+
+    // Add Allowance — brand dark-blue primary
+    a#add-allowance,
+    a.add.blue-button,
+    a.blue-button {
+      @include leti-instructor-btn-primary;
+      float: none !important;
+      margin: 0 !important;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      font-size: 0.95rem !important;
+      line-height: 1.3 !important;
+      text-shadow: none !important;
+      filter: none !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+
+    // Search on top → table/message → pagination below (incl. empty state)
+    .exam-attempts-content,
+    .onboarding-status-content {
+      display: flex !important;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+
+      .top-header {
+        display: contents;
+        margin: 0 !important;
+        float: none !important;
+      }
+
+      .search-attempts,
+      .search-onboarding {
+        order: 1;
+        float: none !important;
+        align-self: flex-start;
+      }
+
+      .leti-table-scroll,
+      > .exam-attempts-table,
+      > .onboarding-status-table {
+        order: 2;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+
+      > p {
+        order: 3;
+        margin: 0;
+        color: $instructor-muted;
+      }
+
+      .pagination {
+        order: 4;
+        float: none !important;
+        align-self: flex-end;
+        width: max-content !important;
+        max-width: 100%;
+        margin: 0 !important;
+        flex: 0 0 auto;
+      }
+
+      .clearfix {
+        display: none !important;
+      }
+    }
+
+    // Minimal search field
+    .top-header {
+      margin: 0 !important;
+      float: none !important;
+    }
+
+    .search-attempts,
+    .search-onboarding {
+      display: inline-flex !important;
+      align-items: center;
+      float: none !important;
+      max-width: 360px;
+      width: 100%;
+      border: none !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      gap: 4px;
+
+      input {
+        flex: 1 1 auto;
+        width: auto !important;
+        min-width: 0;
+        margin: 0 !important;
+        padding: 8px 0 !important;
+        border: none !important;
+        border-bottom: 1px solid $instructor-border !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        font-size: 0.95rem !important;
+        color: $instructor-text;
+
+        &:focus {
+          border-bottom-color: $instructor-accent !important;
+          outline: none;
+          box-shadow: none !important;
+        }
+
+        &::placeholder {
+          color: $instructor-muted;
+          opacity: 0.85;
+        }
+      }
+
+      > span {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+        padding: 6px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 4px;
+        color: $instructor-muted !important;
+        cursor: pointer;
+        line-height: 1;
+
+        &:hover,
+        &:focus {
+          color: $instructor-accent !important;
+          background: rgba(0, 73, 124, 0.08) !important;
+        }
+
+        .icon,
+        .fa {
+          margin: 0;
+          color: inherit;
+        }
+      }
+    }
+
+    // Pagination under the table / empty message
+    .pagination {
+      display: inline-flex !important;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      float: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none;
+      width: max-content !important;
+      max-width: 100%;
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid $instructor-border;
+      box-sizing: border-box;
+
+      > li {
+        display: inline-flex;
+        flex: 0 0 auto;
+        width: auto !important;
+        margin: 0;
+
+        > a,
+        > span {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          width: auto !important;
+          min-width: 2.25rem;
+          max-width: none;
+          flex: 0 0 auto;
+          padding: 8px 10px !important;
+          margin: 0 !important;
+          border: none !important;
+          border-right: 1px solid $instructor-border !important;
+          background: #fff !important;
+          color: $instructor-accent !important;
+          font-weight: 600;
+          font-size: 0.9rem;
+          text-decoration: none !important;
+          line-height: 1;
+          white-space: nowrap;
+          letter-spacing: normal;
+
+          > span {
+            display: inline-block;
+            width: auto;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            line-height: 1;
+            font-size: 1.1rem;
+            font-weight: 400;
+            transform: none;
+          }
+        }
+
+        &:last-child > a,
+        &:last-child > span {
+          border-right: none !important;
+        }
+
+        > a.active,
+        &.active > a {
+          background: rgba(0, 73, 124, 0.12) !important;
+          color: $instructor-accent !important;
+        }
+
+        &.disabled > a,
+        &.disabled > span {
+          color: $instructor-muted !important;
+          opacity: 0.55;
+          pointer-events: none;
+        }
+
+        > a:hover,
+        > a:focus {
+          background: rgba(0, 73, 124, 0.08) !important;
+          color: #01306e !important;
+        }
+      }
+    }
+
+    // Horizontal scroll — only the table scrolls
+    .leti-table-scroll {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid $instructor-border;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    // Tables — auto column widths so headers don't overlap
+    .allowance-table,
+    .exam-attempts-table,
+    .onboarding-status-table,
+    table {
+      table-layout: auto !important;
+      width: max-content !important;
+      min-width: 100%;
+      max-width: none;
+      border-collapse: collapse;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      background: #fff;
+      margin: 0;
+
+      thead,
+      .allowance-headings,
+      .exam-attempt-headings,
+      .onboarding-status-headings {
+        background: rgba(0, 73, 124, 0.12) !important;
+        height: auto !important;
+
+        th {
+          background: transparent !important;
+          color: $instructor-accent !important;
+          font-weight: 700 !important;
+          border: none !important;
+          border-bottom: 1px solid rgba(0, 73, 124, 0.2) !important;
+          padding: 12px 14px !important;
+          text-align: left !important;
+          height: auto !important;
+          width: auto !important;
+          min-width: 0 !important;
+          max-width: none !important;
+          white-space: nowrap;
+          vertical-align: middle;
+          overflow: visible;
+        }
+      }
+
+      // Kill stock fixed column widths that cause header overlap
+      th.more,
+      th.username,
+      th.exam-name,
+      th.attempt-allowed-time,
+      th.attempt-type,
+      th.attempt-started-at,
+      th.attempt-completed-at,
+      th.attempt-status,
+      th.attempt-ready-to-resume,
+      th.c_action,
+      th.email,
+      th.allowance-name,
+      th.allowance-value,
+      td {
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+
+      th.more {
+        width: 2.5rem !important;
+        min-width: 2.5rem !important;
+        padding-left: 12px !important;
+        padding-right: 8px !important;
+      }
+
+      tbody {
+        tr {
+          background: #fff !important;
+          border-bottom: 1px solid $instructor-border !important;
+
+          &:nth-child(even) {
+            background: rgba(0, 73, 124, 0.03) !important;
+          }
+
+          &:hover {
+            background: rgba(0, 73, 124, 0.05) !important;
+          }
+        }
+
+        &.even {
+          background: rgba(0, 73, 124, 0.03) !important;
+        }
+
+        td {
+          padding: 12px 14px !important;
+          color: $instructor-text;
+          border: none !important;
+          vertical-align: middle;
+          white-space: nowrap;
+          overflow: visible;
+        }
+      }
+    }
+
+    // Form controls
+    input[type="text"],
+    input[type="search"],
+    input[type="number"],
+    select,
+    textarea {
+      border: 1px solid $instructor-border !important;
+      border-radius: 5px !important;
+      padding: 10px 14px !important;
+      color: $instructor-text;
+      background: #fff !important;
+      box-shadow: none !important;
+
+      &:focus {
+        border-color: $instructor-accent !important;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 73, 124, 0.15) !important;
+      }
+    }
+
+    // Search inputs override the generic field chrome
+    .search-attempts input,
+    .search-onboarding input {
+      border: none !important;
+      border-bottom: 1px solid $instructor-border !important;
+      border-radius: 0 !important;
+      padding: 8px 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+
+      &:focus {
+        border-bottom-color: $instructor-accent !important;
+        box-shadow: none !important;
+      }
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      accent-color: $instructor-accent !important;
+    }
+
+    // Buttons — solid dark blue
+    input[type="button"],
+    input[type="submit"],
+    button:not(.action-more),
+    .btn,
+    .btn-primary,
+    .btn-brand,
+    .action-primary,
+    a.btn {
+      @include leti-instructor-btn-primary;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      margin: 0 8px 8px 0 !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+
+    a:not(.btn):not(.blue-button):not(.add):not(.target-link) {
+      color: $instructor-accent;
+      font-weight: 600;
+
+      &:hover,
+      &:focus {
+        color: #01306e;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Certificates tab — white cards with blue headers
+  // -------------------------------------------------------------------------
+  #certificates.idash-section {
+    > .hd-3,
+    > h3.hd-3 {
+      display: none !important;
+    }
+
+    .certificates-wrapper,
+    .leti-certificates {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    hr,
+    hr.section-divider {
+      display: none !important;
+    }
+
+    // Page title + enable button (no white card)
+    .leti-certificates-page-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .leti-certificates-title {
+      margin: 0 !important;
+      color: $instructor-accent !important;
+      font-family: $font-family-title;
+      font-size: 1.75rem !important;
+      font-weight: 700 !important;
+      line-height: 1.25 !important;
+    }
+
+    .leti-certificates-enable {
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+
+      form {
+        margin: 0;
+      }
+
+      .under-heading {
+        margin: 0 0 12px;
+      }
+    }
+
+    .leti-cert-card {
+      @include leti-instructor-card;
+      clear: both;
+      display: block !important;
+      float: none !important;
+      position: relative;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: $instructor-card-radius !important;
+      overflow: hidden;
+      background: $instructor-surface !important;
+      box-shadow: $instructor-card-shadow !important;
+
+      > .hd-3,
+      > h3,
+      > h3.hd-3,
+      > h3.title {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 14px 28px !important;
+        background: $instructor-accent !important;
+        color: #fff !important;
+        border: none !important;
+        border-bottom: none !important;
+        border-radius: $instructor-card-radius $instructor-card-radius 0 0 !important;
+        font-family: $font-family-title;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.35;
+        box-sizing: border-box;
+        text-transform: none;
+      }
+
+      > *:not(h3):not(.hd-3) {
+        margin-left: 28px;
+        margin-right: 28px;
+        box-sizing: border-box;
+      }
+
+      > *:nth-child(2) {
+        margin-top: 20px;
+      }
+
+      > *:last-child {
+        margin-bottom: 24px;
+      }
+    }
+
+    // Nested subsection titles — same as «Individual Exceptions»
+    .certificate-exception-container {
+      h3.hd-3:not(:first-child),
+      #certificate-allowlist-editor > h3,
+      .bulk-allowlist-exception > h3,
+      .allowlisted-students > h3,
+      #allowlisted-students > h3 {
+        display: block !important;
+        float: none !important;
+        width: auto !important;
+        margin: 20px 0 10px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        color: $instructor-accent !important;
+        border: none !important;
+        border-bottom: none !important;
+        border-radius: 0 !important;
+        font-family: $font-family-title !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        line-height: 1.35 !important;
+        text-transform: none !important;
+      }
+
+      #certificate-allowlist-editor > h3:first-child {
+        margin-top: 0 !important;
+      }
+    }
+
+    // Bulk exceptions: file upload | Add to Exception List
+    #bulk-allowlist-exception-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: end;
+      margin: 12px 0 0;
+
+      .customBrowseBtn {
+        grid-column: 1;
+        display: grid !important;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        align-items: stretch;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        position: relative;
+        vertical-align: top;
+
+        > label {
+          grid-column: 1 / -1;
+          grid-row: 1;
+          display: block;
+          margin: 0 0 8px !important;
+          font-weight: 600;
+          color: $instructor-accent;
+        }
+
+        .enhanced-input-file {
+          grid-column: 1;
+          grid-row: 2;
+          display: block;
+          position: relative;
+          z-index: 1;
+          width: 100% !important;
+          max-width: none;
+          min-height: 42px;
+          margin: 0 !important;
+          padding: 10px 14px !important;
+          border: 1px solid $instructor-border !important;
+          border-right: none !important;
+          border-radius: 5px 0 0 5px !important;
+          background: #fff !important;
+          box-sizing: border-box;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          cursor: default;
+        }
+
+        .file-browse,
+        .file-browse.btn,
+        .file-browse.btn-primary {
+          grid-column: 2;
+          grid-row: 2;
+          position: relative !important;
+          left: auto !important;
+          right: auto !important;
+          bottom: auto !important;
+          top: auto !important;
+          display: block !important;
+          width: auto !important;
+          min-width: 110px;
+          height: 42px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          border-radius: 0 !important;
+          background: transparent !important;
+          background-image: none !important;
+          box-shadow: none !important;
+          overflow: hidden !important;
+          align-self: stretch;
+
+          .browse {
+            @include leti-instructor-btn-primary;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 42px;
+            margin: 0 !important;
+            margin-left: 0 !important;
+            border-radius: 0 5px 5px 0 !important;
+            padding: 0 18px !important;
+            font-size: 0.9rem !important;
+            box-shadow: none !important;
+            background-image: none !important;
+            pointer-events: none;
+          }
+
+          .file_field,
+          input.file_field,
+          input[type="file"] {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 0 !important;
+            cursor: pointer;
+            z-index: 3;
+          }
+        }
+      }
+
+      .upload-csv-button,
+      button.upload-csv-button,
+      button.btn-blue.upload-csv-button {
+        grid-column: 2;
+        @include leti-instructor-btn-primary;
+        align-self: end;
+        margin: 0 !important;
+        height: 42px;
+        white-space: nowrap;
+      }
+
+      @include media-breakpoint-down(sm) {
+        grid-template-columns: 1fr;
+
+        .upload-csv-button,
+        button.upload-csv-button {
+          grid-column: 1;
+          width: 100%;
+        }
+      }
+    }
+
+    // Exception certificates radios
+    .allowlisted-students,
+    #allowlisted-students {
+      fieldset.under-heading,
+      fieldset {
+        margin: 0 0 16px !important;
+        padding: 0 !important;
+
+        legend {
+          display: block;
+          float: none !important;
+          width: 100%;
+          margin: 0 0 16px !important;
+          padding: 0 !important;
+          border: none !important;
+          color: $instructor-text;
+          font-size: 0.95rem;
+          font-weight: 600;
+          line-height: 1.45;
+        }
+
+        label {
+          display: flex !important;
+          align-items: center;
+          gap: 10px;
+          margin: 0 0 12px !important;
+          padding: 0 !important;
+          font-weight: 400;
+          line-height: 1.45;
+          cursor: pointer;
+          background: transparent !important;
+        }
+
+        input[type="radio"] {
+          flex: 0 0 auto;
+          width: 1.1em;
+          height: 1.1em;
+          margin: 0 !important;
+          accent-color: $instructor-accent !important;
+          cursor: pointer;
+        }
+      }
+    }
+
+    // Regenerate checkboxes — align box with text
+    .start-certificate-regeneration {
+      fieldset {
+        border: none !important;
+        margin: 0 0 16px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        > div {
+          margin-bottom: 10px;
+        }
+
+        label {
+          display: flex !important;
+          align-items: center;
+          gap: 10px;
+          margin: 0 !important;
+          padding: 0 !important;
+          font-weight: 400;
+          line-height: 1.45;
+          cursor: pointer;
+          background: transparent !important;
+
+          input[type="checkbox"] {
+            flex: 0 0 auto;
+            width: 1.1em;
+            height: 1.1em;
+            margin: 0 !important;
+            accent-color: $instructor-accent !important;
+            vertical-align: middle;
+          }
+
+          span {
+            display: block;
+            line-height: 1.45;
+          }
+        }
+      }
+    }
+
+    // Tables
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid $instructor-border;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+
+      thead th,
+      th {
+        background: rgba(0, 73, 124, 0.12) !important;
+        color: $instructor-accent !important;
+        font-weight: 700 !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(0, 73, 124, 0.2) !important;
+        padding: 12px 14px !important;
+        text-align: left;
+      }
+
+      tbody {
+        box-shadow: none !important;
+        border: none !important;
+
+        tr {
+          background: #fff !important;
+          border-top: 1px solid $instructor-border !important;
+
+          &:nth-child(odd) {
+            background: rgba(0, 73, 124, 0.03) !important;
+          }
+
+          &:hover {
+            background: rgba(0, 73, 124, 0.05) !important;
+          }
+        }
+
+        td {
+          padding: 12px 14px !important;
+          border: none !important;
+          vertical-align: middle;
+          color: $instructor-text;
+        }
+      }
+    }
+
+    // Email + notes — full width of card content
+    .student-username-or-email,
+    .notes-field,
+    input.student-username-or-email,
+    textarea.notes-field,
+    #certificate-exception,
+    #notes,
+    #certificate-invalidation-user,
+    #certificate-invalidation-notes {
+      display: block;
+      width: 100% !important;
+      max-width: none !important;
+      border: 1px solid $instructor-border !important;
+      border-radius: 5px !important;
+      box-shadow: none !important;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: $instructor-accent !important;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 73, 124, 0.15) !important;
+      }
+    }
+
+    textarea.notes-field,
+    #notes,
+    #certificate-invalidation-notes {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .certificate-exception-inputs,
+    .add-certificate-invalidation {
+      > div {
+        margin-bottom: 12px;
+      }
+    }
+
+    // Generate Certificates — lower the action button a bit
+    .start-certificate-generation {
+      #certificates-generating-form {
+        #btn-start-generating-certificates,
+        #disabled-btn-start-generating-certificates,
+        input#btn-start-generating-certificates.btn-blue,
+        input#disabled-btn-start-generating-certificates {
+          margin-top: 28px !important;
+        }
+      }
+    }
+
+    // Primary actions — match Add Allowance / other instructor buttons
+    .btn-blue,
+    input.btn-blue,
+    button.btn-blue,
+    input[type="submit"],
+    input[type="button"]:not(.is-disabled),
+    button:not(.is-disabled):not(.btn-link),
+    #btn-start-generating-certificates,
+    input#btn-start-generating-certificates,
+    #btn-start-regenerating-certificates,
+    #generate-exception-certificates,
+    button#generate-exception-certificates,
+    #add-exception,
+    #invalidate-certificate,
+    .upload-csv-button {
+      @include leti-instructor-btn-primary;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      box-shadow: 4px 4px 0 rgba(0, 73, 124, 0.25) !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+        color: #fff !important;
+      }
+    }
+
+    // Exception certificates CTA — keep spacing after radios
+    #generate-exception-certificates,
+    button#generate-exception-certificates.btn-blue {
+      margin-top: 8px !important;
+      margin-bottom: 16px !important;
+    }
+
+    // Force brand look even when stock marks these as disabled / gray
+    // (JS sets [disabled] on exception CTA; template uses .is-disabled when no active cert)
+    #btn-start-generating-certificates,
+    #disabled-btn-start-generating-certificates,
+    input#btn-start-generating-certificates,
+    input#disabled-btn-start-generating-certificates,
+    #generate-exception-certificates,
+    button#generate-exception-certificates,
+    button#generate-exception-certificates.btn-blue,
+    button#generate-exception-certificates[disabled],
+    button#generate-exception-certificates[disabled="disabled"],
+    input#disabled-btn-start-generating-certificates.is-disabled,
+    input#disabled-btn-start-generating-certificates[disabled] {
+      @include leti-instructor-btn-primary;
+      background: $instructor-accent !important;
+      background-color: $instructor-accent !important;
+      background-image: none !important;
+      border: 1px solid $instructor-accent !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
+      filter: none !important;
+      box-shadow: 4px 4px 0 rgba(0, 73, 124, 0.25) !important;
+      cursor: pointer;
+
+      &:hover,
+      &:focus,
+      &:active,
+      &:disabled,
+      &[disabled],
+      &[disabled="disabled"],
+      &.is-disabled,
+      &.disabled {
+        background: $instructor-accent !important;
+        background-color: $instructor-accent !important;
+        border-color: $instructor-accent !important;
+        color: #fff !important;
+        opacity: 1 !important;
+        filter: none !important;
+        box-shadow: 4px 4px 0 rgba(0, 73, 124, 0.25) !important;
+      }
+
+      &:hover:not([disabled]):not(.is-disabled),
+      &:focus:not([disabled]):not(.is-disabled) {
+        background: #01306e !important;
+        background-color: #01306e !important;
+        border-color: #01306e !important;
+      }
+    }
+
+    button.is-disabled:not(#generate-exception-certificates):not(#disabled-btn-start-generating-certificates),
+    input.is-disabled:not(#disabled-btn-start-generating-certificates):not(#btn-start-generating-certificates) {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none !important;
+    }
+
+    a {
+      color: $instructor-accent;
+      font-weight: 600;
+
+      &:hover,
+      &:focus {
+        color: #01306e;
+      }
+    }
+
+    .under-heading,
+    p.under-heading,
+    p.info {
+      color: $instructor-text;
+      line-height: 1.55;
+      margin: 0 0 12px;
+    }
+
+    .no-pending-tasks-message {
+      margin-top: 12px !important;
+      padding-top: 8px;
+      color: $instructor-muted;
+      font-size: 0.95rem;
+
+      p {
+        margin: 0;
+        color: $instructor-muted;
+      }
+    }
+
+    // When the table section is hidden, empty-state sits under the blue header
+    .running-tasks-container {
+      > .no-pending-tasks-message {
+        margin-top: 28px !important;
+        margin-bottom: 28px !important;
+        padding-top: 0;
+      }
+    }
+
+    .bulk-allowlist-exception,
+    .allowlisted-students,
+    .invalidation-history {
+      margin-top: 16px;
+    }
+  }
+}
+
+// Proctoring modals append to body (#modalContainer), outside #special_exams.
+// IMPORTANT: do NOT set overflow:hidden on #modalContainer — the inner .modal is
+// position:absolute, so the container has no size and overflow would clip it away.
+body.view-instructordash #modalContainer {
+  .modal {
+    display: block !important;
+    background: $instructor-surface !important;
+    box-shadow: $instructor-card-shadow !important;
+    border: 1px solid $instructor-border !important;
+    border-radius: $instructor-card-radius !important;
+    overflow: visible !important;
+    color: $instructor-text;
+  }
+
+  .modal-header {
+    color: $instructor-accent !important;
+    font-family: $font-family-title;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+    padding: 14px 20px !important;
+    border-bottom: 1px solid $instructor-border !important;
+    background: #fff;
+  }
+
+  // Create Allowance / Edit — same as Add Allowance
+  #addNewAllowance,
+  input[type="submit"],
+  input[type="button"],
+  button[type="submit"] {
+    @include leti-instructor-btn-primary;
+    float: right !important;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+    margin-left: 8px !important;
+    margin-right: 0 !important;
+    background: $instructor-accent !important;
+    background-color: $instructor-accent !important;
+    background-image: none !important;
+    border: 1px solid $instructor-accent !important;
+    color: #fff !important;
+    text-shadow: none !important;
+    filter: none !important;
+    cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: #01306e !important;
+      background-color: #01306e !important;
+      border-color: #01306e !important;
+      color: #fff !important;
+    }
+  }
+
+  form input[type="text"],
+  form input[type="number"],
+  form select,
+  form textarea {
+    border: 1px solid $instructor-border !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    color: $instructor-text;
+
+    &:focus {
+      border-color: $instructor-accent !important;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 73, 124, 0.15) !important;
+    }
+  }
+
+  form label {
+    color: $instructor-text;
+    font-weight: 600;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PDF textbook (pdfbook) — reuse instructor chrome; modernize book layout
+// ---------------------------------------------------------------------------
+body.view-instructordash {
+  // Wider content column for the PDF reader only
+  .leti-instructor-page.leti-pdfbook-page,
+  .container.leti-instructor-page.leti-pdfbook-page {
+    max-width: 1760px;
+    margin-left: unquote("max(8px, calc((100vw - 1760px) / 4))");
+    margin-right: unquote("max(8px, calc((100vw - 1760px) / 4))");
+    padding: 16px 16px 32px 0;
+    width: auto;
+
+    @include media-breakpoint-down(md) {
+      margin-left: 0;
+      margin-right: 0;
+      padding: 12px 12px 24px;
+    }
+  }
+
+  .book-wrapper {
+    @include leti-instructor-card;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    overflow: hidden;
+
+    @include media-breakpoint-down(md) {
+      flex-direction: column;
+    }
+
+    section.book-sidebar {
+      flex: 0 0 $instructor-nav-width;
+      width: $instructor-nav-width;
+      max-width: 100%;
+      float: none;
+      margin: 0;
+      padding: 12px 8px;
+      border: none;
+      border-right: 1px solid $instructor-border;
+      border-radius: 0;
+      background: $instructor-surface;
+      box-sizing: border-box;
+
+      @include media-breakpoint-down(md) {
+        flex: 1 1 auto;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid $instructor-border;
+      }
+
+      #booknav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin: 0;
+          padding: 0;
+          background: none;
+          border: none;
+
+          a.chapter {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 5px;
+            background: transparent;
+            color: $instructor-text;
+            font-family: $instructor-body-font;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.35;
+            text-align: left;
+            text-decoration: none;
+            box-sizing: border-box;
+
+            &:hover,
+            &:focus {
+              background: $instructor-active-bg;
+              color: $instructor-accent;
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+
+    .book {
+      flex: 1 1 auto;
+      float: none;
+      width: auto;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: $instructor-surface;
+
+      #viewer-frame {
+        display: block;
+        width: 100% !important;
+        max-width: 100%;
+        height: calc(100vh - 200px);
+        min-height: 720px;
+        border: none;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Bookmarks — reuse instructor chrome; card-style list
+// ---------------------------------------------------------------------------
+body.view-instructordash.view-bookmarks {
+  .leti-bookmarks-body {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .course-bookmarks {
+    width: 100%;
+  }
+
+  .bookmarks-results-header,
+  .search-results .search-count {
+    color: $instructor-muted;
+    font-family: $instructor-body-font;
+    font-weight: 600;
+  }
+
+  .bookmarks-results-list {
+    padding-top: 8px;
+
+    .bookmarks-results-list-item {
+      display: block;
+      margin: 0 0 12px;
+      padding: 16px 18px 16px 20px;
+      border: 1px solid $instructor-border;
+      border-radius: 8px;
+      background: $instructor-surface;
+      text-decoration: none !important;
+      color: $instructor-text;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+      &::before {
+        color: $instructor-accent;
+      }
+
+      &:hover,
+      &:focus {
+        border-color: $instructor-accent;
+        box-shadow: 0 2px 10px rgba(0, 73, 124, 0.1);
+        outline: none;
+
+        .list-item-breadcrumbtrail {
+          color: $instructor-accent;
+        }
+
+        .list-item-right-section {
+          color: $instructor-accent;
+        }
+      }
+
+      .list-item-breadcrumbtrail {
+        margin: 0;
+        font-family: $instructor-body-font;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.4;
+        color: $instructor-text;
+      }
+
+      .list-item-date {
+        margin: 6px 0 0;
+        color: $instructor-muted;
+        font-size: 0.875rem;
+      }
+
+      .list-item-right-section {
+        color: $instructor-accent;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .bookmarks-empty {
+    margin: 0;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
+    box-sizing: border-box;
+
+    .bookmarks-empty-header {
+      margin: 0 0 12px;
+      color: $instructor-accent;
+      font-family: $font-family-title;
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .bookmarks-empty-header-icon {
+      margin-right: 6px;
+    }
+
+    .bookmarks-empty-detail,
+    .bookmarks-empty-detail-title {
+      color: $instructor-muted;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  }
+
+  .paging-header,
+  .paging-footer,
+  .pagination.pagination-full {
+    margin: 8px 0 16px;
+    color: $instructor-muted;
+
+    a,
+    button {
+      color: $instructor-accent;
+      font-weight: 600;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Course updates — reuse instructor chrome
+// ---------------------------------------------------------------------------
+body.view-instructordash.view-updates {
+  .leti-updates-body {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  .course-updates .page-header {
+    display: none;
+  }
+
+  .updates-article {
+    @include leti-instructor-card;
+    margin: 0 0 16px;
+    padding: 20px 24px;
+
+    .date {
+      float: none;
+      margin: 0 0 10px;
+      padding: 0;
+      color: $instructor-accent;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .article-content {
+      color: $instructor-text;
+      font-size: 1rem;
+      line-height: 1.55;
+
+      a {
+        color: $instructor-accent;
+      }
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .updates-empty,
+  .course-updates .well,
+  .course-updates .message-area {
+    margin: 0;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    color: $instructor-muted;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}

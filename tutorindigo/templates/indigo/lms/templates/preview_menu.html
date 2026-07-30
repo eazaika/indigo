@@ -1,0 +1,348 @@
+## mako
+
+<%page args="active_page=None" expression_filter="h" />
+<%namespace name='static' file='/static_content.html'/>
+<%!
+from django.utils.translation import gettext as _
+from django.conf import settings
+from openedx.core.djangolib.js_utils import dump_js_escaped_json
+from openedx.core.djangolib.markup import HTML, Text
+from xmodule.partitions.partitions_service import get_all_partitions_for_course
+%>
+
+<%
+show_preview_menu = course and can_masquerade and supports_preview_menu
+%>
+
+% if show_preview_menu:
+    <%
+    def selected(is_selected):
+      return "selected" if is_selected else ""
+
+    course_partitions = get_all_partitions_for_course(course)
+    masquerade_user_name = masquerade.user_name if masquerade else None
+    masquerade_group_id = masquerade.group_id if masquerade else None
+    masquerade_user_partition_id = masquerade.user_partition_id if masquerade else None
+    staff_selected = selected(not masquerade or masquerade.role != "student")
+    specific_student_selected = selected(not staff_selected and masquerade.user_name)
+    student_selected = selected(not staff_selected and not specific_student_selected and not masquerade_group_id)
+
+    if settings.HTTPS == 'on':
+        protocol = 'https'
+    else:
+        protocol = 'http'
+    insights_base_url = ''
+    if settings.ANALYTICS_DASHBOARD_URL:
+        insights_base_url = settings.ANALYTICS_DASHBOARD_URL + '/courses'
+    studio_base_url = ''
+    if settings.CMS_BASE:
+        studio_base_url = protocol + '://' + settings.CMS_BASE
+    insights_url = ''
+    studio_url = ''
+    if course and course.id:
+        if insights_base_url:
+            insights_url = "{base_url}/{course_id}".format(
+                base_url=insights_base_url,
+                course_id=course.id,
+            )
+        if studio_base_url:
+            studio_url = "{base_url}/course/{course_id}".format(
+                base_url=studio_base_url,
+                course_id=course.id,
+            )
+    %>
+    <nav class="wrapper-preview-menu leti-instructor-toolbar" aria-label="${_('Course View')}" data-testid="instructor-toolbar">
+        <style type="text/css">
+          nav.wrapper-preview-menu.leti-instructor-toolbar {
+            background-color: #f5f5f5 !important;
+            color: #313131 !important;
+            border-top: none !important;
+            border-bottom: none !important;
+            box-shadow: none !important;
+            /* No margin (white body shows through). Offset = gray padding under absolute header. */
+            margin: 0 !important;
+            padding: 96px 0 0 !important; /* 72px header + 24px gap */
+            width: 100% !important;
+            max-width: none !important;
+            height: auto !important;
+            min-height: 0 !important;
+            clear: both !important;
+            overflow: visible !important;
+            position: relative;
+            z-index: 1;
+            box-sizing: border-box !important;
+          }
+          body:has(.leti-instructor-toolbar),
+          body:has(.leti-instructor-toolbar) .window-wrap {
+            background-color: #f5f5f5 !important;
+          }
+          body:has(.leti-instructor-toolbar) header.global-header {
+            /* Avoid light shadow band reading as a white stripe under the header */
+            box-shadow: none !important;
+            border-bottom: none !important;
+          }
+          body.view-instructordash:has(.leti-instructor-toolbar) #content.content-wrapper,
+          body.view-in-course:has(.leti-instructor-toolbar) #content.content-wrapper {
+            margin-top: 0 !important;
+            background-color: #f5f5f5 !important;
+          }
+          .leti-instructor-toolbar .preview-menu {
+            display: block !important;
+            float: none !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+          .leti-instructor-toolbar .leti-instructor-toolbar__row {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 16px !important;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem 15px;
+            box-sizing: border-box;
+            color: #313131;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+          .leti-instructor-toolbar .preview-actions,
+          .leti-instructor-toolbar .action-preview {
+            display: block !important;
+            float: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
+            background: transparent !important;
+            border: none !important;
+          }
+          .leti-instructor-toolbar__masquerade {
+            flex: 1 1 auto !important;
+            min-width: 0;
+            margin: 0 !important;
+          }
+          .leti-instructor-toolbar .action-preview-form {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+          }
+          .leti-instructor-toolbar__masquerade-row {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            gap: 8px !important;
+          }
+          .leti-instructor-toolbar__label,
+          .leti-instructor-toolbar .col-form-label,
+          .leti-instructor-toolbar__links-label {
+            color: #313131 !important;
+            font-weight: 400 !important;
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
+            margin: 0 !important;
+            padding: 0.375rem 0 !important;
+            white-space: nowrap !important;
+            background: transparent !important;
+            border: none !important;
+            display: inline-block !important;
+            float: none !important;
+            vertical-align: middle;
+          }
+          .leti-instructor-toolbar__links-label {
+            margin-right: 0.5rem !important;
+          }
+          .leti-instructor-toolbar select.action-preview-select {
+            color: #00497c !important;
+            border: 1px solid #00497c !important;
+            background-color: #fff !important;
+            border-radius: 5px !important;
+            box-shadow: none !important;
+            font-weight: 400 !important;
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
+            padding: 0.4375rem 2.25rem 0.4375rem 0.75rem !important;
+            min-height: 38px;
+            margin: 0 !important;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2300497c' d='M1.4 0L6 4.6 10.6 0 12 1.4 6 7.4 0 1.4z'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.75rem center !important;
+            background-size: 12px 8px !important;
+            display: inline-block !important;
+            float: none !important;
+            vertical-align: middle;
+          }
+          .leti-instructor-toolbar select.action-preview-select:hover,
+          .leti-instructor-toolbar select.action-preview-select:focus {
+            color: #fff !important;
+            background-color: #00497c !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffffff' d='M1.4 0L6 4.6 10.6 0 12 1.4 6 7.4 0 1.4z'/%3E%3C/svg%3E") !important;
+            border-color: #00497c !important;
+            outline: none;
+          }
+          .leti-instructor-toolbar .action-preview-username-container {
+            display: none;
+            align-items: center;
+            margin-top: 0.5rem;
+            width: 100%;
+          }
+          .leti-instructor-toolbar .action-preview-username {
+            color: #313131 !important;
+            background: #fff !important;
+            border: 1px solid #e8e8e8 !important;
+            border-radius: 5px !important;
+            box-shadow: none !important;
+            padding: 0.375rem 0.75rem !important;
+            min-height: 38px;
+            max-width: 280px;
+            width: 100%;
+            margin: 0.25rem 0 0 !important;
+          }
+          .leti-instructor-toolbar__links {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            flex: 0 0 auto !important;
+            margin: 0 !important;
+            float: none !important;
+          }
+          .leti-instructor-toolbar__link-wrap {
+            display: inline-flex !important;
+            margin: 0 0 0 0.25rem !important;
+          }
+          .leti-instructor-toolbar a.btn,
+          .leti-instructor-toolbar a.btn-outline-primary,
+          .leti-instructor-toolbar a.btn-primary,
+          .leti-instructor-toolbar a.view-in-studio {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            color: #00497c !important;
+            border: 1px solid #00497c !important;
+            background: #fff !important;
+            border-radius: 5px !important;
+            box-shadow: none !important;
+            font-weight: 400 !important;
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
+            padding: 0.4375rem 0.75rem !important;
+            min-height: 38px;
+            text-decoration: none !important;
+            text-shadow: none !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            float: none !important;
+            margin: 0 !important;
+          }
+          .leti-instructor-toolbar a.btn:hover,
+          .leti-instructor-toolbar a.btn:focus,
+          .leti-instructor-toolbar a.view-in-studio:hover,
+          .leti-instructor-toolbar a.view-in-studio:focus {
+            color: #fff !important;
+            background: #00497c !important;
+            border-color: #00497c !important;
+          }
+          .leti-instructor-toolbar .preview-specific-student-notice {
+            display: none !important;
+          }
+          @media (max-width: 767.98px) {
+            .leti-instructor-toolbar .leti-instructor-toolbar__row {
+              flex-wrap: wrap !important;
+            }
+          }
+        </style>
+
+        <div class="preview-menu">
+          <div class="leti-instructor-toolbar__row">
+            <div class="leti-instructor-toolbar__masquerade">
+                <ol class="preview-actions">
+                    <li class="action-preview">
+                        <form action="#" class="action-preview-form" method="post">
+                            <div class="leti-instructor-toolbar__masquerade-row">
+                                <span class="col-form-label leti-instructor-toolbar__label">${_("View this course as:")}</span>
+                                <select class="action-preview-select" id="action-preview-select" name="select">
+                                    <option value="staff" ${staff_selected}>${_("Staff")}</option>
+                                    <option value="student" ${student_selected}>${_("Learner")}</option>
+                                    <option value="specific student" ${specific_student_selected}>${_("Specific learner")}</option>
+                                    % if course_partitions:
+                                        % for course_partition in course_partitions:
+                                            % for group in sorted(course_partition.groups, key=lambda group: group.name):
+                                            <option value="group.id" data-group-id="${group.id}" data-partition-id="${course_partition.id}" ${selected(masquerade_user_partition_id == course_partition.id and masquerade_group_id == group.id)}>
+                                                ${_("Learner in {content_group}").format(content_group=group.name)}
+                                            </option>
+                                            % endfor
+                                        % endfor
+                                    % endif
+                                </select>
+                            </div>
+                            <div class="action-preview-username-container">
+                              <span class="col-form-label leti-instructor-toolbar__label">${_("Username or email:")}</span>
+                              <input type="text" class="action-preview-username form-control" id="action-preview-username">
+                            </div>
+                            <button type="submit" class="sr-only" name="submit" value="submit">${_("Set preview mode")}</button>
+                        </form>
+                    </li>
+                </ol>
+            </div>
+
+            % if studio_url or insights_url:
+            <div class="leti-instructor-toolbar__links">
+                <span class="col-form-label leti-instructor-toolbar__links-label">${_("View course in:")}</span>
+                % if studio_url:
+                    <span class="leti-instructor-toolbar__link-wrap">
+                        <a
+                            class="btn btn-outline-primary view-in-studio"
+                            href="${studio_url}"
+                            data-studio-base-url="${studio_base_url}"
+                        >${_("Studio")}</a>
+                    </span>
+                % endif
+                % if insights_url:
+                    <span class="leti-instructor-toolbar__link-wrap">
+                        <a class="btn btn-outline-primary" href="${insights_url}">${_("Insights")}</a>
+                    </span>
+                % endif
+            </div>
+            % endif
+          </div>
+        </div>
+        % if studio_url:
+        <script type="text/javascript">
+          $(function () {
+              $('.wrapper-preview-menu a.view-in-studio').focus(function () {
+                  var verticals = $('.xblock-student_view-vertical');
+                  if (verticals.length > 0) {
+                      var blockId = verticals[0].dataset.usageId;
+                      $(this).attr("href", [this.dataset.studioBaseUrl, 'container', blockId].join('/'));
+                  }
+              });
+            });
+        </script>
+        % endif
+    </nav>
+
+    <%
+    preview_options = {
+        "courseId": course.id,
+        "disableStudentAccess": disable_student_access if disable_student_access is not UNDEFINED else False,
+        "specificStudentSelected": specific_student_selected,
+        "masqueradeUsername" : masquerade_user_name if masquerade_user_name is not UNDEFINED else None,
+    }
+    %>
+    <%static:require_module_async module_name="lms/js/preview/preview_factory" class_name="PreviewFactory">
+        PreviewFactory(${preview_options | n, dump_js_escaped_json});
+    </%static:require_module_async>
+% endif

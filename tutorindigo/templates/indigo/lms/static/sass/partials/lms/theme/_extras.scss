@@ -351,14 +351,18 @@ header.global-header .main-header > .header-logo {
   }
 }
 
-body:not(:has(section.course-info)) {
+body:not(:has(section.course-info)):not(:has(.leti-instructor-page)):not(.view-instructordash) {
   header.global-header {
     padding-bottom: 0;
   }
 }
 
-// Course about — catalog + course title left, logo centered, toolbar right
-body:has(section.course-info) {
+// Course about / instructor / bookmarks — catalog + course title left, logo centered, toolbar right
+body:has(section.course-info),
+body:has(.leti-instructor-page),
+body.view-instructordash,
+body.view-bookmarks,
+body.view-updates {
   header.global-header {
     padding-bottom: 0;
     overflow: visible;
@@ -3051,12 +3055,141 @@ body:has(.program-list-wrapper) {
   }
 }
 
-////////////////// "View this course as staff/learner/..."
-nav.wrapper-preview-menu {
-    // It is necessary to specify `nav` in order to override the common higher priority rule
-    @include media-breakpoint-up(lg) {
-      margin-top: $header-height;
-    }
+body.view-instructordash:has(.leti-instructor-toolbar) {
+  :not(.courseware) > #content.content-wrapper:has(.instructor-dashboard-wrapper-2),
+  :not(.courseware) > #content.content-wrapper:has(.leti-instructor-page) {
+    margin-top: 0;
+  }
+}
+
+////////////////// "View this course as staff/learner/..." — match Learning MFE InstructorToolbar
+nav.wrapper-preview-menu,
+nav.wrapper-preview-menu.leti-instructor-toolbar {
+  background-color: #f5f5f5;
+  color: #313131;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+
+  @include media-breakpoint-up(lg) {
+    margin-top: $header-height;
+  }
+}
+
+.leti-instructor-toolbar .preview-menu,
+.leti-instructor-toolbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 32px;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  @include media-breakpoint-down(md) {
+    padding: 12px 16px;
+    justify-content: flex-start;
+  }
+}
+
+.leti-instructor-toolbar__masquerade,
+.leti-instructor-toolbar .preview-actions {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  float: none;
+  background: transparent;
+  border: none;
+}
+
+.leti-instructor-toolbar .action-preview-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.leti-instructor-toolbar .action-preview-label,
+.leti-instructor-toolbar__links-label {
+  color: #313131;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.leti-instructor-toolbar .action-preview-select,
+.leti-instructor-toolbar .action-preview-username {
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  background: #fff;
+  color: #313131;
+  padding: 6px 10px;
+  min-height: 36px;
+  box-shadow: none;
+}
+
+.leti-instructor-toolbar__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.leti-instructor-toolbar a.btn,
+.leti-instructor-toolbar a.btn-outline-primary,
+.leti-instructor-toolbar a.btn-primary,
+.leti-instructor-toolbar a.view-in-studio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent !important;
+  border: 1px solid #00407c !important;
+  color: #00407c !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  padding: 8px 16px !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+  text-transform: none;
+
+  &:hover,
+  &:focus {
+    background-color: #00407c !important;
+    border-color: #00407c !important;
+    color: #fff !important;
+  }
+}
+
+.leti-instructor-toolbar .preview-specific-student-notice {
+  color: #313131;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+
+  p {
+    margin: 0;
+    color: #313131;
+  }
 }
 
 .btn-inverse-outline-primary {
@@ -3558,6 +3691,7 @@ nav.wrapper-preview-menu {
 
 @import '../../../profile/profile';
 @import '../../../account/account-settings';
+@import '../../../instructor/instructor';
 
 .container.about {
   color: #fff;
@@ -3750,6 +3884,72 @@ nav.wrapper-preview-menu {
 
     p {
       text-align: right;
+    }
+  }
+}
+
+// Learning MFE unit iframe — capa problem buttons (Show answer, Submit)
+$leti-courseware-accent: #00407c;
+$leti-courseware-accent-hover: #01306e;
+
+body.view-courseware,
+body.view-in-course {
+  .xmodule_display.xmodule_CapaModule,
+  .xblock-student_view-problem {
+    .problem .action {
+      button.show,
+      button.show.btn-default,
+      button.show.btn-default.btn-small {
+        color: $leti-courseware-accent !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0;
+        font-weight: 600;
+        box-shadow: none !important;
+        padding-left: 0;
+        padding-right: 0;
+
+        &:hover,
+        &:focus,
+        &:active {
+          color: $leti-courseware-accent-hover !important;
+          background: transparent !important;
+          border: none !important;
+          text-decoration: underline;
+        }
+      }
+
+      button.submit.btn-brand,
+      button.submit.btn-primary,
+      .submit-attempt-container button.submit {
+        background-color: $leti-courseware-accent !important;
+        border-color: $leti-courseware-accent !important;
+        color: #fff !important;
+        border-radius: 5px;
+        font-weight: 600;
+        box-shadow: none !important;
+        opacity: 1 !important;
+        background-image: none !important;
+        filter: none !important;
+        -webkit-font-smoothing: antialiased;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background-color: $leti-courseware-accent-hover !important;
+          border-color: $leti-courseware-accent-hover !important;
+          color: #fff !important;
+        }
+
+        &:disabled,
+        &[disabled] {
+          background-color: #b8c5d0 !important;
+          border-color: #b8c5d0 !important;
+          color: #fff !important;
+          opacity: 1 !important;
+          cursor: not-allowed;
+        }
+      }
     }
   }
 }
