@@ -2,8 +2,29 @@
 <%!
     import json
     from django.utils.translation import ugettext as _
+    from django.utils.translation import get_language
     from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
     from openedx.core.djangolib.js_utils import dump_js_escaped_json
+
+    # Login sidebar LK screenshot per UI language (files in theme static/images/).
+    _LK_EXAMPLE_BY_LANG = {
+        'ru': 'images/lk_etu_example_ru.png',
+        'en': 'images/lk_etu_example_en.png',
+        'fr': 'images/lk_etu_example_fr.png',
+        'es': 'images/lk_etu_example_es.png',
+        'es-es': 'images/lk_etu_example_es.png',
+        'pt': 'images/lk_etu_example_pt.png',
+        'pt-pt': 'images/lk_etu_example_pt.png',
+        'pt-br': 'images/lk_etu_example_pt.png',
+    }
+    _LK_EXAMPLE_DEFAULT = _LK_EXAMPLE_BY_LANG['ru']
+
+    def lk_example_image_path():
+        lang = (get_language() or 'ru').lower().replace('_', '-')
+        path = _LK_EXAMPLE_BY_LANG.get(lang)
+        if path:
+            return path
+        return _LK_EXAMPLE_BY_LANG.get(lang.split('-')[0], _LK_EXAMPLE_DEFAULT)
 %>
 <%namespace name='static' file='/static_content.html'/>
 
@@ -65,8 +86,11 @@
                             </li>
                         </ul>
                     </div>
-                <a href="${static.url("images/lk_etu_ru_example.png")}" target="_blank" rel="noopener noreferrer">
-                    <img class="lk-example-image" src="${static.url("images/lk_etu_ru_example_new.png")}" alt="${_("ETU personal account login example")}">
+                <%
+                    _lk_example = lk_example_image_path()
+                %>
+                <a href="${static.url(_lk_example)}" target="_blank" rel="noopener noreferrer">
+                    <img class="lk-example-image" src="${static.url(_lk_example)}" alt="${_("ETU personal account login example")}">
                 </a>
                 </div>
             </div>
