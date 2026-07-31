@@ -1,0 +1,32 @@
+<%page expression_filter="h"/>
+<%namespace name='static' file='../static_content.html'/>
+<%!
+from django.utils.translation import gettext as _
+from openedx.core.djangolib.markup import HTML, Text
+%>
+<%inherit file="../main.html" />
+
+<%block name="pagetitle">${_("Page Not Found")}</%block>
+<%block name="bodyclass">view-error-page view-404</%block>
+
+<div class="section-bkg-wrapper">
+    <main id="main" class="error-page-content" aria-label="Content" tabindex="-1">
+        <div class="error-panel">
+            <h1>
+                <%block name="pageheader">${page_header or _("Page not found")}</%block>
+            </h1>
+            <p class="error-message">
+                <%block name="pagecontent">
+                    % if page_content:
+                        ${page_content}
+                    % else:
+                        ${Text(_("The page that you were looking for was not found. Go back to the {link_start}homepage{link_end}.")).format(
+                            link_start=HTML('<a href="/">'),
+                            link_end=HTML('</a>'),
+                        )}
+                    % endif
+                </%block>
+            </p>
+        </div>
+    </main>
+</div>

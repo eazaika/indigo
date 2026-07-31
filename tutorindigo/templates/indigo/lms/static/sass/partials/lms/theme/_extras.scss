@@ -2140,6 +2140,75 @@ body.view-logout .logout-panel {
   }
 }
 
+/////////////////// Error pages (404 / 500)
+body.view-error-page {
+  background-color: #00417d;
+}
+
+.error-page-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+body.view-error-page .error-panel {
+  @extend %login-glass-panel;
+
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  text-align: center;
+  box-sizing: border-box;
+
+  @include media-breakpoint-down(md) {
+    padding: 32px 20px;
+  }
+
+  h1 {
+    color: #fff;
+    font-family: $font-family-title;
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.35;
+    margin: 0 0 24px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  p,
+  .error-message {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin: 0;
+    text-align: center;
+  }
+
+  .error-message a,
+  a {
+    color: #fff !important;
+    font-weight: 600;
+    text-decoration: underline !important;
+    text-decoration-line: underline !important;
+    text-decoration-color: rgba(255, 255, 255, 0.75) !important;
+    text-underline-offset: 3px;
+    border-bottom: none !important;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #fff !important;
+      text-decoration: underline !important;
+      text-decoration-line: underline !important;
+      text-decoration-color: #fff !important;
+      border-bottom: none !important;
+    }
+  }
+}
+
 /////////////////// Static pages (contact, etc.)
 body.view-static-page,
 body.view-contact {
