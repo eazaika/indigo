@@ -1,6 +1,134 @@
 <%page expression_filter="h"/>
-<%! from django.utils.translation import ugettext as _ %>
-<%! import json %>
+<%!
+from django.utils.translation import get_language, ugettext as _
+import json
+
+# Explicit catalogs — theme has no .po entries for these widget strings.
+_HELPDESK_I18N = {
+    'en': {
+        'title': 'Helpdesk',
+        'step1': '1 of 3',
+        'step2': '2 of 3',
+        'step3': '3 of 3',
+        'create': 'Create Ticket',
+        'dash': '-',
+        'type_course': 'While taking course',
+        'type_creating': 'While creating course',
+        'type_technical': 'Technical problems',
+        'type_correspondence': 'Correspondence learning',
+        'description': 'Problem description',
+        'prio_critical': '1. Critical',
+        'prio_high': '2. High',
+        'prio_normal': '3. Normal',
+        'prio_low': '4. Low',
+        'prio_very_low': '5. Very Low',
+        'summary_ph': 'Got an 403 error',
+        'summary_hint': 'Summary of the problem',
+        'email': 'Email',
+        'next': 'Next',
+        'ready': 'Ready! If you have not received an email notification, contact cnot@etu.ru',
+    },
+    'ru': {
+        'title': 'Служба поддержки',
+        'step1': '1 из 3',
+        'step2': '2 из 3',
+        'step3': '3 из 3',
+        'create': 'Создать заявку',
+        'dash': '-',
+        'type_course': 'При прохождении курса',
+        'type_creating': 'При создании курса',
+        'type_technical': 'Технические проблемы',
+        'type_correspondence': 'Заочное обучение',
+        'description': 'Описание проблемы',
+        'prio_critical': '1. Критический',
+        'prio_high': '2. Высокий',
+        'prio_normal': '3. Обычный',
+        'prio_low': '4. Низкий',
+        'prio_very_low': '5. Очень низкий',
+        'summary_ph': 'Ошибка 403',
+        'summary_hint': 'Краткое описание проблемы',
+        'email': 'Электронная почта',
+        'next': 'Далее',
+        'ready': 'Готово! Если письмо с уведомлением не пришло, напишите на cnot@etu.ru',
+    },
+    'fr': {
+        'title': 'Assistance',
+        'step1': '1 sur 3',
+        'step2': '2 sur 3',
+        'step3': '3 sur 3',
+        'create': 'Créer un ticket',
+        'dash': '-',
+        'type_course': "Pendant le suivi d'un cours",
+        'type_creating': "Pendant la création d'un cours",
+        'type_technical': 'Problèmes techniques',
+        'type_correspondence': 'Formation à distance',
+        'description': 'Description du problème',
+        'prio_critical': '1. Critique',
+        'prio_high': '2. Élevée',
+        'prio_normal': '3. Normale',
+        'prio_low': '4. Faible',
+        'prio_very_low': '5. Très faible',
+        'summary_ph': 'Erreur 403',
+        'summary_hint': 'Résumé du problème',
+        'email': 'E-mail',
+        'next': 'Suivant',
+        'ready': "Prêt ! Si vous n'avez pas reçu d'e-mail de notification, contactez cnot@etu.ru",
+    },
+    'es': {
+        'title': 'Mesa de ayuda',
+        'step1': '1 de 3',
+        'step2': '2 de 3',
+        'step3': '3 de 3',
+        'create': 'Crear ticket',
+        'dash': '-',
+        'type_course': 'Al cursar un curso',
+        'type_creating': 'Al crear un curso',
+        'type_technical': 'Problemas técnicos',
+        'type_correspondence': 'Formación a distancia',
+        'description': 'Descripción del problema',
+        'prio_critical': '1. Crítica',
+        'prio_high': '2. Alta',
+        'prio_normal': '3. Normal',
+        'prio_low': '4. Baja',
+        'prio_very_low': '5. Muy baja',
+        'summary_ph': 'Error 403',
+        'summary_hint': 'Resumen del problema',
+        'email': 'Correo electrónico',
+        'next': 'Siguiente',
+        'ready': '¡Listo! Si no ha recibido un correo de notificación, contacte con cnot@etu.ru',
+    },
+    'pt': {
+        'title': 'Apoio',
+        'step1': '1 de 3',
+        'step2': '2 de 3',
+        'step3': '3 de 3',
+        'create': 'Criar pedido',
+        'dash': '-',
+        'type_course': 'Durante a realização do curso',
+        'type_creating': 'Durante a criação do curso',
+        'type_technical': 'Problemas técnicos',
+        'type_correspondence': 'Ensino à distância',
+        'description': 'Descrição do problema',
+        'prio_critical': '1. Crítica',
+        'prio_high': '2. Elevada',
+        'prio_normal': '3. Normal',
+        'prio_low': '4. Baixa',
+        'prio_very_low': '5. Muito baixa',
+        'summary_ph': 'Erro 403',
+        'summary_hint': 'Resumo do problema',
+        'email': 'E-mail',
+        'next': 'Seguinte',
+        'ready': 'Pronto! Se não recebeu um e-mail de notificação, contacte cnot@etu.ru',
+    },
+}
+
+
+def hd(key):
+    lang = (get_language() or 'en').lower().replace('_', '-')
+    base = lang.split('-')[0]
+    catalog = _HELPDESK_I18N.get(lang) or _HELPDESK_I18N.get(base) or _HELPDESK_I18N['en']
+    return catalog.get(key) or _HELPDESK_I18N['en'].get(key) or key
+%>
 <%namespace name='static' file='../static_content.html'/>
 
 <style type="text/css">
@@ -187,49 +315,49 @@
 </style>
 
 <div class="helpdesk-widget" id="helpdesk-widget-root"
-     data-step-1="${_('1 of 3')}"
-     data-step-2="${_('2 of 3')}"
-     data-step-3="${_('3 of 3')}"
+     data-step-1="${hd('step1')}"
+     data-step-2="${hd('step2')}"
+     data-step-3="${hd('step3')}"
      data-user-email="${user.email | h}">
   <div class="helpdesk-inner-frame" style="display: none">
-    <div class="header-line"><p>${_('Helpdesk')}</p><span class="helpdesk-steps-indicator">${_('1 of 3')}</span></div>
+    <div class="header-line"><p>${hd('title')}</p><span class="helpdesk-steps-indicator">${hd('step1')}</span></div>
     <form>
       <div class="helpdesk-step-1">
-        <h3>${_('Create Ticket')}</h3>
+        <h3>${hd('create')}</h3>
         <select class="helpdesk-select-type">
-          <option value="">${_('-')}</option>
-          <option value="1">${_('While taking course')}</option>
-          <option value="2">${_('While creating course')}</option>
-          <option value="3">${_('Technical problems')}</option>
-          <option value="4">${_('Correspondence learning')}</option>
+          <option value="">${hd('dash')}</option>
+          <option value="1">${hd('type_course')}</option>
+          <option value="2">${hd('type_creating')}</option>
+          <option value="3">${hd('type_technical')}</option>
+          <option value="4">${hd('type_correspondence')}</option>
         </select>
-        <textarea class="helpdesk-textarea" placeholder="${_('Problem description')}"></textarea>
+        <textarea class="helpdesk-textarea" placeholder="${hd('description')}"></textarea>
       </div>
 
       <div class="helpdesk-step-2" style="display: none">
-        <h3>${_('Create Ticket')}</h3>
+        <h3>${hd('create')}</h3>
         <select class="helpdesk-select-priority">
-          <option value="">${_('-')}</option>
-          <option value="1">${_('1. Critical')}</option>
-          <option value="2">${_('2. High')}</option>
-          <option value="3">${_('3. Normal')}</option>
-          <option value="4">${_('4. Low')}</option>
-          <option value="5">${_('5. Very Low')}</option>
+          <option value="">${hd('dash')}</option>
+          <option value="1">${hd('prio_critical')}</option>
+          <option value="2">${hd('prio_high')}</option>
+          <option value="3">${hd('prio_normal')}</option>
+          <option value="4">${hd('prio_low')}</option>
+          <option value="5">${hd('prio_very_low')}</option>
         </select>
-        <input class="helpdesk-summary" type="text" placeholder="${_('Got an 403 error')}">
-        <span>${_('Summary of the problem')}</span>
+        <input class="helpdesk-summary" type="text" placeholder="${hd('summary_ph')}">
+        <span>${hd('summary_hint')}</span>
         <input class="helpdesk-email" type="email" placeholder="example@domain.com">
-        <span>${_('Email')}</span>
+        <span>${hd('email')}</span>
       </div>
 
       <div class="helpdesk-step-3" style="display: none">
-        <h2>${_('Ready! If you not received a email notification, contact cnot@etu.ru')}</h2>
+        <h2>${hd('ready')}</h2>
       </div>
 
-      <button class="helpdesk-next-btn" type="button">${_('Next')}</button>
+      <button class="helpdesk-next-btn" type="button">${hd('next')}</button>
     </form>
   </div>
-  <div class="helpdesk-open-btn" role="button" aria-label="${_('Helpdesk')}"></div>
+  <div class="helpdesk-open-btn" role="button" aria-label="${hd('title')}"></div>
 </div>
 
 <script type="text/javascript">
