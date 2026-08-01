@@ -18,26 +18,26 @@ from openedx.core.djangolib.js_utils import dump_js_escaped_json, js_escaped_str
 <div class="certificates-wrapper leti-certificates">
 
     <div class="leti-certificates-page-header">
-        <h2 class="hd hd-2 instructor-dashboard-title leti-certificates-title">${_("Выдача сертификатов")}</h2>
+        <h2 class="hd hd-2 instructor-dashboard-title leti-certificates-title">${_("Certificates")}</h2>
         % if not section_data['is_self_paced']:
         <div class="leti-certificates-enable enable-certificates">
             % if section_data['enabled_for_course']:
                 <form id="enable-certificates-form" method="post" action="${section_data['urls']['enable_certificate_generation']}">
                     <input type="hidden" name="csrfmiddlewaretoken" value="${csrf_token}">
                     <input type="hidden" id="certificates-enabled" name="certificates-enabled" value="false" />
-                    <input type="submit" class="btn-blue" id="disable-certificates-submit" value="${_('Отключить самовыпуск')}"/>
+                    <input type="submit" class="btn-blue" id="disable-certificates-submit" value="${_('Disable Student-Generated Certificates')}"/>
                 </form>
             % elif section_data['can_enable_for_course']:
                 <form id="enable-certificates-form" method="post" action="${section_data['urls']['enable_certificate_generation']}">
                     <input type="hidden" name="csrfmiddlewaretoken" value="${csrf_token}">
                     <input type="hidden" id="certificates-enabled" name="certificates-enabled" value="true" />
-                    <input type="submit" class="btn-blue" id="enable-certificates-submit" value="${_('Разрешить самовыпуск')}"/>
+                    <input type="submit" class="btn-blue" id="enable-certificates-submit" value="${_('Enable Student-Generated Certificates')}"/>
                 </form>
             % else:
                 <p class="under-heading">
                     ${_("You must successfully generate example certificates before you enable student-generated certificates.")}
                 </p>
-                <button class="is-disabled" disabled>${_('Разрешить самовыпуск')}</button>
+                <button class="is-disabled" disabled>${_('Enable Student-Generated Certificates')}</button>
             % endif
         </div>
         % endif

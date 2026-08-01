@@ -10,13 +10,13 @@ from django.utils.translation import ugettext as _
 # Always build LETI language list (same as MFE). Do NOT call released_languages():
 # Mako <%! %> imports bind the stock function once, so settings monkeypatches
 # never reach this template.
-_default_codes = ['ru', 'en', 'fr', 'es-es', 'pt-pt']
+_default_codes = ['ru', 'en', 'fr', 'es', 'pt']
 _default_labels = {
     'ru': 'Russian',
     'en': 'English',
     'fr': 'French',
-    'es-es': 'Spanish',
-    'pt-pt': 'Portuguese',
+    'es': 'Spanish',
+    'pt': 'Portuguese',
 }
 _codes = list(getattr(settings, 'LETI_SITE_LANGUAGE_CODES', None) or _default_codes)
 _by_code = dict(_default_labels)
