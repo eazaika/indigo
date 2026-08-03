@@ -277,7 +277,9 @@ body.view-instructordash {
 // Structure: .leti-course-tabs-navigation > __inner > nav.leti-course-tabs > a.nav-link
 // No Bootstrap .navbar (white strip + width expands with tabs → no "More...")
 // ---------------------------------------------------------------------------
-body.view-in-course {
+// Do NOT apply to Learning MFE unit iframes / courseware
+// (body also has .courseware there — gray canvas must stay white).
+body.view-in-course:not(.courseware) {
   // Gray canvas like Learning / instructor (not a white band behind tabs)
   background-color: $instructor-bg;
 

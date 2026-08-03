@@ -10,6 +10,11 @@ body {
   background-color: #fff;
 }
 
+body.view-in-course,
+body.view-courseware {
+  background-color: #fff !important;
+}
+
 body.view-dashboard {
   background-color: #00417d;
 }
