@@ -1,42 +1,82 @@
 /**
  * Responsive course catalog / homepage layout helper.
  *
- * Phone portrait:  7 courses, 1 column
- * Phone landscape: 12 courses, 3 columns
- * Tablet portrait: 12 courses, 3 columns
- * Tablet landscape: 16 courses, 4 columns
- * Desktop:         20 courses, 4 columns
+ * Homepage:
+ *   Phone portrait:  7 courses, 1 column
+ *   Phone landscape: 12 courses, 3 columns
+ *   Tablet portrait: 12 courses, 3 columns
+ *   Tablet landscape / Desktop: 15 courses, 3 columns
+ *
+ * Catalog (/courses) — original sizes:
+ *   Phone portrait:  7 courses, 1 column
+ *   Phone landscape: 12 courses, 3 columns
+ *   Tablet portrait: 12 courses, 3 columns
+ *   Tablet landscape: 16 courses, 4 columns
+ *   Desktop:         20 courses, 4 columns
  */
 (function(window) {
     'use strict';
 
-    var ALLOWED_PAGE_SIZES = [7, 12, 16, 20];
+    var HOME_PAGE_SIZES = [7, 12, 15];
+    var CATALOG_PAGE_SIZES = [7, 12, 16, 20];
 
-    function getCoursesLayout() {
+    function viewportMeta() {
         var width = window.innerWidth || document.documentElement.clientWidth;
         var height = window.innerHeight || document.documentElement.clientHeight;
         var landscape = width > height;
-        // Phones in landscape are wide but short; tablets are taller.
         var phoneLandscape = landscape && height <= 500;
+        return {
+            width: width,
+            height: height,
+            landscape: landscape,
+            phoneLandscape: phoneLandscape
+        };
+    }
 
-        if (phoneLandscape) {
+    function getHomepageLayout() {
+        var v = viewportMeta();
+
+        if (v.phoneLandscape) {
             return {pageSize: 12, columns: 3, mode: 'phone-landscape'};
         }
-
-        if (width < 768) {
-            return landscape
+        if (v.width < 768) {
+            return v.landscape
                 ? {pageSize: 12, columns: 3, mode: 'phone-landscape'}
                 : {pageSize: 7, columns: 1, mode: 'phone-portrait'};
         }
+        if (v.width < 1200) {
+            return v.landscape
+                ? {pageSize: 15, columns: 3, mode: 'tablet-landscape'}
+                : {pageSize: 12, columns: 3, mode: 'tablet-portrait'};
+        }
+        return {pageSize: 15, columns: 3, mode: 'desktop'};
+    }
 
-        // Tablet band.
-        if (width < 1200) {
-            return landscape
+    function getCatalogLayout() {
+        var v = viewportMeta();
+
+        if (v.phoneLandscape) {
+            return {pageSize: 12, columns: 3, mode: 'phone-landscape'};
+        }
+        if (v.width < 768) {
+            return v.landscape
+                ? {pageSize: 12, columns: 3, mode: 'phone-landscape'}
+                : {pageSize: 7, columns: 1, mode: 'phone-portrait'};
+        }
+        if (v.width < 1200) {
+            return v.landscape
                 ? {pageSize: 16, columns: 4, mode: 'tablet-landscape'}
                 : {pageSize: 12, columns: 3, mode: 'tablet-portrait'};
         }
-
         return {pageSize: 20, columns: 4, mode: 'desktop'};
+    }
+
+    // Back-compat for anything still calling getLayout()
+    function getCoursesLayout() {
+        if (document.querySelector('.home .courses-listing')) {
+            return getHomepageLayout();
+        }
+        return getCatalogLayout();
     }
 
     function getCoursesPageSize() {
@@ -44,17 +84,16 @@
     }
 
     function syncCatalogPageSize() {
-        var layout = getCoursesLayout();
+        var layout = getCatalogLayout();
         var params = new URLSearchParams(window.location.search);
         var current = parseInt(params.get('page_size'), 10);
         var searching = !!(params.get('search_query') || '').trim();
 
-        // Discovery search manages its own page size in JS.
         if (searching) {
             return layout;
         }
 
-        if (ALLOWED_PAGE_SIZES.indexOf(current) === -1 || current !== layout.pageSize) {
+        if (CATALOG_PAGE_SIZES.indexOf(current) === -1 || current !== layout.pageSize) {
             params.set('page_size', String(layout.pageSize));
             if (!params.get('page')) {
                 params.set('page', '1');
@@ -74,7 +113,7 @@
         if (!list) {
             return;
         }
-        var layout = getCoursesLayout();
+        var layout = getHomepageLayout();
         var items = list.querySelectorAll('.courses-listing-item');
         var i;
         for (i = 0; i < items.length; i += 1) {
@@ -94,10 +133,14 @@
 
     window.OliveCoursesLayout = {
         getLayout: getCoursesLayout,
+        getHomepageLayout: getHomepageLayout,
+        getCatalogLayout: getCatalogLayout,
         getPageSize: getCoursesPageSize,
         syncCatalogPageSize: syncCatalogPageSize,
         limitHomepageCourses: limitHomepageCourses,
-        ALLOWED_PAGE_SIZES: ALLOWED_PAGE_SIZES
+        ALLOWED_PAGE_SIZES: CATALOG_PAGE_SIZES,
+        HOME_PAGE_SIZES: HOME_PAGE_SIZES,
+        CATALOG_PAGE_SIZES: CATALOG_PAGE_SIZES
     };
 
     onReady(function() {

@@ -9,14 +9,14 @@
       <section class="courses">
         <ul class="courses-listing" data-courses-responsive="1">
           ## Show enough cards for the largest responsive page size; JS hides extras.
-          %for course in courses[:20]:
+          %for course in courses[:15]:
           <li class="courses-listing-item">
               <%include file="course.html" args="course=course" />
           </li>
         %endfor
         </ul>
       </section>
-      % if len(courses) > 20:
+      % if len(courses) > 15:
       <div class="courses-more">
         <a class="courses-more-cta" href="${marketing_link('COURSES')}"> ${_("View all Courses")} </a>
       </div>
