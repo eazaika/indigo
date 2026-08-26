@@ -131,6 +131,168 @@
         }
     }
 
+    function enhanceDiscoverySelects() {
+        var openWidget = null;
+
+        function closeWidget(widget) {
+            if (!widget) {
+                return;
+            }
+            widget.classList.remove('is-open');
+            widget.list.hidden = true;
+            widget.button.setAttribute('aria-expanded', 'false');
+            if (openWidget === widget) {
+                openWidget = null;
+            }
+        }
+
+        function closeAll() {
+            if (openWidget) {
+                closeWidget(openWidget);
+            }
+        }
+
+        function selectedLabel(select) {
+            var option = select.options[select.selectedIndex];
+            return option ? option.textContent : '';
+        }
+
+        function rebuildList(widget) {
+            var select = widget.select;
+            var list = widget.list;
+            var current = select.value;
+            list.innerHTML = '';
+            Array.prototype.forEach.call(select.options, function(option) {
+                var item = document.createElement('li');
+                item.setAttribute('role', 'option');
+                item.dataset.value = option.value;
+                item.textContent = option.textContent;
+                if (option.value === current) {
+                    item.classList.add('is-selected');
+                    item.setAttribute('aria-selected', 'true');
+                }
+                item.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (select.value !== option.value) {
+                        select.value = option.value;
+                        if (window.jQuery) {
+                            window.jQuery(select).trigger('change');
+                        } else {
+                            select.dispatchEvent(new Event('change', {bubbles: true}));
+                        }
+                    }
+                    widget.button.textContent = option.textContent;
+                    rebuildList(widget);
+                    closeWidget(widget);
+                });
+                list.appendChild(item);
+            });
+            widget.button.textContent = selectedLabel(select);
+        }
+
+        Array.prototype.forEach.call(document.querySelectorAll('.discovery-filter-select'), function(select) {
+            if (select.dataset.customSelect === '1') {
+                return;
+            }
+            select.dataset.customSelect = '1';
+            select.classList.add('discovery-filter-select-native');
+            select.setAttribute('tabindex', '-1');
+            select.setAttribute('aria-hidden', 'true');
+
+            var wrap = document.createElement('div');
+            wrap.className = 'discovery-custom-select';
+            select.parentNode.insertBefore(wrap, select);
+            wrap.appendChild(select);
+
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'discovery-custom-select-toggle';
+            button.id = select.id + '-toggle';
+            button.setAttribute('aria-haspopup', 'listbox');
+            button.setAttribute('aria-expanded', 'false');
+
+            var list = document.createElement('ul');
+            list.className = 'discovery-custom-select-list';
+            list.setAttribute('role', 'listbox');
+            list.hidden = true;
+
+            var label = document.querySelector('label[for="' + select.id + '"]');
+            if (label) {
+                label.setAttribute('for', button.id);
+            }
+
+            wrap.appendChild(button);
+            wrap.appendChild(list);
+
+            var widget = {
+                wrap: wrap,
+                select: select,
+                button: button,
+                list: list
+            };
+
+            function open() {
+                if (openWidget && openWidget !== widget) {
+                    closeWidget(openWidget);
+                }
+                rebuildList(widget);
+                wrap.classList.add('is-open');
+                list.hidden = false;
+                button.setAttribute('aria-expanded', 'true');
+                openWidget = widget;
+                var selected = list.querySelector('.is-selected');
+                if (selected && selected.scrollIntoView) {
+                    selected.scrollIntoView({block: 'nearest'});
+                }
+            }
+
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                if (wrap.classList.contains('is-open')) {
+                    closeWidget(widget);
+                } else {
+                    open();
+                }
+            });
+
+            select.addEventListener('change', function() {
+                widget.button.textContent = selectedLabel(select);
+                if (wrap.classList.contains('is-open')) {
+                    rebuildList(widget);
+                }
+            });
+
+            if (window.MutationObserver) {
+                new window.MutationObserver(function() {
+                    widget.button.textContent = selectedLabel(select);
+                    if (wrap.classList.contains('is-open')) {
+                        rebuildList(widget);
+                    }
+                }).observe(select, {childList: true, subtree: true});
+            }
+
+            rebuildList(widget);
+        });
+
+        document.addEventListener('click', closeAll);
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAll();
+            }
+        });
+
+        var filterCheckbox = document.getElementById('discovery-filters-cb');
+        if (filterCheckbox) {
+            filterCheckbox.addEventListener('change', function() {
+                if (!filterCheckbox.checked) {
+                    closeAll();
+                }
+            });
+        }
+    }
+
     window.OliveCoursesLayout = {
         getLayout: getCoursesLayout,
         getHomepageLayout: getHomepageLayout,
@@ -145,6 +307,15 @@
 
     onReady(function() {
         if (document.querySelector('.find-courses')) {
+            enhanceDiscoverySelects();
+            var filterCheckbox = document.getElementById('discovery-filters-cb');
+            if (filterCheckbox) {
+                filterCheckbox.addEventListener('change', function() {
+                    if (filterCheckbox.checked && window.jQuery) {
+                        window.jQuery(document).trigger('leti:discovery-filters-open');
+                    }
+                });
+            }
             syncCatalogPageSize();
 
             var resizeTimer;
