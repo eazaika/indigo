@@ -17,6 +17,14 @@ body.view-courseware {
 
 body.view-dashboard {
   background-color: #00417d;
+
+  // Certificate status / "View my certificate" on course cards
+  .course-status-certavailable,
+  .course-status-certrendering,
+  .course-status-certnotavailable,
+  .course-status-earned-not-available {
+    display: none !important;
+  }
 }
 
 body.view-profile,
@@ -26,7 +34,8 @@ body.view-account-settings {
 
 body.view-dashboard,
 body.view-profile,
-body.view-account-settings {
+body.view-account-settings,
+body.layout-accomplishment {
   header.global-header {
     background-color: #00407c;
     position: absolute;
@@ -3590,6 +3599,19 @@ body.view-contact {
     color: #004b88;
     background: #fff;
     border: 1px solid transparent;
+  }
+
+  &.archived {
+    border: 1px solid #fff;
+    color: #fff;
+    background: transparent;
+
+    &:hover,
+    &:focus {
+      color: #004b88;
+      background: #fff;
+      border: 1px solid transparent;
+    }
   }
 }
 

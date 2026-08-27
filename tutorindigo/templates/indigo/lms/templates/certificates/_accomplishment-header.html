@@ -1,0 +1,13 @@
+<%page expression_filter="h"/>
+<%!
+from django.conf import settings as django_settings
+%>
+<%
+## Use the site header (not the in-course slim header).
+course = None
+show_dashboard_tabs = True
+show_program_listing = django_settings.FEATURES.get('ENABLE_PROGRAM_LISTING', False)
+combined_login_and_register = django_settings.FEATURES.get('ENABLE_COMBINED_LOGIN_REGISTRATION', True)
+is_secure = context.get('is_secure', False)
+%>
+<%include file="../header/header.html" args="online_help_token='certificates'"/>
