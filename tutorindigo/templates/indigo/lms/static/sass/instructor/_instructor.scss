@@ -796,6 +796,7 @@ body.view-instructordash {
     #set-extension,
     #view-granted-extensions,
     #reset-extension,
+    #leti-set-group-extension,
     #section-send-email,
     #section-task-history {
       @include leti-instructor-card;
@@ -1707,7 +1708,8 @@ body.view-instructordash {
   #extensions.idash-section {
     #set-extension,
     #view-granted-extensions,
-    #reset-extension {
+    #reset-extension,
+    #leti-set-group-extension {
       input[type="text"] {
         display: inline-block;
         width: auto;
@@ -1734,13 +1736,22 @@ body.view-instructordash {
     }
 
     // 1) Individual extensions: gap between date and reason
-    #set-extension {
+    #set-extension,
+    #leti-set-group-extension {
       input[name="due_datetime"] {
         margin-right: 24px !important;
       }
 
       input[name="reason"] {
         margin-left: 0 !important;
+      }
+    }
+
+    #leti-set-group-extension {
+      label {
+        display: inline-block;
+        margin: 0 16px 8px 0;
+        font-weight: 400;
       }
     }
 
@@ -1776,6 +1787,7 @@ body.view-instructordash {
     // 4) Action buttons — solid dark blue
     input[type="button"],
     input[name="change-due-date"],
+    input[name="change-due-date-group"],
     input[name="show-unit-extensions"],
     input[name="show-student-extensions"],
     input[name="reset-due-date"] {
