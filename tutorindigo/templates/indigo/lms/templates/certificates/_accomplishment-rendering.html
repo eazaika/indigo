@@ -1,5 +1,23 @@
 <%page expression_filter="h"/>
-<%! from django.utils.translation import gettext as _ %>
+<%!
+import re
+from django.utils.translation import get_language
+from django.utils.translation import gettext as _
+
+_EN_MONTH_DAY_YEAR = re.compile(r'^(\S+)\s+(\d+),\s+(\d+)$')
+
+
+def leti_certificate_date_issued(formatted):
+    """Use day-month-year for Russian: '2 августа 2026' instead of 'августа 2, 2026'."""
+    lang = (get_language() or '').replace('_', '-').split('-')[0].lower()
+    if lang != 'ru' or not formatted:
+        return formatted
+    match = _EN_MONTH_DAY_YEAR.match(str(formatted).strip())
+    if not match:
+        return formatted
+    month, day, year = match.groups()
+    return '{} {} {}'.format(day, month, year)
+%>
 <%namespace name='static' file='/static_content.html'/>
 <%
 course_mode_class = course_mode if course_mode else ''
@@ -103,7 +121,7 @@ course_mode_class = course_mode if course_mode else ''
                 </dl>
                 <dl class="metadata accomplishment-date">
                     <dt class="label copy copy-meta">${certificate_date_issued_title}</dt>
-                    <dd class="value copy copy-base">${certificate_date_issued}</dd>
+                    <dd class="value copy copy-base">${leti_certificate_date_issued(certificate_date_issued)}</dd>
                 </dl>
             </div>
         </div>
