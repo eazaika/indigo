@@ -5,6 +5,24 @@ from openedx.core.djangolib.markup import HTML
 %>
 
 
+<style>
+  #section-send-email .email-targets-primary,
+  #section-send-email .email-targets-secondary {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+  }
+  #section-send-email .email-targets-primary li,
+  #section-send-email .email-targets-secondary li {
+    display: flex !important;
+    float: none !important;
+    clear: both !important;
+    width: 100% !important;
+    margin: 6px 0 !important;
+  }
+</style>
 <div class="vert-left send-email leti-send-email" id="section-send-email">
     <div class="request-response msg msg-confirm copy" id="request-response"></div>
     %if 'communications_mfe_url' in section_data:
@@ -28,14 +46,18 @@ from openedx.core.djangolib.markup import HTML
                     <input type="checkbox" name="send_to" value="myself" id="target_myself">
                     <label for="target_myself">${_("Myself")}</label>
                 </li>
+                %if not section_data.get('hide_staff'):
                 <li>
                     <input type="checkbox" name="send_to" value="staff" id="target_staff">
                     <label for="target_staff">${_("Staff and Administrators")}</label>
                 </li>
+                %endif
+                %if not section_data.get('hide_all_learners'):
                 <li>
                     <input type="checkbox" name="send_to" value="learners" id="target_learners">
                     <label for="target_learners">${_("All Learners")}</label>
                 </li>
+                %endif
             </ul>
             %if len(section_data['cohorts']) > 0:
             <ul role="group" class="email-targets-secondary">
@@ -56,7 +78,7 @@ from openedx.core.djangolib.markup import HTML
             </ul>
             %endif
             ## If there's only 1 course mode, everyone is in it and you should just use "All Learners"
-            %if len(section_data['course_modes']) > 1:
+            %if not section_data.get('hide_tracks') and len(section_data['course_modes']) > 1:
             <ul role="group" class="email-targets-secondary">
                 %for track in section_data['course_modes']:
                 <li>
