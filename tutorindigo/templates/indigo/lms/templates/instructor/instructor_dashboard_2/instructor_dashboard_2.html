@@ -121,6 +121,9 @@ from openedx.core.djangolib.markup import HTML
                     <%include file="/instructor/instructor_dashboard_2/leti_group_extend.html" args="section_data=section_data" />
                     % endif
                     <%include file="/instructor/instructor_dashboard_2/${ section_data['section_key'] }.html" args="section_data=section_data" />
+                    % if section_data.get('section_key') == 'cohort_management' and section_data.get('assign_url'):
+                    <%include file="/instructor/instructor_dashboard_2/leti_groups.html" args="section_data=section_data" />
+                    % endif
                 </section>
               % endfor
             </div>
