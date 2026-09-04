@@ -3677,8 +3677,203 @@ body.view-contact {
 
 ////////////////// Programs listing /dashboard/programs/
 body.view-programs,
-body:has(.program-list-wrapper) {
+body.leti-programs-page,
+body:has(.program-list-wrapper),
+body:has(.leti-programs-dashboard) {
   background-color: #00417d;
+}
+
+.leti-programs-page .dashboard.leti-programs-dashboard {
+  padding-bottom: 48px;
+}
+
+.leti-programs-page .dashboard.leti-programs-dashboard .main-container {
+  padding-left: 6.25rem;
+}
+
+.leti-programs-dashboard .listing-courses .leti-program-item {
+  width: auto;
+  max-width: 100%;
+}
+
+.leti-program-item .course-container,
+.leti-program-item .course {
+  width: auto !important;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.leti-program-item .course .details {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-right: 16px;
+}
+
+.leti-program-item .wrapper-course-image {
+  float: none !important;
+  flex: 0 0 210px;
+  width: 210px !important;
+  margin-right: 16px;
+}
+
+.leti-program-item .wrapper-course-details {
+  flex: 1 1 auto;
+  width: 70rem;
+  max-width: 70rem;
+}
+
+.leti-program-item .continue-button {
+  flex: 0 0 auto !important;
+  align-self: center;
+  margin: 0 0 0 12px;
+}
+
+.leti-program-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 8px;
+  overflow: hidden;
+}
+
+.leti-program-chip {
+  display: inline-block;
+  width: auto;
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #00417d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.leti-program-stack {
+  position: relative;
+
+  .cover {
+    display: block;
+    height: 150px;
+  }
+
+  &__deck {
+    position: relative;
+    width: 100%;
+    height: 150px;
+  }
+
+  &__img,
+  &__fallback {
+    position: absolute;
+    object-fit: cover;
+    background: rgba(0, 32, 64, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  &.is-single &__img,
+  &.is-single &__fallback {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 150px;
+    box-shadow: none;
+  }
+
+  &:not(.is-single) &__img,
+  &:not(.is-single) &__fallback {
+    width: 72%;
+    height: 118px;
+  }
+
+  &:not(.is-single) &__layer-0 {
+    left: 0;
+    top: 28px;
+    z-index: 1;
+  }
+
+  &:not(.is-single) &__layer-1 {
+    left: 12%;
+    top: 14px;
+    z-index: 2;
+  }
+
+  &:not(.is-single) &__layer-2 {
+    left: 24%;
+    top: 0;
+    z-index: 3;
+  }
+
+  &__count {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 4;
+    padding: 3px 8px;
+    background: rgba(0, 65, 125, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+}
+
+.leti-program-courses {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0 0 6px;
+    padding: 0;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.4;
+    opacity: 0.92;
+
+    &::before {
+      content: "";
+      flex: 0 0 8px;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow:
+        0 0 4px 1px rgba(255, 255, 255, 0.65),
+        0 0 8px 2px rgba(255, 255, 255, 0.22);
+    }
+  }
+
+  &__more {
+    opacity: 0.75;
+    font-style: italic;
+
+    &::before {
+      content: none;
+      display: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.leti-programs-dashboard .empty-dashboard-message {
+  margin-top: 12px;
 }
 
 :not(.courseware) > #content.content-wrapper:has(.program-list-wrapper) {
