@@ -62,7 +62,7 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
         <%include file="navbar-logo-header.html" args="online_help_token=online_help_token"/>
         % if user.is_authenticated:
             <%include file="navbar-authenticated.html" args="online_help_token=online_help_token"/>
-        % elif not use_course_about_header:
+        % else:
             <%include file="navbar-not-authenticated.html" args="online_help_token=online_help_token"/>
         % endif
         <div class="header-toolbar${' header-toolbar--authenticated' if user.is_authenticated else ''}">
