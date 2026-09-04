@@ -1,25 +1,44 @@
 ## mako
 
 <%page expression_filter="h"/>
+
+<%namespace name='static' file='../static_content.html'/>
+<%namespace file='../main.html' import="login_query"/>
+
 <%!
+from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 %>
 
 <%
+  mktg_site_enabled = static.get_value('ENABLE_MKTG_SITE', settings.FEATURES.get('ENABLE_MKTG_SITE', False))
+  courses_are_browsable = settings.FEATURES.get('COURSES_ARE_BROWSABLE')
+  allows_login = not settings.FEATURES['DISABLE_LOGIN_BUTTON'] and not combined_login_and_register
+  can_discover_courses = settings.FEATURES.get('ENABLE_COURSE_DISCOVERY')
   is_course_about = course and request.path.rstrip('/').endswith('/about')
-  path_end = request.path.rstrip('/')
-  is_instructor_page = course and path_end.endswith('/instructor')
-  is_pdfbook_page = course and '/pdfbook/' in request.path
-  is_bookmarks_page = course and '/bookmarks' in request.path
-  is_updates_page = course and '/course/updates' in request.path
-  last_segment = path_end.split('/')[-1].lower()
-  is_static_course_tab_page = course and last_segment and len(last_segment) >= 24 and all(c in '0123456789abcdef' for c in last_segment)
-  use_course_about_header = is_course_about or is_instructor_page or is_static_course_tab_page or is_pdfbook_page or is_bookmarks_page or is_updates_page
 %>
-% if not use_course_about_header:
-<nav class="nav-links" aria-label=${_("Supplemental Links")}>
+<nav class="nav-links${' nav-links--course-about hidden' if is_course_about else ''}" aria-label=${_("Supplemental Links")}>
   <div class="main">
-    <%include file="navbar-main-links.html"/>
+  % if mktg_site_enabled and not is_course_about:
+    <div class="mobile-nav-item hidden-mobile nav-item">
+      <a href="${marketing_link('HOW_IT_WORKS')}">${_("How it Works")}</a>
+    </div>
+    % if courses_are_browsable:
+      <div class="mobile-nav-item hidden-mobile nav-item">
+        <a href="${marketing_link('COURSES')}">${_("Courses")}</a>
+      </div>
+    % endif
+    <div class="mobile-nav-item hidden-mobile nav-item">
+      <a href="${marketing_link('SCHOOLS')}">${_("Schools")}</a>
+    </div>
+  % endif
+  % if allows_login:
+    % if can_discover_courses and not is_course_about:
+      <div class="mobile-nav-item hidden-mobile nav-item">
+        <a href="/courses" class="explore-courses">${_('Explore courses')}</a>
+      </div>
+    %endif
+  % endif
   </div>
 </nav>
-% endif

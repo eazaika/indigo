@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from lms.djangoapps.ccx.overrides import get_current_ccx
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.features.enterprise_support.utils import get_enterprise_learner_generic_name, get_enterprise_learner_portal
+from common.djangoapps.edxmako.shortcuts import marketing_link
 
 # App that handles subdomain specific branding
 from lms.djangoapps.branding import api as branding_api
@@ -25,6 +26,8 @@ is_updates_page = course and '/course/updates' in request.path
 last_segment = path_end.split('/')[-1].lower()
 is_static_course_tab_page = course and last_segment and len(last_segment) >= 24 and all(c in '0123456789abcdef' for c in last_segment)
 use_course_about_header = is_course_about or is_instructor_page or is_static_course_tab_page or is_pdfbook_page or is_bookmarks_page or is_updates_page
+courses_are_browsable = settings.FEATURES.get('COURSES_ARE_BROWSABLE')
+catalog_href = marketing_link('COURSES') if courses_are_browsable else '/courses'
 course_display_name = ''
 if use_course_about_header:
   course_display_name = course.display_name_with_default
@@ -36,11 +39,15 @@ if use_course_about_header:
 
 % if use_course_about_header:
   <div class="header-about-meta">
-    <div class="nav-links nav-links--course-about">
-      <div class="main">
-        <%include file="navbar-main-links.html"/>
+    % if user.is_authenticated:
+      <div class="nav-links nav-links--course-about">
+        <div class="main">
+          <%include file="navbar-main-links.html"/>
+        </div>
       </div>
-    </div>
+    % else:
+      <a class="course-catalog-link tab-nav-link" href="${catalog_href}">${_('Discover New')}</a>
+    % endif
     <div class="course-header course-header--about">
       <span class="provider">${course.display_org_with_default}:</span>
       <span class="course-number">${course.display_number_with_default}</span>
