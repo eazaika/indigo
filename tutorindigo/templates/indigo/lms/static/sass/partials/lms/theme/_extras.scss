@@ -3876,6 +3876,232 @@ body:has(.leti-programs-dashboard) {
   margin-top: 12px;
 }
 
+////////////////// Program details /dashboard/programs/<uuid>/
+.leti-program-about .leti-program-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.leti-program-about .leti-program-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: $blue;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.leti-program-about .leti-program-back {
+  display: inline-block;
+  margin: 0 0 16px;
+  color: $blue;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.leti-roadmap {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 8px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 27px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: #e8e8e8;
+  }
+}
+
+.leti-roadmap-step {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  position: relative;
+  margin: 0 0 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.leti-roadmap-marker {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  margin-top: 18px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: 2px solid #d9d9d9;
+  color: #707070;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 36px;
+  text-align: center;
+  z-index: 1;
+
+  .is-completed & {
+    background: $blue;
+    border-color: $blue;
+    color: #fff;
+  }
+
+  .is-current & {
+    background: #fff;
+    border-color: $blue;
+    color: $blue;
+    box-shadow: 0 0 0 4px rgba(0, 65, 125, 0.15);
+  }
+}
+
+.leti-roadmap-card {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 14px 16px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+a.leti-roadmap-card:hover {
+  background: #edf3f8;
+  text-decoration: none;
+  color: inherit;
+}
+
+.leti-roadmap-step.is-current .leti-roadmap-card {
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #c5d4e3;
+}
+
+.leti-roadmap-card__image {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 64px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: #d9d9d9;
+}
+
+.leti-roadmap-card__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.leti-roadmap-card__title {
+  margin: 0 0 4px;
+  color: $blue;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.leti-roadmap-card__status {
+  margin: 0;
+  color: #5b5b5b;
+  font-size: 0.85rem;
+}
+
+.leti-roadmap-step.is-current .leti-roadmap-card__status {
+  color: $blue;
+  font-weight: 600;
+}
+
+.leti-roadmap-card__cta {
+  flex: 0 0 auto;
+  color: $blue;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.leti-progress-circle-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px 20px 28px;
+  text-align: center;
+  box-sizing: border-box;
+
+  h2 {
+    margin: 0 0 16px;
+    color: $blue;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+}
+
+.leti-progress-circle-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.leti-progress-circle {
+  width: 180px;
+  height: 180px;
+
+  .bg {
+    stroke: #e8e8e8;
+  }
+
+  .complete {
+    stroke: $blue;
+  }
+
+  .current {
+    stroke: #7aa7d4;
+  }
+
+  .incomplete {
+    stroke: #e8e8e8;
+  }
+}
+
+.leti-progress-circle-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $blue;
+
+  .numbers {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .caption {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5b5b5b;
+  }
+}
+
 :not(.courseware) > #content.content-wrapper:has(.program-list-wrapper) {
   padding: 40px 20px 80px 40px;
   box-sizing: border-box;
