@@ -3137,6 +3137,10 @@ body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses 
   z-index: 0;
   border: none;
   border-radius: 0;
+  background: rgba(255, 255, 255, 0.15) !important;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: #fff !important;
   box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2), 8px 8px 0px rgba(255, 255, 255, 0.2);
   transition:
     transform 0.28s ease,
@@ -3167,7 +3171,7 @@ body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses 
   &:hover,
   &:focus-within {
     border-radius: 0;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.15) !important;
     transform: translateY(-6px) scale(1.025);
     box-shadow:
       0 0 16px rgba(255, 255, 255, 0.55),
@@ -3192,6 +3196,19 @@ body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses 
     display: none !important;
   }
 
+  .course-info,
+  .course-info .course-title,
+  .course-info .course-name,
+  .course-info .course-organization,
+  .course-info .course-code,
+  .course-info .course-date {
+    color: #fff;
+  }
+
+  .course-info {
+    background: transparent !important;
+  }
+
   .course-image .cover-image::before {
     opacity: 0 !important;
     background: transparent !important;
@@ -3205,7 +3222,7 @@ body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses 
 }
 
 .home .courses-container .courses .course .course-info:hover {
-  background-color: #fff;
+  background-color: transparent;
 }
 
 // Catalog: keep learn-more / darken overlay only (no glow)
@@ -3928,7 +3945,7 @@ body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery
   color: #fff;
 
   &::placeholder {
-    color: #fff;
+    color: #fff !important;
   }
   &:-ms-input-placeholder {
     color: #fff;
@@ -3977,7 +3994,7 @@ body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery
   &.archived {
     border: 1px solid #fff;
     color: #fff;
-    background: transparent;
+    background: transparent !important;
 
     &:hover,
     &:focus {
