@@ -1,3 +1,21 @@
 ## mako
 <%namespace name='static' file='static_content.html'/>
 <link rel="stylesheet" href="${static.url('css/vendor/bvi.min.css')}" type="text/css" />
+<style>
+	.dashboard .main-container .my-courses .course .details .enter-course,
+	.dashboard .main-container .my-courses .course .details .enter-course.archived {
+		border: 1px solid #fff !important;
+		border-radius: 3px !important;
+		background-color: transparent !important;
+		color: #fff !important;
+	}
+
+	.dashboard .main-container .my-courses .course .details .enter-course:hover,
+	.dashboard .main-container .my-courses .course .details .enter-course:focus,
+	.dashboard .main-container .my-courses .course .details .enter-course.archived:hover,
+	.dashboard .main-container .my-courses .course .details .enter-course.archived:focus {
+		border-color: #fff !important;
+		background-color: #fff !important;
+		color: #126f9a !important;
+	}
+</style>
