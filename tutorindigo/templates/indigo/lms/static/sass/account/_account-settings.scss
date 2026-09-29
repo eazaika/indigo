@@ -378,20 +378,6 @@ body.view-account-settings {
                                 }
                             }
 
-                            .icon-caret-down {
-                                position: absolute;
-                                right: 12px;
-                                bottom: 14px;
-                                pointer-events: none;
-
-                                &::after {
-                                    content: '';
-                                    display: block;
-                                    border-left: 6px solid transparent;
-                                    border-right: 6px solid transparent;
-                                    border-top: 7px solid $account-accent;
-                                }
-                            }
                         }
 
                         .u-field-message {
