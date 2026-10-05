@@ -347,10 +347,13 @@ body.view-profile {
         align-items: flex-start;
         gap: 32px;
 
-        @media (max-width: 767px) {
+        // Stack earlier so profile fields keep enough horizontal room
+        // for Russian labels (e.g. «Полное имя») on tablet widths.
+        @media (max-width: 991px) {
             flex-direction: column;
             align-items: center;
             text-align: center;
+            gap: 24px;
         }
     }
 
@@ -401,15 +404,23 @@ body.view-profile {
 
     .profile-section-one-fields {
         margin: 0;
-        display: grid;
-        grid-template-columns: minmax(140px, auto) 1fr;
-        gap: 10px 20px;
-        align-items: center;
-        font: normal 1em/1.6em $profile-body-font-stack;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font: normal 1em/1.5 $profile-body-font-stack;
+        text-align: left;
+        width: 100%;
+
+        @media (max-width: 991px) {
+            gap: 8px;
+            max-width: 28rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         @media (max-width: 767px) {
-            grid-template-columns: 1fr;
-            gap: 8px;
+            font-size: 0.875rem;
+            gap: 10px;
         }
 
         > .u-field {
@@ -417,22 +428,29 @@ body.view-profile {
             color: $profile-muted-color;
         }
 
+        // Each field owns its own row so a wrapping label cannot shift
+        // neighboring values (unlike a shared grid + display: contents).
         .u-field {
             border-bottom: none;
             padding: 0;
             margin: 0;
-            font-size: 1rem;
-            line-height: 1.6;
-            display: contents;
+            font-size: inherit;
+            line-height: 1.5;
+            display: grid;
+            grid-template-columns: max-content minmax(0, 1fr);
+            column-gap: 16px;
+            align-items: start;
 
             .u-field-title {
                 display: block;
-                font-size: 1em;
+                font-size: inherit;
                 font-family: $font-family-title;
                 font-weight: 600;
                 color: $profile-accent;
                 margin: 0;
                 text-transform: none;
+                white-space: nowrap;
+                line-height: 1.5;
 
                 &::after {
                     content: none;
@@ -445,12 +463,14 @@ body.view-profile {
             select,
             .u-field-value-editable {
                 display: block;
+                min-width: 0;
                 width: 100%;
                 font-family: $profile-body-font-stack;
-                font-size: 1em;
-                line-height: 1.6;
+                font-size: inherit;
+                line-height: 1.5;
                 color: $profile-secondary-color;
                 font-weight: 400;
+                word-break: break-word;
             }
 
             .u-field-message {

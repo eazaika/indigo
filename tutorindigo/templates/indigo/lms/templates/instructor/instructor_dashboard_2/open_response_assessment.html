@@ -1,0 +1,44 @@
+<%page args="section_data" expression_filter="h"/>
+<%! from openedx.core.djangolib.markup import HTML %>
+
+<%include file="/courseware/xqa_interface.html/"/>
+
+## LETIteach: ORA listing styled like special-exam attempts table
+<section class="open-response-assessment leti-ora">
+    ${HTML(section_data['fragment'].body_html())}
+</section>
+<script type="text/javascript">
+  // Wrap Backgrid tables so wide grids scroll horizontally (same as special exams)
+  (function () {
+    var ROOT = '#open_response_assessment .open-response-assessment-main-table';
+
+    function wrapTables(root) {
+      if (!root || !root.querySelectorAll) { return; }
+      Array.prototype.forEach.call(root.querySelectorAll('table'), function (table) {
+        if (table.parentElement && table.parentElement.classList.contains('leti-table-scroll')) {
+          return;
+        }
+        var wrap = document.createElement('div');
+        wrap.className = 'leti-table-scroll';
+        table.parentNode.insertBefore(wrap, table);
+        wrap.appendChild(table);
+      });
+    }
+
+    function init() {
+      var root = document.querySelector(ROOT);
+      if (!root) { return; }
+      wrapTables(root);
+      if (window.MutationObserver) {
+        new MutationObserver(function () { wrapTables(root); })
+          .observe(root, { childList: true, subtree: true });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  }());
+</script>

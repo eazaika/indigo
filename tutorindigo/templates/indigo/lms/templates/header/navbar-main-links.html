@@ -1,0 +1,38 @@
+## mako
+<%page expression_filter="h"/>
+<%!
+from django.urls import NoReverseMatch, reverse
+from django.utils.translation import ugettext as _
+from common.djangoapps.edxmako.shortcuts import marketing_link
+%>
+<%
+  dashboard_url = reverse('dashboard')
+  try:
+    programs_url = reverse('program_listing_view')
+  except NoReverseMatch:
+    programs_url = '/dashboard/programs/'
+  catalog_url = marketing_link('COURSES') if settings.FEATURES.get('COURSES_ARE_BROWSABLE') else '/courses'
+  path = request.path or ''
+  path_norm = path.rstrip('/')
+  is_courses_tab = path_norm == dashboard_url.rstrip('/') or path_norm == '/dashboard'
+  is_programs_tab = path.startswith('/dashboard/programs') or path.startswith('/programs')
+  is_catalog_tab = path.startswith('/courses')
+%>
+<div class="mobile-nav-item hidden-mobile nav-item nav-tab">
+  <a class="${'active ' if is_courses_tab else ''}tab-nav-link" href="${dashboard_url}"
+     aria-current="${'page' if is_courses_tab else 'false'}">
+    ${_("Courses")}
+  </a>
+</div>
+<div class="mobile-nav-item hidden-mobile nav-item nav-tab">
+  <a class="${'active ' if is_programs_tab else ''}tab-nav-link" href="${programs_url}"
+     aria-current="${'page' if is_programs_tab else 'false'}">
+    ${_("Programs")}
+  </a>
+</div>
+<div class="mobile-nav-item hidden-mobile nav-item nav-tab">
+  <a class="${'active ' if is_catalog_tab else ''}tab-nav-link discover-new-link" href="${catalog_url}"
+     aria-current="${'page' if is_catalog_tab else 'false'}">
+    ${_("Course catalog")}
+  </a>
+</div>

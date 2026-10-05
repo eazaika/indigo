@@ -1,0 +1,198 @@
+<%page expression_filter="h"/>
+
+<%!
+import json
+
+from django.urls import reverse
+from django.conf import settings
+from django.utils.translation import ugettext as _
+
+from openedx.core.djangolib.js_utils import dump_js_escaped_json, js_escaped_string
+from openedx.core.djangolib.markup import HTML
+from webpack_loader.templatetags.webpack_loader import render_bundle
+from openedx.core.djangoapps.user_api.accounts.utils import is_secondary_email_feature_enabled
+%>
+
+<%inherit file="/main.html" />
+<%def name="online_help_token()"><% return "learneraccountsettings" %></%def>
+<%namespace name='static' file='/static_content.html'/>
+
+<%block name="pagetitle">${_("Account Settings")}</%block>
+<%block name="bodyclass">view-account-settings is-authenticated</%block>
+
+% if duplicate_provider:
+    <section>
+        <%include file='/dashboard/_dashboard_third_party_error.html' />
+    </section>
+% endif
+
+<div class="wrapper-account-settings"></div>
+<%block name="headextra">
+    <%static:css group='style-course'/>
+    <link type="text/css" rel="stylesheet" href="${STATIC_URL}paragon/static/paragon.min.css">
+    <style id="leti-account-select-caret-styles">
+        body.view-account-settings .wrapper-account-settings .field {
+            position: relative;
+        }
+
+        body.view-account-settings .wrapper-account-settings .field select {
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            background-color: transparent !important;
+            padding-right: 36px !important;
+        }
+
+        body.view-account-settings .wrapper-account-settings .field select::-ms-expand {
+            display: none;
+        }
+
+        body.view-account-settings .section-account-deletion .account-settings-section-body {
+            display: none;
+        }
+
+        body.view-account-settings .account-deletion-section-message {
+            margin: 24px 40px 32px !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+        }
+
+        @media (max-width: 767px) {
+            body.view-account-settings .account-deletion-section-message {
+                margin: 20px 20px 24px !important;
+            }
+        }
+
+        body.view-account-settings .account-deletion-details {
+            margin: 0;
+            padding: 0 !important;
+        }
+
+        body.view-account-settings .account-deletion-details .account-deletion-lead,
+        body.view-account-settings .account-deletion-details .account-settings-header-subtitle,
+        body.view-account-settings .account-deletion-details .account-settings-header-subtitle-warning {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        body.view-account-settings .account-deletion-details .account-deletion-lead {
+            font-size: 1.125rem !important;
+            font-weight: 600;
+            line-height: 1.5 !important;
+            margin-top: 8px !important;
+            margin-bottom: 16px !important;
+            color: #292b2c;
+        }
+
+        body.view-account-settings .account-deletion-details .account-settings-header-subtitle {
+            font-size: 1rem !important;
+            line-height: 1.55 !important;
+            margin-top: 0 !important;
+            margin-bottom: 14px !important;
+            padding-bottom: 0 !important;
+            color: #292b2c;
+        }
+
+        body.view-account-settings .account-deletion-details .account-settings-header-subtitle-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 14px 16px !important;
+            margin-top: 28px !important;
+            margin-bottom: 16px !important;
+            font-size: 1rem !important;
+            line-height: 1.55 !important;
+            box-sizing: border-box;
+        }
+
+        body.view-account-settings .account-deletion-details #delete-account-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            margin-top: 24px !important;
+            margin-bottom: 0 !important;
+            padding: 10px 24px !important;
+            line-height: 1.4 !important;
+        }
+
+        body.view-account-settings .account-deletion-details #delete-account-btn * {
+            text-align: center !important;
+        }
+
+        body.view-account-settings .account-deletion-details a {
+            text-decoration: underline;
+        }
+    </style>
+</%block>
+
+<%block name="js_extra">
+<%
+try:
+    readonly_fullname_value = readonly_fullname_field
+except NameError:
+    readonly_fullname_value = False
+secondary_email_feature_enabled = is_secondary_email_feature_enabled()
+%>
+<%static:require_module module_name="indigo/js/student_account/views/account_settings_factory" class_name="AccountSettingsFactory">
+    var fieldsData = ${ fields | n, dump_js_escaped_json },
+        ordersHistoryData = ${ order_history | n, dump_js_escaped_json },
+        authData = ${ auth | n, dump_js_escaped_json },
+        platformName = '${ static.get_platform_name() | n, js_escaped_string }',
+        contactEmail = '${ static.get_contact_email_address() | n, js_escaped_string }',
+        allowEmailChange = ${ bool(settings.FEATURES['ALLOW_EMAIL_ADDRESS_CHANGE']) | n, dump_js_escaped_json },
+        socialPlatforms = ${ settings.SOCIAL_PLATFORMS | n, dump_js_escaped_json },
+
+        syncLearnerProfileData = ${ bool(sync_learner_profile_data) | n, dump_js_escaped_json },
+        enterpriseName = '${ enterprise_name | n, js_escaped_string }',
+        enterpriseReadonlyAccountFields = ${ enterprise_readonly_account_fields | n, dump_js_escaped_json },
+        edxSupportUrl = '${ edx_support_url | n, js_escaped_string }',
+        extendedProfileFields = ${ extended_profile_fields | n, dump_js_escaped_json },
+        displayAccountDeletion = ${ enable_account_deletion | n, dump_js_escaped_json },
+        isSecondaryEmailFeatureEnabled = ${ dump_js_escaped_json(secondary_email_feature_enabled) | n },
+        enableCoppaCompliance = ${ bool(enable_coppa_compliance) | n, dump_js_escaped_json };
+
+    window.readonlyFullnameField = ${ dump_js_escaped_json(readonly_fullname_value) | n };
+
+    AccountSettingsFactory(
+        fieldsData,
+        true,
+        ordersHistoryData,
+        authData,
+        '${ password_reset_support_link | n, js_escaped_string }',
+        '${ user_accounts_api_url | n, js_escaped_string }',
+        '${ user_preferences_api_url | n, js_escaped_string }',
+        ${ user.id | n, dump_js_escaped_json },
+        platformName,
+        contactEmail,
+        allowEmailChange,
+        enableCoppaCompliance,
+        socialPlatforms,
+
+        syncLearnerProfileData,
+        enterpriseName,
+        enterpriseReadonlyAccountFields,
+        edxSupportUrl,
+        extendedProfileFields,
+        displayAccountDeletion,
+        isSecondaryEmailFeatureEnabled,
+        ${ beta_language | n, dump_js_escaped_json },
+    );
+</%static:require_module>
+
+<script type="text/javascript">
+     window.auth = ${ auth | n, dump_js_escaped_json };
+     window.isActive = ${ user.is_active | n, dump_js_escaped_json };
+     window.additionalSiteSpecificDeletionText = "${ static.get_value('SITE_SPECIFIC_DELETION_TEXT', '') | n, js_escaped_string }";
+     window.mktgRootLink = "${ static.marketing_link('ROOT') | n, js_escaped_string }";
+     window.platformName = "${ platform_name | n, js_escaped_string }";
+     window.siteName = "${ static.get_value('SITE_NAME', settings.SITE_NAME) | n, js_escaped_string }";
+     window.mktgEmailOptIn = ${ settings.MARKETING_EMAILS_OPT_IN | n, dump_js_escaped_json };;
+
+</script>
+<%static:webpack entry="StudentAccountDeletionInitializer">
+</%static:webpack>
+</%block>

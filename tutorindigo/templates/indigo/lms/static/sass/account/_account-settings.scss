@@ -378,20 +378,6 @@ body.view-account-settings {
                                 }
                             }
 
-                            .icon-caret-down {
-                                position: absolute;
-                                right: 12px;
-                                bottom: 14px;
-                                pointer-events: none;
-
-                                &::after {
-                                    content: '';
-                                    display: block;
-                                    border-left: 6px solid transparent;
-                                    border-right: 6px solid transparent;
-                                    border-top: 7px solid $account-accent;
-                                }
-                            }
                         }
 
                         .u-field-message {
@@ -444,14 +430,71 @@ body.view-account-settings {
                 }
             }
 
-            .account-deletion-details {
-                padding: 0 32px 32px;
-
-                @include media-breakpoint-down(md) {
-                    padding: 0 16px 24px;
+            .section-account-deletion {
+                .account-settings-section-body {
+                    display: none;
                 }
 
+                .account-deletion-section-message {
+                    margin: 24px 40px 32px;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+
+                    @include media-breakpoint-down(md) {
+                        margin: 20px 20px 24px;
+                    }
+                }
+            }
+
+            .account-deletion-details {
+                padding: 0;
+
+                @include media-breakpoint-down(md) {
+                    padding: 0;
+                }
+
+                .account-deletion-lead,
+                .account-settings-header-subtitle,
+                .account-settings-header-subtitle-warning {
+                    padding-left: 0;
+                    padding-right: 0;
+                    padding-top: 0;
+                }
+
+                .account-deletion-lead {
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                    line-height: 1.5;
+                    margin: 8px 0 16px;
+                    color: $account-muted-color;
+                }
+
+                .account-settings-header-subtitle {
+                    font-size: 1rem;
+                    line-height: 1.55;
+                    margin: 0 0 14px;
+                    color: $account-muted-color;
+                }
+
+                .account-settings-header-subtitle-warning {
+                    color: #856404;
+                    background-color: #fff3cd;
+                    border: 1px solid #ffeeba;
+                    padding: 14px 16px;
+                    margin: 28px 0 16px;
+                    font-size: 1rem;
+                    line-height: 1.55;
+                    box-sizing: border-box;
+                }
+
+                #delete-account-btn,
                 .btn-outline-primary {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    margin-top: 24px;
                     padding: 10px 24px;
                     font: 600 0.95rem/1.4 $account-body-font-stack;
                     color: #fff;
@@ -465,6 +508,10 @@ body.view-account-settings {
                         border-color: darken($account-accent, 8%);
                         color: #fff;
                     }
+                }
+
+                a {
+                    text-decoration: underline;
                 }
             }
         }

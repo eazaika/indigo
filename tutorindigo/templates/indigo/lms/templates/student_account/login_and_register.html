@@ -2,8 +2,93 @@
 <%!
     import json
     from django.utils.translation import ugettext as _
+    from django.utils.translation import get_language
     from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
     from openedx.core.djangolib.js_utils import dump_js_escaped_json
+
+    # Login sidebar LK screenshot per UI language (files in theme static/images/).
+    _LK_EXAMPLE_BY_LANG = {
+        'ru': 'images/lk_etu_example_ru.png',
+        'en': 'images/lk_etu_example_en.png',
+        'fr': 'images/lk_etu_example_fr.png',
+        'es': 'images/lk_etu_example_es.png',
+        'es-es': 'images/lk_etu_example_es.png',
+        'pt': 'images/lk_etu_example_pt.png',
+        'pt-pt': 'images/lk_etu_example_pt.png',
+        'pt-br': 'images/lk_etu_example_pt.png',
+    }
+    _LK_EXAMPLE_DEFAULT = _LK_EXAMPLE_BY_LANG['ru']
+
+    def lk_example_image_path():
+        lang = (get_language() or 'ru').lower().replace('_', '-')
+        path = _LK_EXAMPLE_BY_LANG.get(lang)
+        if path:
+            return path
+        return _LK_EXAMPLE_BY_LANG.get(lang.split('-')[0], _LK_EXAMPLE_DEFAULT)
+
+    _LOGIN_I18N = {
+        'en': {
+            'students_only': '(students only)',
+            'lk_note': (
+                'For ETU students: use the same email and password as on lk.etu.ru. '
+                'Registration on LETIteach is not required.'
+            ),
+            'lk_recovery': 'LK password recovery',
+            'lk_alt': 'ETU personal account login example',
+            'forgot_password': 'Forgot password?',
+        },
+        'ru': {
+            'students_only': '(только для студентов)',
+            'lk_note': (
+                'Для студентов ЛЭТИ: используйте тот же email и пароль, что и на lk.etu.ru. '
+                'Регистрация на LETIteach не требуется.'
+            ),
+            'lk_recovery': 'Восстановление пароля от ЛК',
+            'lk_alt': 'Пример входа в личный кабинет ЛЭТИ',
+            'forgot_password': 'Забыли пароль?',
+        },
+        'fr': {
+            'students_only': '(étudiants uniquement)',
+            'lk_note': (
+                "Pour les étudiants de l'ETU : utilisez le même e-mail et le même mot de passe "
+                "que sur lk.etu.ru. L'inscription sur LETIteach n'est pas nécessaire."
+            ),
+            'lk_recovery': 'Récupération du mot de passe du LK',
+            'lk_alt': 'Exemple de connexion au compte personnel ETU',
+            'forgot_password': 'Mot de passe oublié ?',
+        },
+        'es': {
+            'students_only': '(solo para estudiantes)',
+            'lk_note': (
+                'Para estudiantes de ETU: use el mismo correo y contraseña que en lk.etu.ru. '
+                'No es necesario registrarse en LETIteach.'
+            ),
+            'lk_recovery': 'Recuperación de contraseña del LK',
+            'lk_alt': 'Ejemplo de acceso a la cuenta personal de ETU',
+            'forgot_password': '¿Olvidó su contraseña?',
+        },
+        'pt': {
+            'students_only': '(apenas para estudantes)',
+            'lk_note': (
+                'Para estudantes da ETU: use o mesmo e-mail e palavra-passe que em lk.etu.ru. '
+                'Não é necessário registar-se no LETIteach.'
+            ),
+            'lk_recovery': 'Recuperação da palavra-passe do LK',
+            'lk_alt': 'Exemplo de acesso à conta pessoal da ETU',
+            'forgot_password': 'Esqueceu a palavra-passe?',
+        },
+    }
+
+    def login_t(key):
+        lang = (get_language() or 'en').lower().replace('_', '-')
+        base = lang.split('-')[0]
+        catalog = _LOGIN_I18N.get(lang) or _LOGIN_I18N.get(base) or _LOGIN_I18N['en']
+        return catalog.get(key) or _LOGIN_I18N['en'].get(key) or key
+
+    def login_i18n_catalog():
+        lang = (get_language() or 'en').lower().replace('_', '-')
+        base = lang.split('-')[0]
+        return _LOGIN_I18N.get(lang) or _LOGIN_I18N.get(base) or _LOGIN_I18N['en']
 %>
 <%namespace name='static' file='/static_content.html'/>
 
@@ -12,6 +97,17 @@
 <%block name="pagetitle">${_("Sign in or Register")}</%block>
 
 <%block name="js_extra">
+    <script type="text/javascript">
+      (function () {
+        var catalog = ${json.dumps(login_i18n_catalog()) | n};
+        // Override stock logistration string ("Need help signing in?").
+        if (catalog && catalog.forgot_password) {
+          window.django = window.django || {};
+          django.catalog = django.catalog || {};
+          django.catalog['Need help signing in?'] = catalog.forgot_password;
+        }
+      }());
+    </script>
     <%static:require_module module_name="js/student_account/logistration_factory" class_name="LogistrationFactory">
         var options = ${data | n, dump_js_escaped_json};
         LogistrationFactory(options);
@@ -59,14 +155,17 @@
                         <ul>
                             <li class="status status-verification is-accepted">
                                 <span class="title status-title"><a target="_blank" href="https://lk.etu.ru">lk.etu.ru</a></span>
-                                <p class="status-note">${_("(students only)")}</p>
-                                <p class="status-note">${_("For ETU students: use the same email and password as on lk.etu.ru. Registration on LETIteach is not required.")}</p>
-                                <p class="status-note recovery-password"><a target="_blank" href="https://lk.etu.ru/password/reset">${_("Recovery password for LK")}</a></p>
+                                <p class="status-note">${login_t('students_only')}</p>
+                                <p class="status-note">${login_t('lk_note')}</p>
+                                <p class="status-note recovery-password"><a target="_blank" href="https://lk.etu.ru/password/reset">${login_t('lk_recovery')}</a></p>
                             </li>
                         </ul>
                     </div>
-                <a href="${static.url("images/lk_etu_ru_example.png")}" target="_blank" rel="noopener noreferrer">
-                    <img class="lk-example-image" src="${static.url("images/lk_etu_ru_example.png")}" alt="${_("ETU personal account login example")}">
+                <%
+                    _lk_example = lk_example_image_path()
+                %>
+                <a href="${static.url(_lk_example)}" target="_blank" rel="noopener noreferrer">
+                    <img class="lk-example-image" src="${static.url(_lk_example)}" alt="${login_t('lk_alt')}">
                 </a>
                 </div>
             </div>

@@ -1,0 +1,300 @@
+/* LETIteach certificate page: brand header, banner, fonts */
+
+body.layout-accomplishment {
+  font-family: Plex, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  background: #fff;
+}
+
+body.layout-accomplishment .wrapper-view {
+  padding-top: 72px;
+}
+
+body.layout-accomplishment h1,
+body.layout-accomplishment h2,
+body.layout-accomplishment h3,
+body.layout-accomplishment h4,
+body.layout-accomplishment h5,
+body.layout-accomplishment h6,
+body.layout-accomplishment p,
+body.layout-accomplishment a,
+body.layout-accomplishment button,
+body.layout-accomplishment li,
+body.layout-accomplishment span:not(.fa):not(.icon),
+body.layout-accomplishment .copy,
+body.layout-accomplishment .hd-1,
+body.layout-accomplishment .hd-2,
+body.layout-accomplishment .hd-3,
+body.layout-accomplishment .hd-4,
+body.layout-accomplishment .hd-5,
+body.layout-accomplishment .hd-6,
+body.layout-accomplishment .message-title,
+body.layout-accomplishment .message-copy,
+body.layout-accomplishment .accomplishment-recipient,
+body.layout-accomplishment .accomplishment-course,
+body.layout-accomplishment .accomplishment-statement,
+body.layout-accomplishment .accomplishment-statement-lead,
+body.layout-accomplishment .accomplishment-statement-detail,
+body.layout-accomplishment .accomplishment-summary,
+body.layout-accomplishment .accomplishment-type,
+body.layout-accomplishment .about-title,
+body.layout-accomplishment .about-edx-title,
+body.layout-accomplishment .about-copy,
+body.layout-accomplishment .introduction-copy {
+  font-family: Plex, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+body.layout-accomplishment .fa,
+body.layout-accomplishment .fa:before,
+body.layout-accomplishment .icon.fa {
+  font-family: FontAwesome !important;
+}
+
+/* Congrats banner: brand photo; keep below the site header */
+body.layout-accomplishment .wrapper-banner,
+body.layout-accomplishment .wrapper-banner-user {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 40px !important;
+  padding-bottom: 40px !important;
+  background-color: #00417d;
+  background-image: url('../images/back.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: none;
+}
+
+body.layout-accomplishment .leti-cert-mid {
+  display: flow-root;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  background: #f5f5f5 !important;
+}
+
+body.layout-accomplishment .leti-cert-mid .wrapper-introduction {
+  margin-top: 0 !important;
+  padding-top: 40px !important;
+}
+
+body.layout-accomplishment .leti-cert-mid .introduction-copy {
+  margin-top: 0 !important;
+}
+
+body.layout-accomplishment .leti-cert-mid .accomplishment-rendering {
+  top: 0 !important;
+  overflow: visible;
+  background-color: #00407c !important;
+  background-image: url('../images/back.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  color: #fff !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  padding-bottom: 0.625rem !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body.layout-accomplishment .accomplishment-rendering,
+body.layout-accomplishment .accomplishment-rendering h1,
+body.layout-accomplishment .accomplishment-rendering h2,
+body.layout-accomplishment .accomplishment-rendering h3,
+body.layout-accomplishment .accomplishment-rendering h4,
+body.layout-accomplishment .accomplishment-rendering p,
+body.layout-accomplishment .accomplishment-rendering span,
+body.layout-accomplishment .accomplishment-rendering strong,
+body.layout-accomplishment .accomplishment-rendering .copy,
+body.layout-accomplishment .accomplishment-rendering .hd-1,
+body.layout-accomplishment .accomplishment-rendering .hd-3,
+body.layout-accomplishment .accomplishment-rendering .hd-5,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-type-label,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-recipient,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-course,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-statement,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-statement-lead,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-statement-detail,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-summary,
+body.layout-accomplishment .accomplishment-rendering .signatory-name,
+body.layout-accomplishment .accomplishment-rendering .signatory-credentials {
+  color: #fff !important;
+}
+
+body.layout-accomplishment .accomplishment-rendering .accomplishment-statement,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-signatories,
+body.layout-accomplishment .accomplishment-rendering .accomplishment-orgs-title {
+  border-bottom-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+body.layout-accomplishment .accomplishment-rendering .accomplishment-type {
+  margin-top: 0 !important;
+  padding-top: 16px;
+}
+
+body.layout-accomplishment .accomplishment-rendering .accomplishment-type-symbol {
+  margin-top: 0 !important;
+}
+
+body.layout-accomplishment .accomplishment-rendering .accomplishment-signatories {
+  padding-top: 2.5rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+body.layout-accomplishment .accomplishment-orgs {
+  overflow: visible;
+  margin-bottom: 1.25rem !important;
+  margin-top: 0 !important;
+}
+
+body.layout-accomplishment .accomplishment-orgs .wrapper-organization {
+  height: auto !important;
+  width: auto !important;
+}
+
+body.layout-accomplishment .accomplishment-orgs .organization {
+  height: auto !important;
+}
+
+body.layout-accomplishment .leti-cert-logo {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  height: auto !important;
+  margin: 0.25rem auto !important;
+}
+
+body.layout-accomplishment .leti-cert-logo::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 165%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.14) 42%,
+    transparent 72%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.layout-accomplishment .leti-cert-logo .logo {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 45px;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  background: transparent;
+  filter:
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.55))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.28));
+}
+
+body.layout-accomplishment .accomplishment-rendering .signatory-signature {
+  filter: brightness(0) invert(1);
+}
+
+body.layout-accomplishment .banner-user .message-title,
+body.layout-accomplishment .banner-user .message-copy {
+  color: #fff;
+}
+
+body.layout-accomplishment .banner-user .message-actions .action {
+  color: #fff;
+  border-color: #fff;
+  background: transparent;
+  font-family: Plex, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+body.layout-accomplishment .banner-user .message-actions .action:hover,
+body.layout-accomplishment .banner-user .message-actions .action:focus {
+  color: #00417d;
+  background: #fff;
+  border-color: #fff;
+}
+
+body.layout-accomplishment .banner-user .message-actions .action.action-print {
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 5px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.layout-accomplishment .banner-user .message-actions .action.action-print:hover,
+body.layout-accomplishment .banner-user .message-actions .action.action-print:focus {
+  color: #004b88 !important;
+  background: #fff !important;
+  border: 1px solid transparent !important;
+}
+
+body.layout-accomplishment .banner-user .message-actions .action.action-print:hover .icon,
+body.layout-accomplishment .banner-user .message-actions .action.action-print:focus .icon {
+  color: #004b88 !important;
+}
+
+body.layout-accomplishment .wrapper-footer,
+body.layout-accomplishment .footer-app {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-top: none !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+body.layout-accomplishment .wrapper-footer {
+  padding-top: 20px !important;
+  padding-bottom: 2.5rem !important;
+}
+
+body.layout-accomplishment .footer-app {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+body.layout-accomplishment .wrapper-about {
+  margin-bottom: 0 !important;
+  background: #fff;
+}
+
+body.layout-accomplishment .leti-cert-mid,
+body.layout-accomplishment .leti-cert-mid .accomplishment-main,
+body.layout-accomplishment .leti-cert-mid .wrapper-introduction,
+body.layout-accomplishment .leti-cert-mid .wrapper-accomplishment-metadata {
+  background: #f5f5f5 !important;
+}
+
+body.layout-accomplishment hr.divider {
+  display: none !important;
+}
+
+@media print {
+  body.layout-accomplishment header.global-header,
+  body.layout-accomplishment .wrapper-banner-user,
+  body.layout-accomplishment .header-toolbar {
+    display: none !important;
+  }
+
+  body.layout-accomplishment .wrapper-view {
+    padding-top: 0;
+  }
+
+  body.layout-accomplishment .accomplishment-rendering {
+    background-color: #00407c !important;
+    background-image: url('../images/back.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

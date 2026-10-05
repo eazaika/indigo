@@ -1,0 +1,41 @@
+<%page expression_filter="h"/>
+<%namespace name='static' file='../static_content.html'/>
+<%!
+from django.utils.translation import gettext as _
+from openedx.core.djangolib.markup import HTML, Text
+%>
+<%inherit file="../main.html" />
+
+<%block name="pagetitle">${_("Server Error")}</%block>
+<%block name="bodyclass">view-error-page view-500</%block>
+
+<div class="section-bkg-wrapper">
+    <main id="main" class="error-page-content" aria-label="Content" tabindex="-1">
+        <div class="error-panel">
+            <h1>
+                <%block name="pageheader">
+                    % if page_header:
+                        ${page_header}
+                    % else:
+                        ${Text(_("There has been a 500 error on the {platform_name} servers")).format(
+                            platform_name=Text(static.get_platform_name())
+                        )}
+                    % endif
+                </%block>
+            </h1>
+            <p class="error-message">
+                <%block name="pagecontent">
+                    % if page_content:
+                        ${page_content}
+                    % else:
+                        ${Text(_("Please wait a few seconds and then reload the page. If the problem persists, please email us at {email}.")).format(
+                            email=HTML('<a href="mailto:{email}">{email}</a>').format(
+                                email=Text(static.get_tech_support_email_address())
+                            )
+                        )}
+                    % endif
+                </%block>
+            </p>
+        </div>
+    </main>
+</div>

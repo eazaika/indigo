@@ -1,0 +1,32 @@
+<%page expression_filter="h"/>
+<%namespace name='static' file='static_content.html'/>
+<%! from django.utils.translation import gettext as _ %>
+
+<section class="courses-container">
+  <section class="highlighted-courses">
+
+    % if settings.FEATURES.get('COURSES_ARE_BROWSABLE'):
+      <section class="courses">
+        <ul class="courses-listing" data-courses-responsive="1">
+          ## Show enough cards for the largest responsive page size; JS hides extras.
+          %for course in courses[:15]:
+          <li class="courses-listing-item">
+              <%include file="course.html" args="course=course" />
+          </li>
+        %endfor
+        </ul>
+      </section>
+      % if len(courses) > 15:
+      <div class="courses-more">
+        <a class="courses-more-cta" href="${marketing_link('COURSES')}"> ${_("View all Courses")} </a>
+      </div>
+      % elif homepage_course_max and len(courses) > homepage_course_max:
+      <div class="courses-more">
+        <a class="courses-more-cta" href="${marketing_link('COURSES')}"> ${_("View all Courses")} </a>
+      </div>
+      % endif
+    % endif
+
+  </section>
+</section>
+<script type="text/javascript" src="${static.url('js/courses_layout.js')}"></script>

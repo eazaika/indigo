@@ -1,0 +1,258 @@
+<%page expression_filter="h"/>
+<%namespace name='static' file='/static_content.html'/>
+<%! from django.utils.translation import gettext as _%>
+
+<%!
+from django.utils.translation import get_language_bidi
+%>
+<%
+dir_rtl = 'rtl' if get_language_bidi() else 'ltr'
+course_mode_class = course_mode if course_mode else ''
+%>
+
+<!DOCTYPE html>
+<html class="no-js" lang="${LANGUAGE_CODE}">
+<head dir="${dir_rtl}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>${document_title}</title>
+
+    <%static:css group='style-vendor'/>
+    % if get_language_bidi():
+        <%static:css group='style-main-v1-rtl'/>
+        <%static:css group='style-certificates-rtl'/>
+    % else:
+        <%static:css group='style-main-v1'/>
+        <%static:css group='style-certificates'/>
+    % endif
+    <link rel="stylesheet" href="${static.url('css/leti-certificates.css')}" type="text/css" />
+    <style type="text/css">
+      body.layout-accomplishment .wrapper-view {
+        padding-top: 72px;
+      }
+      body.layout-accomplishment .wrapper-banner,
+      body.layout-accomplishment .wrapper-banner-user {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+        background-color: #00417d;
+        background-image: url('${static.url("images/back.png")}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-shadow: none;
+      }
+      body.layout-accomplishment .leti-cert-mid {
+        display: flow-root;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        background: #f5f5f5 !important;
+      }
+      body.layout-accomplishment .leti-cert-mid .wrapper-introduction {
+        margin-top: 0 !important;
+        padding-top: 40px !important;
+      }
+      body.layout-accomplishment .leti-cert-mid .introduction-copy {
+        margin-top: 0 !important;
+      }
+      body.layout-accomplishment .leti-cert-mid .accomplishment-rendering {
+        top: 0 !important;
+        overflow: visible;
+        background-color: #00407c !important;
+        background-image: url('${static.url("images/back.png")}') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        color: #fff !important;
+        border-top: none !important;
+        box-shadow: none !important;
+        padding-bottom: 0.625rem !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      body.layout-accomplishment .accomplishment-rendering,
+      body.layout-accomplishment .accomplishment-rendering h1,
+      body.layout-accomplishment .accomplishment-rendering h2,
+      body.layout-accomplishment .accomplishment-rendering h3,
+      body.layout-accomplishment .accomplishment-rendering h4,
+      body.layout-accomplishment .accomplishment-rendering p,
+      body.layout-accomplishment .accomplishment-rendering span,
+      body.layout-accomplishment .accomplishment-rendering strong,
+      body.layout-accomplishment .accomplishment-rendering .copy,
+      body.layout-accomplishment .accomplishment-rendering .hd-1,
+      body.layout-accomplishment .accomplishment-rendering .hd-3,
+      body.layout-accomplishment .accomplishment-rendering .hd-5,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-type-label,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-recipient,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-course,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-statement,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-statement-lead,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-statement-detail,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-summary,
+      body.layout-accomplishment .accomplishment-rendering .signatory-name,
+      body.layout-accomplishment .accomplishment-rendering .signatory-credentials {
+        color: #fff !important;
+      }
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-statement,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-signatories,
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-orgs-title {
+        border-bottom-color: rgba(255, 255, 255, 0.25) !important;
+      }
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-type {
+        margin-top: 0 !important;
+        padding-top: 16px;
+      }
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-type-symbol {
+        margin-top: 0 !important;
+      }
+      body.layout-accomplishment .accomplishment-rendering .accomplishment-signatories {
+        padding-top: 2.5rem !important;
+        margin-bottom: 1.25rem !important;
+      }
+      body.layout-accomplishment .accomplishment-orgs {
+        overflow: visible;
+        margin-bottom: 1.25rem !important;
+        margin-top: 0 !important;
+      }
+      body.layout-accomplishment .accomplishment-orgs .wrapper-organization {
+        height: auto !important;
+        width: auto !important;
+      }
+      body.layout-accomplishment .accomplishment-orgs .organization {
+        height: auto !important;
+      }
+      body.layout-accomplishment .leti-cert-logo {
+        position: relative;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: auto !important;
+        height: auto !important;
+        margin: 0.25rem auto !important;
+      }
+      body.layout-accomplishment .leti-cert-logo::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 130%;
+        height: 165%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(255, 255, 255, 0.42) 0%,
+          rgba(255, 255, 255, 0.14) 42%,
+          transparent 72%
+        );
+        z-index: 0;
+        pointer-events: none;
+      }
+      body.layout-accomplishment .leti-cert-logo .logo {
+        position: relative;
+        z-index: 1;
+        display: block;
+        height: 45px;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        background: transparent;
+        filter:
+          drop-shadow(0 0 5px rgba(255, 255, 255, 0.55))
+          drop-shadow(0 0 12px rgba(255, 255, 255, 0.28));
+      }
+      body.layout-accomplishment .accomplishment-rendering .signatory-signature {
+        filter: brightness(0) invert(1);
+      }
+      body.layout-accomplishment .banner-user .message-actions .action.action-print {
+        color: #fff !important;
+        border: 1px solid #fff !important;
+        border-radius: 5px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+      body.layout-accomplishment .banner-user .message-actions .action.action-print:hover,
+      body.layout-accomplishment .banner-user .message-actions .action.action-print:focus {
+        color: #004b88 !important;
+        background: #fff !important;
+        border: 1px solid transparent !important;
+      }
+      body.layout-accomplishment .banner-user .message-actions .action.action-print:hover .icon,
+      body.layout-accomplishment .banner-user .message-actions .action.action-print:focus .icon {
+        color: #004b88 !important;
+      }
+      body.layout-accomplishment .wrapper-footer,
+      body.layout-accomplishment .footer-app {
+        background: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-top: none !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      body.layout-accomplishment .wrapper-footer {
+        padding-top: 20px !important;
+        padding-bottom: 2.5rem !important;
+      }
+      body.layout-accomplishment .footer-app {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      body.layout-accomplishment .wrapper-about {
+        margin-bottom: 0 !important;
+        background: #fff;
+      }
+      body.layout-accomplishment .leti-cert-mid,
+      body.layout-accomplishment .leti-cert-mid .accomplishment-main,
+      body.layout-accomplishment .leti-cert-mid .wrapper-introduction,
+      body.layout-accomplishment .leti-cert-mid .wrapper-accomplishment-metadata {
+        background: #f5f5f5 !important;
+      }
+      body.layout-accomplishment hr.divider {
+        display: none !important;
+      }
+    </style>
+
+    <%static:js group='main_vendor'/>
+
+    <% ga_4_id = static.get_value("GOOGLE_ANALYTICS_4_ID", settings.GOOGLE_ANALYTICS_4_ID) %>
+    % if ga_4_id:
+        <script async src="https://www.googletagmanager.com/gtag/js?id=${ga_4_id}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${ga_4_id | n, js_escaped_string}');
+        </script>
+    % endif
+    <%static:optional_include_mako file="head-extra.html" is_theming_enabled="True" />
+</head>
+
+<body class="layout-accomplishment view-valid-accomplishment ${dir_rtl} certificate certificate-${course_mode_class}" data-view="valid-accomplishment">
+
+    <%include file="_accomplishment-header.html" />
+
+    <div class="wrapper-view" dir="${dir_rtl}">
+
+        <hr class="divider sr-only">
+
+        ${self.body()}
+
+        <hr class="divider sr-only">
+
+        <%include file="_accomplishment-footer.html" />
+    </div>
+
+    <%include file="_assets-secondary.html" />
+    <script type="text/javascript" src="${static.url('js/header/header.js')}"></script>
+    <script type="text/javascript" src="${static.url('js/src/lang_edx.js')}"></script>
+    <%static:optional_include_mako file="body-extra.html" is_theming_enabled="True" />
+    %if badge:
+        <%include file="_badges-modal.html" />
+    %endif
+</body>
+</html>

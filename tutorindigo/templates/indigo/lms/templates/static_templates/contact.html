@@ -1,4 +1,5 @@
 <%page expression_filter="h"/>
+<%namespace name='static' file='/static_content.html'/>
 <%!
 from django.utils.translation import ugettext as _
 from django.conf import settings
@@ -24,30 +25,37 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
       "name": "Токарев Николай Васильевич",
       "role": "Заместитель директора центра, продюссер онлайн-курсов",
       "note": "",
-      "rooms": "1160",
+      "rooms": "1161",
       "initials": "НВ",
     },
     {
       "name": "Заика Екатерина Александровна",
-      "role": "DevOps-инженер, разработчик",
+      "role": "Начальнник сектора, DevOps-инженер, разработчик",
       "note": "",
       "rooms": "5411",
       "initials": "ЕА",
     },
     {
       "name": "Александрова Алиса Андреевна",
-      "role": "Продюссер онлайн-курсов",
+      "role": "Начальник сектора, продюссер онлайн-курсов",
       "note": "",
-      "rooms": "",
+      "rooms": "1161",
       "initials": "АА",
     },
     {
-      "name": "Рудня Ирина Георгиевна",
-      "role": "Ведущий программист",
+      "name": "Разживина Наталья Михайловна",
+      "role": "Инженер, разработчик",
       "note": "",
-      "rooms": "3138",
-      "initials": "ИГ",
+      "rooms": "",
+      "initials": "НМ",
     },
+    {
+      "name": "Борисов Всеволод Валерьевич",
+      "role": "Инженер, оператор",
+      "note": "",
+      "rooms": "",
+      "initials": "ВВ",
+    }
   ]
 %>
 
@@ -139,14 +147,15 @@ body.view-contact {
   height: 100px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Plex, Crimson, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1.35rem;
-  font-weight: 600;
+  background: #fff;
+  overflow: hidden;
+  padding: 0;
+}
+.contact-person__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .contact-person__body {
   min-width: 0;
@@ -237,12 +246,14 @@ body.view-contact {
                 </ul>
             </header>
 
-            <h2 class="contact-directory__section-title">Команда ЦНОТ</h2>
+            <h2 class="contact-directory__section-title">Команда LETIteach</h2>
 
             <div class="contact-people">
                 % for person in people:
                 <article class="contact-person">
-                    <div class="contact-person__avatar" aria-hidden="true">${person["initials"]}</div>
+                    <div class="contact-person__avatar">
+                        <img src="${static.url('images/profiles/default_120.png')}" alt="${person['name']}">
+                    </div>
                     <div class="contact-person__body">
                         <h3 class="contact-person__name">${person["name"]}</h3>
                         <p class="contact-person__role">${person["role"]}</p>

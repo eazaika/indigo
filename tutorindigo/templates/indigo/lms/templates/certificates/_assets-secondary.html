@@ -1,0 +1,12 @@
+<script type="text/javascript">
+    (function () {
+        var printBtn = document.getElementById("action-print-view");
+        if (!printBtn) {
+            return;
+        }
+        printBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            window.print();
+        });
+    })();
+</script>

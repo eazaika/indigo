@@ -23,7 +23,15 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
 
 <%
   unsupported_browser_alert_versions = configuration_helpers.get_value('UNSUPPORTED_BROWSER_ALERT_VERSIONS', settings.FEATURES.get('UNSUPPORTED_BROWSER_ALERT_VERSIONS'))
-  is_course_about = course and request.path.rstrip('/').endswith('/about')
+  path_end = request.path.rstrip('/')
+  is_course_about = course and path_end.endswith('/about')
+  is_instructor_page = course and path_end.endswith('/instructor')
+  is_pdfbook_page = course and '/pdfbook/' in request.path
+  is_bookmarks_page = course and '/bookmarks' in request.path
+  is_updates_page = course and '/course/updates' in request.path
+  last_segment = path_end.split('/')[-1].lower()
+  is_static_course_tab_page = course and last_segment and len(last_segment) >= 24 and all(c in '0123456789abcdef' for c in last_segment)
+  use_course_about_header = is_course_about or is_instructor_page or is_static_course_tab_page or is_pdfbook_page or is_bookmarks_page or is_updates_page
 %>
 % if waffle.switch_is_active('enable_unsupported_browser_alert'):
   <script>
@@ -50,11 +58,11 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
             props={}
         )}
     % endif
-    <div class="main-header${' main-header--course-about' if is_course_about else ''}">
+    <div class="main-header${' main-header--course-about' if use_course_about_header else ''}">
         <%include file="navbar-logo-header.html" args="online_help_token=online_help_token"/>
         % if user.is_authenticated:
             <%include file="navbar-authenticated.html" args="online_help_token=online_help_token"/>
-        % elif not is_course_about:
+        % elif not use_course_about_header:
             <%include file="navbar-not-authenticated.html" args="online_help_token=online_help_token"/>
         % endif
         <div class="header-toolbar${' header-toolbar--authenticated' if user.is_authenticated else ''}">

@@ -1,0 +1,455 @@
+## mako - LETIteach: Learning-style course tabs + "More..." overflow
+
+<%page args="active_page=None" expression_filter="h" />
+<%namespace name='static' file='/static_content.html'/>
+
+<%!
+from lms.djangoapps.courseware.masquerade import is_masquerading_as_student
+from lms.djangoapps.courseware.tabs import get_course_tab_list
+from lms.djangoapps.course_goals.models import UserActivity
+
+from django.conf import settings
+from django.urls import reverse
+from django.utils.translation import gettext as _
+%>
+
+<%
+if active_page is None and active_page_context is not UNDEFINED:
+    # If active_page is not passed in as an argument, it may be in the context as active_page_context
+    active_page = active_page_context
+
+if course is not None:
+    include_special_exams = (
+    request.user.is_authenticated and
+    settings.FEATURES.get('ENABLE_SPECIAL_EXAMS', False) and
+    (course.enable_proctored_exams or course.enable_timed_exams)
+    )
+
+masquerading_as_student = is_masquerading_as_student(request.user, course.id)
+%>
+
+% if include_special_exams is not UNDEFINED and include_special_exams:
+    <%static:js group='proctoring'/>
+    % for template_name in ["proctored-exam-status"]:
+        <script type="text/template" id="${template_name}-tpl">
+            <%static:include path="courseware/${template_name}.underscore" />
+        </script>
+    % endfor
+    <div class="proctored_exam_status"></div>
+% endif
+
+% if disable_tabs is UNDEFINED or not disable_tabs:
+    <%
+    tab_list = get_course_tab_list(request.user, course)
+
+    # Record course goals user activity for (web) courseware and course tabs that are outside of the learning mfe
+    UserActivity.record_user_activity(user, course.id)
+    %>
+    <style id="leti-course-tabs-critical-css">
+      /* Mirror Learning MFE .course-tabs-navigation — closed menu by default */
+      body.view-in-course {
+        background-color: #f5f5f5;
+      }
+      body.view-in-course .window-wrap,
+      body.view-in-course #content.content-wrapper {
+        background-color: #f5f5f5 !important;
+        background-image: none !important;
+      }
+      .leti-course-tabs-navigation {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: transparent !important;
+        border: none;
+        border-bottom: 2px solid #e8e8e8;
+        box-shadow: none !important;
+      }
+      .leti-course-tabs-navigation__inner {
+        display: block;
+        width: 100%;
+        max-width: 1400px;
+        min-width: 0;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding: 0 24px 0 12px;
+        box-sizing: border-box;
+      }
+      @media (max-width: 991.98px) {
+        .leti-course-tabs-navigation__inner {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 16px;
+        }
+      }
+      nav.leti-course-tabs {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0 !important;
+        padding: 0;
+        background: transparent !important;
+        border: none !important;
+        position: relative;
+        box-sizing: border-box;
+        justify-content: flex-start;
+      }
+      @media (max-width: 991.98px) {
+        nav.leti-course-tabs {
+          justify-content: center;
+          width: 100%;
+        }
+      }
+      .leti-course-tabs > a.nav-link {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        margin: 0;
+        padding: 0.85rem 1rem !important;
+        white-space: nowrap;
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.3;
+        color: #717171 !important;
+        text-decoration: none !important;
+        border: none !important;
+        border-top: 3px solid transparent !important;
+        border-bottom: 3px solid transparent !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+      .leti-course-tabs > a.nav-link:first-child {
+        padding-left: 0 !important;
+      }
+      @media (max-width: 991.98px) {
+        .leti-course-tabs > a.nav-link,
+        .leti-course-tabs > a.nav-link:first-child,
+        .leti-course-tabs__more-btn {
+          padding-left: 0.85rem !important;
+          padding-right: 0.85rem !important;
+        }
+      }
+      .leti-course-tabs > a.nav-link:hover,
+      .leti-course-tabs > a.nav-link:focus {
+        color: #00497c !important;
+        border-bottom-color: rgba(0, 73, 124, 0.35) !important;
+        background: transparent !important;
+      }
+      .leti-course-tabs > a.nav-link.active {
+        color: #00497c !important;
+        border-bottom-color: #00497c !important;
+      }
+
+      /* More… — closed by default (do NOT use Bootstrap .dropdown-menu) */
+      .leti-course-tabs__more {
+        display: inline-flex;
+        align-items: stretch;
+        position: relative;
+        flex: 0 0 auto;
+        height: auto;
+      }
+      .leti-course-tabs__more-btn {
+        display: inline-flex;
+        align-items: center;
+        margin: 0;
+        padding: 0.85rem 1rem !important;
+        white-space: nowrap;
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.3;
+        color: #717171 !important;
+        background: transparent !important;
+        border: none !important;
+        border-top: 3px solid transparent !important;
+        border-bottom: 3px solid transparent !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        cursor: pointer;
+        text-decoration: none !important;
+      }
+      .leti-course-tabs__more-btn::after {
+        content: "";
+        display: inline-block;
+        margin-left: 0.4em;
+        vertical-align: 0.15em;
+        border-top: 0.3em solid currentColor;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+        opacity: 0.75;
+      }
+      .leti-course-tabs__more-btn:hover,
+      .leti-course-tabs__more-btn:focus {
+        color: #00497c !important;
+        border-bottom-color: rgba(0, 73, 124, 0.35) !important;
+      }
+      .leti-course-tabs__menu {
+        display: none !important;
+        position: absolute !important;
+        top: 100%;
+        right: 0;
+        left: auto;
+        z-index: 1050;
+        min-width: 12rem;
+        margin: 0;
+        padding: 0.35rem 0;
+        list-style: none;
+        border: 1px solid #e8e8e8;
+        border-radius: 6px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        background: #fff;
+      }
+      .leti-course-tabs__more.is-open .leti-course-tabs__menu,
+      .leti-course-tabs__menu.is-open {
+        display: block !important;
+      }
+      .leti-course-tabs__menu a {
+        display: block;
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #717171 !important;
+        padding: 0.55rem 1rem;
+        text-decoration: none !important;
+        background: transparent !important;
+        border: none !important;
+        white-space: nowrap;
+      }
+      .leti-course-tabs__menu a:hover,
+      .leti-course-tabs__menu a:focus,
+      .leti-course-tabs__menu a.active {
+        color: #00497c !important;
+        background: rgba(0, 73, 124, 0.12) !important;
+      }
+    </style>
+
+    <div class="leti-course-tabs-navigation" id="letiCourseTabsNavigation">
+        <div class="leti-course-tabs-navigation__inner">
+            <nav class="nav flex-nowrap leti-course-tabs nav-underline-tabs" aria-label="${_('Course')}" data-leti-course-tabs>
+                % for tab in tab_list:
+                    <%
+                    tab_is_active = tab.tab_id in (active_page, default_tab)
+                    %>
+                    % if tab.name == 'Instructor' and masquerading_as_student:
+                        <% continue %>
+                    % else:
+                        <a
+                            href="${tab.link_func(course, reverse)}"
+                            class="nav-item flex-shrink-0 nav-link${' active' if tab_is_active else ''}"
+                            data-leti-tab
+                        >
+                            ${_(tab.name)}
+                            % if tab_is_active:
+                                <span class="sr-only">, ${_('current location')}</span>
+                            % endif
+                            % if tab_image:
+                                <img src="${tab_image}" alt="${_('needs attention')}" />
+                            % endif
+                        </a>
+                    % endif
+                % endfor
+                <div class="nav-item flex-shrink-0 leti-course-tabs__more" data-leti-tabs-more>
+                    <button
+                        type="button"
+                        class="nav-link leti-course-tabs__more-btn"
+                        id="leti-course-tabs-more"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-controls="leti-course-tabs-menu"
+                    >${_("More...")}</button>
+                    <div
+                        class="leti-course-tabs__menu"
+                        id="leti-course-tabs-menu"
+                        role="menu"
+                        hidden
+                    ></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <script type="text/javascript">
+    (function (window, document) {
+      'use strict';
+      if (window.letiCourseTabs && window.letiCourseTabs.__inline) { return; }
+
+      var NAV_SELECTOR = 'nav[data-leti-course-tabs]';
+
+      function applyInvisible(el, on) {
+        if (!el) { return; }
+        if (on) {
+          el.style.position = 'absolute';
+          el.style.left = '0';
+          el.style.top = '0';
+          el.style.pointerEvents = 'none';
+          el.style.visibility = 'hidden';
+          el.setAttribute('aria-hidden', 'true');
+        } else {
+          el.style.position = '';
+          el.style.left = '';
+          el.style.top = '';
+          el.style.pointerEvents = '';
+          el.style.visibility = '';
+          el.removeAttribute('aria-hidden');
+        }
+      }
+
+      function floorWidth(el) {
+        return Math.floor(el.getBoundingClientRect().width);
+      }
+
+      function availableWidth(nav) {
+        var inner = nav.parentElement;
+        var widths = [];
+        if (inner) {
+          widths.push(inner.clientWidth);
+          widths.push(floorWidth(inner));
+        }
+        var viewportCap = Math.max(0, (window.innerWidth || document.documentElement.clientWidth) - 32);
+        widths.push(viewportCap);
+        var positive = widths.filter(function (w) { return w > 0; });
+        return positive.length ? Math.min.apply(null, positive) : viewportCap;
+      }
+
+      function closeMenu(more, btn, menu) {
+        more.classList.remove('is-open');
+        menu.classList.remove('is-open');
+        menu.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      function openMenu(more, btn, menu) {
+        more.classList.add('is-open');
+        menu.classList.add('is-open');
+        menu.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      function rebuild(nav) {
+        var more = nav.querySelector('[data-leti-tabs-more]');
+        if (!more) { return; }
+        var menu = more.querySelector('.leti-course-tabs__menu');
+        var btn = more.querySelector('.leti-course-tabs__more-btn');
+        var tabs = Array.prototype.slice.call(nav.querySelectorAll('[data-leti-tab]'));
+        if (!tabs.length) {
+          applyInvisible(more, true);
+          return;
+        }
+
+        tabs.forEach(function (tab) { applyInvisible(tab, false); });
+        applyInvisible(more, false);
+        if (menu) {
+          menu.innerHTML = '';
+          if (btn) { closeMenu(more, btn, menu); }
+        }
+        nav.offsetWidth;
+
+        var containerWidth = availableWidth(nav);
+        var sumWidth = floorWidth(more);
+        var lastVisible = -1;
+        var i;
+        for (i = 0; i < tabs.length; i += 1) {
+          sumWidth += floorWidth(tabs[i]);
+          if (sumWidth <= containerWidth) { lastVisible = i; }
+        }
+
+        if (lastVisible + 1 >= tabs.length) {
+          applyInvisible(more, true);
+          return;
+        }
+
+        for (i = 0; i < tabs.length; i += 1) {
+          if (i <= lastVisible) { continue; }
+          applyInvisible(tabs[i], true);
+          if (menu) {
+            var item = document.createElement('a');
+            item.setAttribute('role', 'menuitem');
+            item.className = tabs[i].classList.contains('active') ? 'active' : '';
+            item.href = tabs[i].getAttribute('href') || '#';
+            item.textContent = (tabs[i].childNodes[0] && tabs[i].childNodes[0].nodeType === 3)
+              ? tabs[i].childNodes[0].nodeValue.trim()
+              : (tabs[i].textContent || '').replace(/\s+,.*$/, '').trim();
+            menu.appendChild(item);
+          }
+        }
+      }
+
+      function bindMoreToggle(nav) {
+        var more = nav.querySelector('[data-leti-tabs-more]');
+        if (!more || more.getAttribute('data-leti-more-bound') === '1') { return; }
+        more.setAttribute('data-leti-more-bound', '1');
+        var btn = more.querySelector('.leti-course-tabs__more-btn');
+        var menu = more.querySelector('.leti-course-tabs__menu');
+        if (!btn || !menu) { return; }
+
+        closeMenu(more, btn, menu);
+
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (menu.hidden) {
+            openMenu(more, btn, menu);
+          } else {
+            closeMenu(more, btn, menu);
+          }
+        });
+
+        document.addEventListener('click', function () {
+          closeMenu(more, btn, menu);
+        });
+        menu.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+      }
+
+      function bind(nav) {
+        if (nav.getAttribute('data-leti-tabs-bound') === '1') {
+          rebuild(nav);
+          return;
+        }
+        nav.setAttribute('data-leti-tabs-bound', '1');
+        bindMoreToggle(nav);
+
+        var scheduled = false;
+        function schedule() {
+          if (scheduled) { return; }
+          scheduled = true;
+          window.requestAnimationFrame(function () {
+            scheduled = false;
+            rebuild(nav);
+          });
+        }
+
+        rebuild(nav);
+        window.setTimeout(function () { rebuild(nav); }, 50);
+        window.setTimeout(function () { rebuild(nav); }, 250);
+        window.addEventListener('resize', schedule);
+        if (window.ResizeObserver) {
+          var ro = new window.ResizeObserver(schedule);
+          if (nav.parentElement) { ro.observe(nav.parentElement); }
+          ro.observe(nav);
+        }
+      }
+
+      function init() {
+        Array.prototype.forEach.call(document.querySelectorAll(NAV_SELECTOR), bind);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+
+      window.letiCourseTabs = { init: init, rebuild: rebuild, __inline: true };
+    }(window, document));
+    </script>
+%endif

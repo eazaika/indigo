@@ -10,8 +10,21 @@ body {
   background-color: #fff;
 }
 
+body.view-in-course,
+body.view-courseware {
+  background-color: #fff !important;
+}
+
 body.view-dashboard {
   background-color: #00417d;
+
+  // Certificate status / "View my certificate" on course cards
+  .course-status-certavailable,
+  .course-status-certrendering,
+  .course-status-certnotavailable,
+  .course-status-earned-not-available {
+    display: none !important;
+  }
 }
 
 body.view-profile,
@@ -19,13 +32,88 @@ body.view-account-settings {
   background-color: #f5f5f5;
 }
 
+body:not(.leti-programs-catalog-page) .find-courses {
+  .courses-listing .courses-listing-item {
+    max-height: none !important;
+
+    .course {
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+      background: rgba(255, 255, 255, 0.15) !important;
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      background-image: none !important;
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow: 0 12px 30px rgba(0, 25, 55, 0.2);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+
+      > a,
+      .course-image,
+      .course-info {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+      }
+
+      > a {
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      .course-info {
+        color: #fff;
+        padding-bottom: 2px;
+      }
+
+      .course-image .cover-image {
+        height: 280px;
+        max-height: 280px;
+      }
+
+      .course-image {
+        height: 280px;
+        max-height: 280px;
+        overflow: hidden;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .course-name,
+      .course-name span,
+      .course-title,
+      .course-organization,
+      .course-code,
+      .course-date {
+        color: #fff !important;
+      }
+
+      .course-title {
+        font-size: 1.35rem !important;
+      }
+
+      .course-organization {
+        display: block;
+        margin-bottom: 10px !important;
+      }
+    }
+  }
+}
+
 body.view-dashboard,
 body.view-profile,
-body.view-account-settings {
+body.view-account-settings,
+body.layout-accomplishment {
   header.global-header {
     background-color: #00407c;
     position: absolute;
-    height: 72px;
+    height: auto;
+    min-height: 72px;
 
     .nav-links .main {
       @include media-breakpoint-up(lg) {
@@ -34,30 +122,33 @@ body.view-account-settings {
     }
 
     .nav-links .main .nav-tab a {
-      color: #fff;
+      color: #fff !important;
       padding: 23px 6px 24px;
       font-weight: 300;
-      background: rgb(51, 107, 156);
+      background: rgb(51, 107, 156) !important;
       border-bottom: 1px dashed rgb(92, 135, 173);
       margin-bottom: 0;
 
       &.active {
-        background: rgb(51, 107, 156);
+        background: rgb(51, 107, 156) !important;
         border-bottom: 1px dashed rgb(92, 135, 173);
+        color: #fff !important;
       }
 
-      &:hover {
-        background: rgb(26, 83, 137);
+      &:hover,
+      &:focus {
+        background: rgb(26, 83, 137) !important;
         border-bottom: 1px solid rgb(109, 145, 180);
-        color: #fff;
+        color: #fff !important;
       }
     }
 
     .nav-links .nav-item a {
-      color: #fff;
+      color: #fff !important;
 
-      &:hover {
-        color: #fff;
+      &:hover,
+      &:focus {
+        color: #fff !important;
       }
     }
   }
@@ -83,11 +174,13 @@ h1, h2, h3, h1 span, h2 span, h3 span, .nav-item {
   margin: 30px 0 -10px;
   width: 100%;
   border-top: none;
+  background: transparent;
 }
 
 .mobile-menu a {
-  color: $primary;
+  color: #fff;
   font-family: Plex;
+  text-decoration: none;
 }
 
 // It is necessary to specify `:not(.courseware) >` in order to not affect the style
@@ -244,10 +337,11 @@ header.global-header {
   //}
   top: 0;
   z-index: 200;
-  overflow: visible;
+  overflow: visible !important;
   background-color: #00407c;
   position: absolute;
-  height: 72px;
+  height: auto;
+  min-height: 72px;
   padding-bottom: 0;
   box-sizing: border-box;
   @include header-elevation;
@@ -344,14 +438,18 @@ header.global-header .main-header > .header-logo {
   }
 }
 
-body:not(:has(section.course-info)) {
+body:not(:has(section.course-info)):not(:has(.leti-instructor-page)):not(.view-instructordash) {
   header.global-header {
     padding-bottom: 0;
   }
 }
 
-// Course about — catalog + course title left, logo centered, toolbar right
-body:has(section.course-info) {
+// Course about / instructor / bookmarks — catalog + course title left, logo centered, toolbar right
+body:has(section.course-info),
+body:has(.leti-instructor-page),
+body.view-instructordash,
+body.view-bookmarks,
+body.view-updates {
   header.global-header {
     padding-bottom: 0;
     overflow: visible;
@@ -374,14 +472,70 @@ body:has(section.course-info) {
     align-items: stretch;
     gap: 0;
     min-width: 0;
-    max-width: calc(50% - 80px);
+    max-width: calc(50% - 24px);
     height: 72px;
     padding-left: 0;
     z-index: 3;
 
     @include media-breakpoint-down(md) {
-      max-width: calc(50% - 56px);
+      max-width: calc(50% - 16px);
       padding-left: 0;
+    }
+
+    .nav-links,
+    .nav-links--course-about {
+      display: flex !important;
+      float: none;
+      width: auto;
+      height: 72px;
+      margin: 0;
+      padding: 0;
+      align-items: stretch;
+
+      .main {
+        display: flex;
+        align-items: stretch;
+        float: none;
+        margin: 0 0 0 8px;
+        height: 72px;
+      }
+
+      .nav-tab {
+        display: flex;
+        align-items: stretch;
+        height: 72px;
+        margin: 0;
+      }
+
+      .nav-tab a,
+      .tab-nav-link,
+      .course-catalog-link {
+        display: inline-flex;
+        align-items: center;
+        align-self: stretch;
+        flex: 0 0 auto;
+        height: 72px;
+        color: #fff !important;
+        font-size: inherit;
+        font-weight: 300;
+        line-height: 1.3;
+        text-decoration: none;
+        white-space: nowrap;
+        background: rgb(51, 107, 156) !important;
+        border-bottom: 1px dashed rgb(92, 135, 173);
+        padding: 0 12px;
+        margin: 0;
+        box-sizing: border-box;
+
+        &:hover,
+        &:focus,
+        &.active {
+          color: #fff !important;
+          text-decoration: none;
+          background: rgb(26, 83, 137) !important;
+          border-bottom: 1px solid rgb(109, 145, 180);
+        }
+      }
     }
   }
 
@@ -473,6 +627,12 @@ body:has(section.course-info) {
     margin: 0;
     z-index: 3;
   }
+
+  @include media-breakpoint-down(lg) {
+    header.global-header .header-about-meta {
+      display: none !important;
+    }
+  }
 }
 
 .fixed-header {
@@ -494,20 +654,23 @@ body:has(section.course-info) {
 }
 
 .global-header .nav-links .main .nav-tab a {
-  color: #fff;
+  color: #fff !important;
   padding: 23px 6px 24px;
   font-weight: 300;
-  background: rgb(51, 107, 156);
+  background: rgb(51, 107, 156) !important;
   border-bottom: 1px dashed rgb(92, 135, 173);
 
   &.active {
-    background: rgb(51, 107, 156);
+    background: rgb(51, 107, 156) !important;
     border-bottom: 1px dashed rgb(92, 135, 173);
+    color: #fff !important;
   }
 
-  &:hover {
-    background: rgb(26, 83, 137);
+  &:hover,
+  &:focus {
+    background: rgb(26, 83, 137) !important;
     border-bottom: 1px solid rgb(109, 145, 180);
+    color: #fff !important;
   }
 }
 
@@ -586,17 +749,98 @@ body:has(section.course-info) {
     top: auto;
     left: auto;
     flex: 0 0 auto;
-    margin: 0 0 0 2px;
+    margin: 0 0 0 8px;
+    width: 28px;
+    height: 22px;
+    padding: 0;
+    cursor: pointer;
+    -webkit-transform: none;
+    transform: none;
+    transition: none;
 
-    @include media-breakpoint-up(lg) {
-      display: none;
+    .line {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #fff;
+      opacity: 1;
+      border-radius: 1px;
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+      transition: 0.2s ease-in-out;
+
+      &:nth-child(1) { top: 2px; }
+      &:nth-child(2),
+      &:nth-child(3) { top: 10px; }
+      &:nth-child(4) { top: 18px; }
+    }
+
+    &.open .line {
+      &:nth-child(1) {
+        top: 10px;
+        width: 0%;
+        left: 50%;
+      }
+
+      &:nth-child(2) {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+
+      &:nth-child(3) {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+      }
+
+      &:nth-child(4) {
+        top: 10px;
+        width: 0%;
+        left: 50%;
+      }
+    }
+
+    // Phones + tablets incl. iPad Pro landscape (1366px). Desktop from 1367px.
+    display: block !important;
+
+    @media (min-width: 1367px) {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 1366.98px) {
+    .header-account-cluster,
+    .header-guest-auth {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    margin-right: 8px;
+
+    // Phone: language lives in the hamburger (cloned), not the toolbar.
+    .header-accessibility-widget,
+    .header-language-widget,
+    .nav-item-help {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1366.98px) {
+    .header-accessibility-widget,
+    .header-language-widget {
+      display: flex !important;
+    }
+
+    .nav-item-help.hidden-mobile {
+      display: flex !important;
     }
   }
 }
 
 .global-header .header-action-link,
-.global-header .header-bvi-link,
-.global-header .header-language-link {
+.global-header .header-bvi-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -619,7 +863,52 @@ body:has(section.course-info) {
   }
 }
 
+.global-header .header-language-link,
+.global-header .header-action-link.header-language-link,
+.global-header button.header-language-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: $header-action-hit-size;
+  min-height: $header-action-hit-size;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.open {
+    background: transparent !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    outline: none;
+  }
+
+  .header-language-link__code {
+    text-shadow: none !important;
+    filter: none !important;
+  }
+}
+
 .global-header .header-toolbar .help-link {
+  text-decoration: none !important;
+  border-bottom: none !important;
+
   .icon.fa-question-circle {
     color: #fff;
     font-size: $header-action-icon-size;
@@ -838,14 +1127,41 @@ body:has(section.course-info) {
   border-radius: 0;
   background: transparent !important;
   box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover,
   &:focus,
+  &:active,
   &.open {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
   }
+
+  .header-language-link__code,
+  &:hover .header-language-link__code,
+  &:focus .header-language-link__code,
+  &.open .header-language-link__code {
+    text-shadow: none !important;
+    filter: none !important;
+  }
+}
+
+// Keep phone hamburger language control same visual weight as BVI / help.
+.mobile-menu .mobile-menu-widgets .header-language-link,
+.mobile-menu .mobile-menu-widgets button.toggle-language-dropdown {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 6px 10px !important;
+}
+
+.mobile-menu .mobile-menu-widgets .header-language-link__code {
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
 }
 
 .global-header .header-language-link__code {
@@ -864,7 +1180,7 @@ body:has(section.course-info) {
   border: 1px solid rgb(51, 107, 156);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  z-index: 20;
+  z-index: 1100;
   overflow: hidden;
 
   .dropdown-item {
@@ -894,7 +1210,7 @@ body:has(section.course-info) {
     }
 
     &.is-active {
-      background: rgb(51, 107, 156);
+      background: transparent;
       font-weight: 600;
     }
   }
@@ -914,15 +1230,270 @@ body:has(section.course-info) {
 }
 
 .global-header .hamburger-menu .line {
-  background: #fff;
-  height: 1px;
+  background: #fff !important;
+  height: 2px;
+}
+
+.mobile-menu {
+  margin: 0 !important;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgb(0, 64, 124) !important;
+  clear: both;
+  box-sizing: border-box;
+  overflow: visible !important;
+
+  // Stock LMS hides .mobile-menu at lg (≥992). Keep it available on tablets
+  // (incl. landscape) until desktop width; respect the JS .hidden toggle.
+  @media (max-width: 1366.98px) {
+    &:not(.hidden) {
+      display: block !important;
+    }
+
+    &.hidden {
+      display: none !important;
+    }
+  }
+
+  .mobile-nav-link:not(.mobile-nav-widget) {
+    float: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+
+    a,
+    button {
+      display: block !important;
+      width: 100% !important;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 14px 20px !important;
+      font-size: 1.05rem !important;
+      font-weight: 500 !important;
+      line-height: 1.4 !important;
+      letter-spacing: 0.01em;
+      color: #fff !important;
+      background-color: rgba(0, 64, 124, 0.9) !important;
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 0 !important;
+      text-align: left !important;
+      text-decoration: none !important;
+      cursor: pointer;
+      box-shadow: none !important;
+
+      &:hover,
+      &:focus {
+        background: #336b9c !important;
+        color: #fff !important;
+        border-bottom: 1px dashed #fff !important;
+        text-decoration: none !important;
+      }
+
+      &::after {
+        content: none !important;
+      }
+    }
+
+    &:last-of-type a,
+    &:last-of-type button {
+      border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    }
+  }
+
+  .mobile-menu-widgets {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    float: none;
+    clear: both;
+    margin: 0;
+    padding: 12px 16px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgb(0, 64, 124);
+    box-sizing: border-box;
+    overflow: visible !important;
+
+    .mobile-nav-link,
+    .mobile-nav-widget,
+    .header-accessibility-widget,
+    .header-language-widget,
+    .nav-item-help,
+    .settings-language-form {
+      float: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: auto !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      background: transparent !important;
+      border: none !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative;
+      overflow: visible !important;
+      flex: 0 0 auto;
+      order: 0;
+    }
+
+    // Explicit order: BVI → language → helpdesk
+    .header-accessibility-widget {
+      order: 1;
+    }
+
+    .header-language-widget,
+    form.settings-language-form {
+      order: 2;
+    }
+
+    .nav-item-help {
+      order: 3;
+    }
+
+    a,
+    button:not(.header-language-link):not(.header-language-option):not(.toggle-language-dropdown),
+    .header-action-link:not(.header-language-link),
+    .header-bvi-link,
+    .help-link {
+      min-width: 40px;
+      min-height: 40px;
+      color: #fff !important;
+      text-decoration: none !important;
+      border: none !important;
+      border-bottom: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+
+      &:hover,
+      &:focus {
+        text-decoration: none !important;
+        border-bottom: none !important;
+        background: transparent !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+      }
+
+      &::after {
+        content: none !important;
+      }
+    }
+
+    .header-language-link,
+    .header-language-link:hover,
+    .header-language-link:focus,
+    .header-language-link:active,
+    .header-language-link.open,
+    button.header-language-link,
+    button.toggle-language-dropdown {
+      min-width: 44px !important;
+      min-height: 44px !important;
+      padding: 6px 10px !important;
+      color: #fff !important;
+      text-decoration: none !important;
+      border: none !important;
+      background: transparent !important;
+      text-shadow: none !important;
+      filter: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent;
+      font-size: inherit;
+      line-height: 1;
+    }
+
+    .header-language-link .header-language-link__code,
+    .header-language-link__code {
+      color: #fff !important;
+      font-size: 1.15rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-decoration: none !important;
+      text-shadow: none !important;
+    }
+
+    button.header-language-option,
+    button.header-language-option:hover,
+    button.header-language-option:focus,
+    button.header-language-option.is-active {
+      min-width: 160px !important;
+      min-height: 44px !important;
+      width: 100%;
+      padding: 10px 14px !important;
+      color: #fff !important;
+      text-shadow: none !important;
+      filter: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent;
+      font-size: 1rem !important;
+    }
+
+    button.header-language-option:hover,
+    button.header-language-option:focus {
+      background: rgb(51, 107, 156) !important;
+    }
+
+    button.header-language-option.is-active {
+      background: transparent !important;
+      font-weight: 600;
+    }
+
+    .header-language-option__code {
+      font-size: 0.95rem !important;
+      font-weight: 700;
+    }
+
+    .header-language-option__name {
+      font-size: 1rem !important;
+    }
+
+    .header-bvi-link__icon,
+    .help-link .icon {
+      font-size: 22px;
+      color: #fff;
+      text-decoration: none !important;
+    }
+
+    .header-language-dropdown {
+      position: relative;
+      overflow: visible !important;
+    }
+
+    .dropdown-language-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      z-index: 1200;
+      min-width: 180px;
+    }
+
+    .dropdown-language-menu.hidden {
+      display: none !important;
+    }
+
+    .dropdown-language-menu:not(.hidden) {
+      display: block !important;
+    }
+  }
+
+  @media (min-width: 1367px) {
+    display: none !important;
+  }
 }
 
 .global-header .nav-links .nav-item a {
-  color: #fff;
+  color: #fff !important;
 
-  &:hover {
-    color: #fff;
+  &:hover,
+  &:focus {
+    color: #fff !important;
   }
 }
 
@@ -931,24 +1502,50 @@ body:has(section.course-info) {
   overflow: inherit;
 }
 
-.mobile-menu .mobile-nav-link a {
-  font-weight: 500;
-  background-color: rgba(0, 64, 124, 0.9);
-  color: #fff;
+.mobile-menu .mobile-nav-link:not(.mobile-nav-widget) a,
+.mobile-menu .mobile-nav-link:not(.mobile-nav-widget) button,
+header.global-header .mobile-menu .mobile-nav-link:not(.mobile-nav-widget) a,
+header.global-header .mobile-menu .mobile-nav-link:not(.mobile-nav-widget) button {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  padding: 14px 20px !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  background-color: rgba(0, 64, 124, 0.9) !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: none !important;
 
-  &:hover {
-    background: #336b9c;
-    border-bottom: 1px dashed #fff;
-  }
-
+  &:hover,
   &:focus {
-    background: #336796;
+    background: #336b9c !important;
+    color: #fff !important;
+    border-bottom: 1px dashed #fff !important;
   }
+
+  &::after {
+    content: none !important;
+  }
+}
+
+.mobile-menu .mobile-menu-widgets a {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background: transparent !important;
 }
 
 
 header.global-header .nav-links .main {
-  @include media-breakpoint-up(lg) {
+  // Below desktop: navigation only via hamburger (phones + tablets).
+  @media (max-width: 1366.98px) {
+    display: none !important;
+  }
+
+  @media (min-width: 1367px) {
     margin: 0 0 0 10px;
   }
 }
@@ -1003,17 +1600,82 @@ $login-accent-alert-hover: #ff9e9e;
 
 body:has(.section-bkg-wrapper) {
   background-color: #00417d;
+
+
+  .global-header .hamburger-menu,
+  .global-header .mobile-menu {
+    display: none !important;
+  }
+
+
+  .global-header .header-toolbar {
+    margin-right: 0;
+    margin-left: auto;
+    padding-right: 12px;
+    gap: 4px;
+  }
+
+  .global-header .header-bvi-link,
+  .global-header .header-language-link {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .global-header .header-bvi-link__icon {
+    font-size: 26px;
+  }
+
+  .global-header .header-language-link__code {
+    font-size: 0.95rem;
+  }
+
+  @include media-breakpoint-down(md) {
+    .global-header .header-toolbar {
+      padding-right: 8px;
+      gap: 0;
+    }
+
+    .global-header .header-bvi-link,
+    .global-header .header-language-link {
+      min-width: 36px;
+      min-height: 36px;
+      padding: 4px 6px;
+    }
+
+    .global-header .header-bvi-link__icon {
+      font-size: 22px;
+    }
+
+    .global-header .header-language-link {
+      padding: 4px 6px;
+    }
+
+    .global-header .header-language-link__code {
+      font-size: 0.85rem;
+    }
+  }
 }
 
 .window-wrap:has(.section-bkg-wrapper) {
   background: transparent;
 }
 
+// Side-by-side needs ~1288px (520 form + 48 gap + 720 LK). Stack below that
+// so tablets/phones get a single column: LK block first, then the form.
+$login-register-row-min: 1320px;
+
 .section-bkg-wrapper {
   width: 100%;
   min-height: calc(100vh - #{$header-height + $content-padding-bottom + $footer-height});
   padding: 72px 48px 48px 72px;
   box-sizing: border-box;
+
+  @media (max-width: #{$login-register-row-min - 1}) {
+    padding: 48px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   @include media-breakpoint-down(md) {
     padding: 36px 12px 32px;
@@ -1036,11 +1698,30 @@ $lk-sidebar-height: 680px;
   align-content: flex-start;
   gap: 48px;
 
-  @media (max-width: 767px) {
+  @media (max-width: #{$login-register-row-min - 1}) {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    align-items: stretch;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    gap: 24px;
+
+    > .side-container {
+      order: 1;
+    }
+
+    > .login-register {
+      order: 2;
+    }
+  }
+
+
+  @media (min-width: 768px) and (max-width: #{$login-register-row-min - 1}) {
+    max-width: 720px;
+    width: 100%;
   }
 
   h1 {
@@ -1079,11 +1760,26 @@ $lk-sidebar-height: 680px;
   min-width: 0;
   box-sizing: border-box;
 
-  @media (max-width: 767px) {
-    padding: 24px 20px;
-    width: 100%;
-    max-width: 100%;
+  @media (max-width: #{$login-register-row-min - 1}) {
+    padding: 28px 28px;
+    width: 100% !important;
+    max-width: 100% !important;
     flex: 1 1 auto;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+
+  @media (min-width: 768px) and (max-width: #{$login-register-row-min - 1}) {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 32px 36px;
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 24px 20px;
   }
 
   .header {
@@ -1283,15 +1979,28 @@ $lk-sidebar-height: 680px;
   flex-direction: column;
   overflow: hidden;
 
-  @media (max-width: 767px) {
+  @media (max-width: #{$login-register-row-min - 1}) {
     flex: 1 1 auto;
     width: 100%;
     max-width: 100%;
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    padding: 20px 16px;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 24px 28px;
     overflow: visible;
+  }
+
+  // Tablet: shrink LK panel to content (smaller screenshot, no fixed height).
+  @media (min-width: 768px) and (max-width: #{$login-register-row-min - 1}) {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 24px 28px;
+    overflow: visible;
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 20px 16px;
   }
 
   .profile-sidebar {
@@ -1301,6 +2010,12 @@ $lk-sidebar-height: 680px;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
+
+    @media (max-width: #{$login-register-row-min - 1}) {
+      flex: 0 0 auto;
+      overflow: visible;
+      min-height: 0;
+    }
   }
 
   .user-info {
@@ -1314,6 +2029,12 @@ $lk-sidebar-height: 680px;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
+
+    @media (max-width: #{$login-register-row-min - 1}) {
+      flex: 0 0 auto;
+      overflow: visible;
+      margin-top: 16px;
+    }
   }
 
   .lk-example-image {
@@ -1327,47 +2048,98 @@ $lk-sidebar-height: 680px;
     box-shadow: none;
     object-fit: contain;
     object-position: center top;
+
+    @media (max-width: #{$login-register-row-min - 1}) {
+      height: auto;
+      // libsass treats min() as Sass; pass through as CSS.
+      max-height: unquote("min(420px, 55vh)");
+    }
+
+    // Tablet: keep screenshot compact so the panel hugs content.
+    @media (min-width: 768px) and (max-width: #{$login-register-row-min - 1}) {
+      height: auto;
+      max-height: 260px;
+      width: auto;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @include media-breakpoint-down(md) {
+      max-height: unquote("min(280px, 45vh)");
+    }
   }
 }
 
-// Keep LK sidebar height fixed regardless of registration form height.
 .section-bkg-wrapper #content-container.login-register-content {
   display: flex !important;
-  flex-direction: row !important;
   flex-wrap: nowrap !important;
-  align-items: flex-start !important;
   align-content: flex-start !important;
 
-  @media (max-width: 767px) {
+  @media (min-width: $login-register-row-min) {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 48px;
+
+    > .login-register {
+      order: 0;
+      align-self: flex-start;
+      flex: 0 1 520px;
+      width: 520px;
+      max-width: 520px;
+      min-width: 0;
+    }
+
+    > .side-container {
+      order: 0;
+      height: $lk-sidebar-height !important;
+      min-height: $lk-sidebar-height !important;
+      max-height: $lk-sidebar-height !important;
+      align-self: flex-start !important;
+      flex: 0 0 $lk-sidebar-width;
+      width: $lk-sidebar-width;
+      max-width: $lk-sidebar-width;
+      overflow: hidden;
+    }
+  }
+
+  // Phones + tablets: column, equal widths, centered, LK height hugs content.
+  @media (max-width: #{$login-register-row-min - 1}) {
     flex-direction: column !important;
-    flex-wrap: wrap !important;
-  }
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    gap: 24px;
 
-  > .login-register {
-    align-self: flex-start;
-    flex: 0 1 520px;
-    width: 520px;
-    max-width: 520px;
-    min-width: 0;
-  }
-
-  > .side-container {
-    height: $lk-sidebar-height !important;
-    min-height: $lk-sidebar-height !important;
-    max-height: $lk-sidebar-height !important;
-    align-self: flex-start !important;
-    flex: 0 0 $lk-sidebar-width;
-    width: $lk-sidebar-width;
-    max-width: $lk-sidebar-width;
-
-    @media (max-width: 767px) {
-      flex: 1 1 auto;
-      width: 100%;
-      max-width: 100%;
+    > .side-container {
+      order: 1;
       height: auto !important;
       min-height: 0 !important;
       max-height: none !important;
+      flex: 0 0 auto;
+      width: 100% !important;
+      max-width: 100% !important;
+      align-self: center !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      overflow: visible !important;
     }
+
+    > .login-register {
+      order: 2;
+      align-self: center !important;
+      flex: 1 1 auto;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: #{$login-register-row-min - 1}) {
+    max-width: 720px !important;
   }
 }
 
@@ -1489,6 +2261,75 @@ body.view-logout .logout-panel {
   }
 
   .logout-message a,
+  a {
+    color: #fff !important;
+    font-weight: 600;
+    text-decoration: underline !important;
+    text-decoration-line: underline !important;
+    text-decoration-color: rgba(255, 255, 255, 0.75) !important;
+    text-underline-offset: 3px;
+    border-bottom: none !important;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      color: #fff !important;
+      text-decoration: underline !important;
+      text-decoration-line: underline !important;
+      text-decoration-color: #fff !important;
+      border-bottom: none !important;
+    }
+  }
+}
+
+/////////////////// Error pages (404 / 500)
+body.view-error-page {
+  background-color: #00417d;
+}
+
+.error-page-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+body.view-error-page .error-panel {
+  @extend %login-glass-panel;
+
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  text-align: center;
+  box-sizing: border-box;
+
+  @include media-breakpoint-down(md) {
+    padding: 32px 20px;
+  }
+
+  h1 {
+    color: #fff;
+    font-family: $font-family-title;
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.35;
+    margin: 0 0 24px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  p,
+  .error-message {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin: 0;
+    text-align: center;
+  }
+
+  .error-message a,
   a {
     color: #fff !important;
     font-weight: 600;
@@ -1905,7 +2746,292 @@ body.view-contact {
 
 }
 
-.find-courses .courses-container .courses .course {
+.find-courses #discovery-form {
+  .search-status-label {
+    float: left !important;
+    display: block !important;
+    width: calc(74.41059% - 63px) !important;
+    min-height: 55px !important;
+    margin-right: 2.35765% !important;
+
+    &:empty {
+      visibility: hidden;
+    }
+  }
+
+  .discovery-search-row {
+    float: left !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    width: calc(23.23176% + 63px) !important;
+    max-width: none !important;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .wrapper-search-input {
+    float: none !important;
+    display: block !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0;
+    margin: 0 !important;
+  }
+
+  .discovery-filters-toggle {
+    flex: 0 0 55px;
+    width: 55px;
+    height: 55px;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: none;
+    line-height: 55px;
+    text-align: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative;
+
+    .icon,
+    .fa {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      display: block !important;
+      float: none !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      font-size: 28px !important;
+      line-height: 1 !important;
+    }
+
+    &:hover,
+    &:focus,
+    &.is-open,
+    &.is-active {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: rgba(255, 255, 255, 0.7);
+      outline: none;
+    }
+  }
+
+  .discovery-filters-checkbox {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    opacity: 0 !important;
+  }
+
+  .discovery-filters-panel {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    box-sizing: border-box;
+    clear: both;
+    width: calc(23.23176% + 63px);
+  }
+
+  .discovery-filters-checkbox:checked ~ .discovery-filters-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    float: right !important;
+    clear: both !important;
+    width: calc(23.23176% + 63px) !important;
+    max-width: calc(23.23176% + 63px) !important;
+    visibility: visible !important;
+    margin-top: 12px !important;
+    box-sizing: border-box;
+  }
+
+  .discovery-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .discovery-filter label {
+    color: #fff;
+    font-family: Plex, Crimson, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .discovery-filter-select {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1rem;
+    box-shadow: none;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.45);
+    }
+  }
+
+  .discovery-custom-select {
+    position: relative;
+    width: 100%;
+  }
+
+  .discovery-filter-select-native {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .discovery-custom-select-toggle {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 36px 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.3;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: none;
+    position: relative;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.45);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      margin-top: -3px;
+      border: 5px solid transparent;
+      border-top-color: #fff;
+    }
+  }
+
+  .discovery-custom-select.is-open .discovery-custom-select-toggle::after {
+    margin-top: -8px;
+    border-top-color: transparent;
+    border-bottom-color: #fff;
+  }
+
+  .discovery-custom-select-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 40;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+
+    &[hidden] {
+      display: none !important;
+    }
+
+    li {
+      padding: 8px 12px;
+      color: #313131;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.95rem;
+      line-height: 1.35;
+
+      &:hover {
+        background: #d9e4ee;
+        color: #313131;
+      }
+
+      &.is-selected,
+      &.is-selected:hover {
+        background: #00417d !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    .search-status-label,
+    .discovery-search-row,
+    .discovery-filters-checkbox:checked ~ .discovery-filters-panel {
+      float: none !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin-right: 0 !important;
+    }
+  }
+
+  @media screen and (min-width: 541px) and (max-width: 768px) {
+    .search-status-label {
+      width: 48.21% !important;
+    }
+
+    .discovery-search-row,
+    .discovery-filters-checkbox:checked ~ .discovery-filters-panel {
+      width: 48.21% !important;
+      max-width: 48.21% !important;
+    }
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 979px) {
+    .search-status-label {
+      width: 57.8% !important;
+    }
+
+    .discovery-search-row,
+    .discovery-filters-checkbox:checked ~ .discovery-filters-panel {
+      width: 39.8% !important;
+      max-width: 39.8% !important;
+    }
+  }
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course {
   border-bottom: 2px solid #fff;
   &:hover {
     border-bottom: 2px solid #fff;
@@ -2001,44 +3127,128 @@ body.view-contact {
   padding-top: 0;
 }
 
-.courses-container .courses .course {
-  box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2), 8px 8px 0px rgba(255, 255, 255, 0.2);
-
-  &:hover {
-    box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.2), 12px 12px 0px rgba(255, 255, 255, 0.2); 
-    background: #fff;
-  }
+.home .courses-container {
+  padding-top: 56px;
 }
 
-.courses-container .courses .course {
+// Homepage card hover: white glow (catalog keeps its own learn-more overlay)
+.home .courses-container .courses .course {
+  position: relative;
+  z-index: 0;
   border: none;
   border-radius: 0;
+  background: rgba(255, 255, 255, 0.15) !important;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: #fff !important;
+  box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2), 8px 8px 0px rgba(255, 255, 255, 0.2);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    filter 0.28s ease,
+    background 0.28s ease;
 
-  &:hover {
-    border-radius: 0;
-  }
-}
-
-.courses-container .courses .course .course-info:hover {
-  background-color: #fff; 
-}
-
-.courses-container .courses .course .course-image .cover-image {
-  &:before {
-    background: #fff;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 118%;
+    height: 118%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.14) 40%,
+      transparent 72%
+    );
     opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
   }
 
-  &:hover {
-    opacity: 0.9;
+  &:hover,
+  &:focus-within {
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-6px) scale(1.025);
+    box-shadow:
+      0 0 16px rgba(255, 255, 255, 0.55),
+      0 0 36px rgba(255, 255, 255, 0.28),
+      0 8px 28px rgba(92, 135, 173, 0.35),
+      6px 6px 0 rgba(255, 255, 255, 0.28),
+      12px 12px 0 rgba(255, 255, 255, 0.16);
+    filter:
+      drop-shadow(0 0 6px rgba(255, 255, 255, 0.45))
+      drop-shadow(0 0 14px rgba(255, 255, 255, 0.22));
+
+    &::after {
+      opacity: 1;
+    }
+
+    .course-info .course-title {
+      text-shadow: 0 0 8px rgba(18, 111, 154, 0.35);
+    }
   }
 
-  .learn-more {
+  .course-image .cover-image .learn-more {
+    display: none !important;
+  }
+
+  .course-info,
+  .course-info .course-title,
+  .course-info .course-name,
+  .course-info .course-organization,
+  .course-info .course-code,
+  .course-info .course-date {
+    color: #fff;
+  }
+
+  .course-info {
+    background: transparent !important;
+  }
+
+  .course-image .cover-image::before {
+    opacity: 0 !important;
+    background: transparent !important;
+  }
+
+  &:hover .course-image .cover-image::before,
+  &:focus-within .course-image .cover-image::before {
+    opacity: 0 !important;
+    background: transparent !important;
+  }
+}
+
+.home .courses-container .courses .course .course-info:hover {
+  background-color: transparent;
+}
+
+// Catalog: keep learn-more / darken overlay only (no glow)
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  &:hover,
+  &:focus-within {
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+    filter: none;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &::after {
     display: none;
   }
 }
 
-.find-courses .courses-container .courses .course .course-image .cover-image .learn-more {
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course .course-image .cover-image .learn-more {
   border-radius: 0;
   width: 100%;
   left: 0;
@@ -2048,27 +3258,66 @@ body.view-contact {
   letter-spacing: 2px;
   color: #fff;
   height: 53px;
-  font-size: 2em;
+  font-size: 2.4em;
   font-weight: 300;
 }
 
-.find-courses .courses-container .courses .course .course-image .cover-image {
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course .course-image .cover-image {
   &:hover {
     opacity: 1;
   }
 }
 
-.find-courses .courses-container .courses .course:hover .cover-image:before {
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course:hover .cover-image:before {
   opacity: 0.75 !important;
   background: #000;
 }
 
-.find-courses .courses-container .courses .course {
-  box-shadow: none;
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course .course-image .cover-image {
+  height: 280px;
+  max-height: 280px;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    box-shadow: none;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    height: 280px;
+    max-height: 280px;
+    box-sizing: border-box;
+    z-index: 4;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
   }
+
+  .learn-more {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    z-index: 5;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 280px;
+    max-height: 280px;
+    margin: 0;
+    background: transparent !important;
+    text-align: center;
+  }
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course:hover .course-image .cover-image::before,
+body:not(.leti-programs-catalog-page) .find-courses .courses-container .courses .course:focus-within .course-image .cover-image::before {
+  opacity: 0.75 !important;
 }
 
 .find-courses .courses-pagination {
@@ -2119,37 +3368,501 @@ body.view-contact {
 }
 
 
+// ——— Homepage grid only (catalog restored below) ———
 .home .courses-container .courses .courses-listing {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 64px 96px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 3vw, 40px);
+  list-style: none;
 
   .courses-listing-item {
-    margin: 0 20px 30px 20px;
-    // Fix right margin
-    &:nth-child(4n), &:last-child {
-      margin-right: 20px;
+    box-sizing: border-box;
+    float: none !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+// Keep search above the course grid; neutralize Neat floats that pull cards up.
+.find-courses .courses-container {
+  #discovery-form,
+  .wrapper-search-context {
+    position: relative;
+    z-index: 2;
+    display: block;
+    float: none !important;
+    clear: both;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .courses.no-course-discovery {
+    float: none !important;
+    clear: both;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 16px 0 0 !important;
+    padding-top: 8px;
+    box-sizing: border-box;
+  }
+}
+
+// Catalog grid: original 4-column layout
+.find-courses .courses-container .courses.no-course-discovery .courses-listing {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  float: none !important;
+  clear: both;
+
+  .courses-listing-item {
+    box-sizing: border-box;
+    float: none !important;
+    clear: none !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 24px !important;
+    padding: 0 8px;
+    overflow: visible;
+  }
+}
+
+// Homepage: 1 column on phone portrait
+.home .courses-container .courses .courses-listing .courses-listing-item {
+  width: 100%;
+  max-width: 100%;
+}
+
+// Catalog: 1 column default
+.find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+  width: 100%;
+  max-width: 100%;
+}
+
+@mixin home-courses-grid-3col {
+  flex: 0 1 480px;
+  width: calc((100% - 192px) / 3);
+  max-width: 480px;
+  min-width: 0;
+  max-height: none;
+}
+
+// Homepage phone landscape: 3 columns
+@media (orientation: landscape) and (max-height: 500px) {
+  .home .courses-container .courses .courses-listing .courses-listing-item {
+    @include home-courses-grid-3col;
+  }
+
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 50%;
+    max-width: 50%;
+  }
+}
+
+// Homepage tablet portrait: 3 columns
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: portrait) {
+  .home .courses-container .courses .courses-listing .courses-listing-item {
+    @include home-courses-grid-3col;
+  }
+
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 50%;
+    max-width: 50%;
+  }
+}
+
+// Tablet landscape: home 3 cols, catalog 4 cols
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: landscape) and (min-height: 501px) {
+  .home .courses-container .courses .courses-listing .courses-listing-item {
+    @include home-courses-grid-3col;
+  }
+
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 33.333%;
+    max-width: 33.333%;
+  }
+}
+
+// Desktop: home 3 cols, catalog 4 cols
+@media (min-width: 1200px) {
+  .home .courses-container .courses .courses-listing .courses-listing-item {
+    @include home-courses-grid-3col;
+  }
+
+  .find-courses .courses-container .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: 25%;
+    max-width: 25%;
+  }
+}
+
+// Lock standard course cards to their grid tracks instead of their content width.
+@media (max-width: 767.98px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+    flex: 0 0 100% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: portrait) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+    flex: 0 0 50% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: landscape) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+    flex: 0 0 33.333% !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+    flex: 0 0 25% !important;
+  }
+}
+
+// Short landscape viewports are mobile layouts even when their CSS width is tablet-sized.
+@media (orientation: landscape) and (max-height: 500px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course,
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course > a {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+// Let standard course cards grow with their longest title/date content.
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course,
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course > a {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course .course-info {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  box-sizing: border-box;
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course .course-name {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course .course-date {
+  position: static !important;
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  margin-top: auto !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  box-sizing: border-box;
+  line-height: 1.35 !important;
+}
+
+// Mobile and tablet rows follow the tallest card in each grid row.
+@media (max-width: 1199.98px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 24px 0;
+  }
+
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .courses-listing-item {
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+  }
+
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course,
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing .course > a {
+    height: 100% !important;
+  }
+}
+
+@media (max-width: 767.98px) and (orientation: landscape),
+       (min-width: 768px) and (max-width: 1199.98px) and (orientation: portrait) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199.98px) and (orientation: landscape) and (min-height: 501px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+}
+
+@media (max-width: 1199.98px) and (orientation: landscape) and (max-height: 500px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses.no-course-discovery .courses-listing {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+}
+
+// Mobile catalog cards: let the tallest card define each grid row.
+@media (max-width: 767.98px) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing,
+  body.leti-programs-catalog-page .find-courses .courses-listing {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 24px 0;
+  }
+
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing .courses-listing-item,
+  body.leti-programs-catalog-page .find-courses .courses-listing .courses-listing-item {
+    display: flex;
+    align-items: stretch;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+  }
+
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing .course,
+  body.leti-programs-catalog-page .find-courses .courses-listing .course,
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing .course > a,
+  body.leti-programs-catalog-page .find-courses .courses-listing .course > a {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing .course .course-info,
+  body.leti-programs-catalog-page .find-courses .courses-listing .course .course-info {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing .course .course-info {
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+
+    .course-name {
+      flex: 0 0 auto;
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
+    .course-date {
+      position: static !important;
+      display: block !important;
+      height: auto !important;
+      max-height: none !important;
+      margin-top: auto !important;
+      padding: 8px 12px 12px !important;
+      overflow: visible !important;
+      white-space: normal !important;
+      box-sizing: border-box;
+      line-height: 1.35 !important;
     }
   }
 }
 
-.home .courses-more .courses-more-cta {
-  color: #fff;
-  background: transparent;
-  text-shadow: 0px 0px 6px #126f9a;
-  letter-spacing: 2px;
-  font-weight: 300;
-  font-size: 1em;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.55);
-  text-underline-offset: 3px;
+@media (max-width: 767.98px) and (orientation: landscape) {
+  body:not(.leti-programs-catalog-page) .find-courses .courses-listing,
+  body.leti-programs-catalog-page .find-courses .courses-listing {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+}
 
-  &:hover,
-  &:focus {
-    color: #fff;
-    text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.6);
+// Taller cards — homepage only
+.home .courses-container .courses .courses-listing .courses-listing-item {
+  max-height: none;
+  overflow: visible;
+
+  .course,
+  .course > a {
+    overflow: visible;
+    display: block;
+    height: auto;
+  }
+
+  .course .course-image .cover-image {
+    height: 280px;
+  }
+
+  .course .course-info {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 200px;
+    max-height: none;
+    overflow: visible;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    box-sizing: border-box;
+  }
+
+  .course .course-info .course-name {
+    flex: 1 1 auto;
+  }
+
+  .course .course-info .course-title {
+    height: auto;
+    max-height: none;
+    margin-bottom: 12px;
+  }
+
+  .course .course-info .course-date {
+    display: block;
+    position: static;
+    margin-top: auto;
+    padding-top: 8px;
+    padding-bottom: 4px;
+    overflow: visible;
+    white-space: normal;
+  }
+}
+
+.home .courses-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 36px 0 56px;
+  text-align: center;
+  clear: both;
+
+  .courses-more-cta {
+    @extend %login-glass-panel;
+    position: relative;
+    z-index: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 28px;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-decoration: none !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 0 10px rgba(255, 255, 255, 0.18),
+      0 0 20px rgba(255, 255, 255, 0.08);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      text-shadow 0.2s ease,
+      filter 0.2s ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 140%;
+      height: 180%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255, 255, 255, 0.24) 0%,
+        rgba(255, 255, 255, 0.08) 42%,
+        transparent 72%
+      );
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.7;
+      transition: opacity 0.2s ease, background 0.2s ease;
+    }
+
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.95);
+      color: #00407c !important;
+      border-color: transparent;
+      text-decoration: none !important;
+      text-shadow: none;
+      filter:
+        drop-shadow(0 0 8px rgba(255, 255, 255, 0.55))
+        drop-shadow(0 0 18px rgba(255, 255, 255, 0.3));
+      box-shadow:
+        0 10px 36px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.45),
+        0 0 40px rgba(255, 255, 255, 0.22);
+      transform: translateY(-2px);
+      outline: none;
+
+      &::before {
+        opacity: 1;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(255, 255, 255, 0.38) 0%,
+          rgba(255, 255, 255, 0.12) 42%,
+          transparent 72%
+        );
+      }
+    }
+
+    &::after {
+      content: "›";
+      margin-left: 0.55em;
+      letter-spacing: 0;
+    }
   }
 }
 
@@ -2208,27 +3921,16 @@ body.view-contact {
   }
 }
 
-.empty-dashboard-message {
-  border: none;
-  background: rgba(255, 255, 255, 0.2);
-}
+.dashboard:has(.empty-programs-message),
+.dashboard:has(.empty-dashboard-message) {
+  .side-container {
+    display: none;
+  }
 
-.empty-dashboard-message p {
-  text-shadow: none;
-  color: #fff;
-}
-
-.empty-dashboard-message a.btn {
-  box-shadow: none;
-  background-color: #3372a2;
-  border: 1px solid #336b9c;
-  border-left: 3px double #5396c8;
-  border-right: 3px double #5396c8;
-  text-transform: lowercase;
-
-  &:hover {
-    box-shadow: none;
-    border: 1px solid #336b9c;
+  .main-container {
+    float: none;
+    width: 100%;
+    max-width: none;
   }
 }
 
@@ -2243,7 +3945,7 @@ body.view-contact {
   color: #fff;
 
   &::placeholder {
-    color: #fff;
+    color: #fff !important;
   }
   &:-ms-input-placeholder {
     color: #fff;
@@ -2287,6 +3989,19 @@ body.view-contact {
     color: #004b88;
     background: #fff;
     border: 1px solid transparent;
+  }
+
+  &.archived {
+    border: 1px solid #fff;
+    color: #fff;
+    background: transparent !important;
+
+    &:hover,
+    &:focus {
+      color: #004b88;
+      background: #fff;
+      border: 1px solid transparent;
+    }
   }
 }
 
@@ -2352,8 +4067,432 @@ body.view-contact {
 
 ////////////////// Programs listing /dashboard/programs/
 body.view-programs,
-body:has(.program-list-wrapper) {
+body.leti-programs-page,
+body:has(.program-list-wrapper),
+body:has(.leti-programs-dashboard) {
   background-color: #00417d;
+}
+
+.leti-programs-page .dashboard.leti-programs-dashboard {
+  padding-bottom: 48px;
+}
+
+.leti-programs-page .dashboard.leti-programs-dashboard .main-container {
+  padding-left: 6.25rem;
+}
+
+.leti-programs-dashboard .listing-courses .leti-program-item {
+  width: auto;
+  max-width: 100%;
+}
+
+.leti-program-item .course-container,
+.leti-program-item .course {
+  width: auto !important;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.leti-program-item .course .details {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-right: 16px;
+}
+
+.leti-program-item .wrapper-course-image {
+  float: none !important;
+  flex: 0 0 210px;
+  width: 210px !important;
+  margin-right: 16px;
+}
+
+.leti-program-item .wrapper-course-details {
+  flex: 1 1 auto;
+  width: 70rem;
+  max-width: 70rem;
+}
+
+.leti-program-item .continue-button {
+  flex: 0 0 auto !important;
+  align-self: center;
+  margin: 0 0 0 12px;
+}
+
+.leti-program-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 8px;
+  overflow: hidden;
+}
+
+.leti-program-chip {
+  display: inline-block;
+  width: auto;
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #00417d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.leti-program-stack {
+  position: relative;
+
+  .cover {
+    display: block;
+    height: 150px;
+  }
+
+  &__deck {
+    position: relative;
+    width: 100%;
+    height: 150px;
+  }
+
+  &__img,
+  &__fallback {
+    position: absolute;
+    object-fit: cover;
+    background: rgba(0, 32, 64, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  &.is-single &__img,
+  &.is-single &__fallback {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 150px;
+    box-shadow: none;
+  }
+
+  &:not(.is-single) &__img,
+  &:not(.is-single) &__fallback {
+    width: 72%;
+    height: 118px;
+  }
+
+  &:not(.is-single) &__layer-0 {
+    left: 0;
+    top: 28px;
+    z-index: 1;
+  }
+
+  &:not(.is-single) &__layer-1 {
+    left: 12%;
+    top: 14px;
+    z-index: 2;
+  }
+
+  &:not(.is-single) &__layer-2 {
+    left: 24%;
+    top: 0;
+    z-index: 3;
+  }
+
+  &__count {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 4;
+    padding: 3px 8px;
+    background: rgba(0, 65, 125, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+}
+
+.leti-program-courses {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0 0 6px;
+    padding: 0;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.4;
+    opacity: 0.92;
+
+    &::before {
+      content: "";
+      flex: 0 0 8px;
+      width: 8px;
+      height: 8px;
+      margin-top: 0.45em;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow:
+        0 0 4px 1px rgba(255, 255, 255, 0.65),
+        0 0 8px 2px rgba(255, 255, 255, 0.22);
+    }
+  }
+
+  &__more {
+    opacity: 0.75;
+    font-style: italic;
+
+    &::before {
+      content: none;
+      display: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.leti-programs-dashboard .empty-programs-message,
+.leti-programs-dashboard .empty-dashboard-message {
+  margin-top: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+////////////////// Program details /dashboard/programs/<uuid>/
+.leti-program-about .leti-program-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.leti-program-about .leti-program-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: $blue;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.leti-program-about .leti-program-back {
+  display: inline-block;
+  margin: 0 0 16px;
+  color: $blue;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.leti-roadmap {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 8px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 27px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: #e8e8e8;
+  }
+}
+
+.leti-roadmap-step {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  position: relative;
+  margin: 0 0 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.leti-roadmap-marker {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  margin-top: 18px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: 2px solid #d9d9d9;
+  color: #707070;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 36px;
+  text-align: center;
+  z-index: 1;
+
+  .is-completed & {
+    background: $blue;
+    border-color: $blue;
+    color: #fff;
+  }
+
+  .is-current & {
+    background: #fff;
+    border-color: $blue;
+    color: $blue;
+    box-shadow: 0 0 0 4px rgba(0, 65, 125, 0.15);
+  }
+}
+
+.leti-roadmap-card {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 14px 16px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+a.leti-roadmap-card:hover {
+  background: #edf3f8;
+  text-decoration: none;
+  color: inherit;
+}
+
+.leti-roadmap-step.is-current .leti-roadmap-card {
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #c5d4e3;
+}
+
+.leti-roadmap-card__image {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 64px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: #d9d9d9;
+}
+
+.leti-roadmap-card__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.leti-roadmap-card__title {
+  margin: 0 0 4px;
+  color: $blue;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.leti-roadmap-card__status {
+  margin: 0;
+  color: #5b5b5b;
+  font-size: 0.85rem;
+}
+
+.leti-roadmap-step.is-current .leti-roadmap-card__status {
+  color: $blue;
+  font-weight: 600;
+}
+
+.leti-roadmap-card__cta {
+  flex: 0 0 auto;
+  color: $blue;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.leti-progress-circle-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px 20px 28px;
+  text-align: center;
+  box-sizing: border-box;
+
+  h2 {
+    margin: 0 0 16px;
+    color: $blue;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+}
+
+.leti-progress-circle-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.leti-progress-circle {
+  width: 180px;
+  height: 180px;
+
+  .bg {
+    stroke: #e8e8e8;
+  }
+
+  .complete {
+    stroke: $blue;
+  }
+
+  .current {
+    stroke: #7aa7d4;
+  }
+
+  .incomplete {
+    stroke: #e8e8e8;
+  }
+}
+
+.leti-progress-circle-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $blue;
+
+  .numbers {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .caption {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5b5b5b;
+  }
 }
 
 :not(.courseware) > #content.content-wrapper:has(.program-list-wrapper) {
@@ -2442,13 +4581,15 @@ body:has(.program-list-wrapper) {
   }
 }
 
-.empty-programs-message {
+.empty-programs-message,
+.empty-dashboard-message {
   @extend %login-glass-panel;
 
   float: none;
+  display: block;
   width: 100%;
   max-width: 720px;
-  margin: 0;
+  margin: 12px auto 0;
   padding: 48px 40px;
   border: none;
   background: $login-glass-bg;
@@ -2459,7 +4600,8 @@ body:has(.program-list-wrapper) {
     padding: 32px 20px;
   }
 
-  .hd-3 {
+  .hd-3,
+  > p:not(.custom-message) {
     color: #fff;
     font-family: $font-family-title;
     font-weight: 400;
@@ -2469,8 +4611,17 @@ body:has(.program-list-wrapper) {
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
   }
 
+  .custom-message {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 20px;
+    text-shadow: none;
+  }
+
   .btn,
-  .btn-primary {
+  .btn-primary,
+  a.btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2499,12 +4650,141 @@ body:has(.program-list-wrapper) {
   }
 }
 
-////////////////// "View this course as staff/learner/..."
-nav.wrapper-preview-menu {
-    // It is necessary to specify `nav` in order to override the common higher priority rule
-    @include media-breakpoint-up(lg) {
-      margin-top: $header-height;
-    }
+body.view-instructordash:has(.leti-instructor-toolbar) {
+  :not(.courseware) > #content.content-wrapper:has(.instructor-dashboard-wrapper-2),
+  :not(.courseware) > #content.content-wrapper:has(.leti-instructor-page) {
+    margin-top: 0;
+  }
+}
+
+////////////////// "View this course as staff/learner/..." — match Learning MFE InstructorToolbar
+nav.wrapper-preview-menu,
+nav.wrapper-preview-menu.leti-instructor-toolbar {
+  background-color: #f5f5f5;
+  color: #313131;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+
+  @include media-breakpoint-up(lg) {
+    margin-top: $header-height;
+  }
+}
+
+.leti-instructor-toolbar .preview-menu,
+.leti-instructor-toolbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 32px;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  @include media-breakpoint-down(md) {
+    padding: 12px 16px;
+    justify-content: flex-start;
+  }
+}
+
+.leti-instructor-toolbar__masquerade,
+.leti-instructor-toolbar .preview-actions {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  float: none;
+  background: transparent;
+  border: none;
+}
+
+.leti-instructor-toolbar .action-preview-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.leti-instructor-toolbar .action-preview-label,
+.leti-instructor-toolbar__links-label {
+  color: #313131;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.leti-instructor-toolbar .action-preview-select,
+.leti-instructor-toolbar .action-preview-username {
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  background: #fff;
+  color: #313131;
+  padding: 6px 10px;
+  min-height: 36px;
+  box-shadow: none;
+}
+
+.leti-instructor-toolbar__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.leti-instructor-toolbar a.btn,
+.leti-instructor-toolbar a.btn-outline-primary,
+.leti-instructor-toolbar a.btn-primary,
+.leti-instructor-toolbar a.view-in-studio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent !important;
+  border: 1px solid #00407c !important;
+  color: #00407c !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  padding: 8px 16px !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+  text-transform: none;
+
+  &:hover,
+  &:focus {
+    background-color: #00407c !important;
+    border-color: #00407c !important;
+    color: #fff !important;
+  }
+}
+
+.leti-instructor-toolbar .preview-specific-student-notice {
+  color: #313131;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+
+  p {
+    margin: 0;
+    color: #313131;
+  }
 }
 
 .btn-inverse-outline-primary {
@@ -2527,11 +4807,8 @@ nav.wrapper-preview-menu {
   border-radius: 0;
 }
 
-.content-wrapper .course-tabs .nav-item.active .nav-link, .content-wrapper .course-tabs .nav-item:hover .nav-link {
-  border: none;
-  color: #fff;
-  background: rgba(0, 64, 124, 0.5);
-}
+// Legacy pill tabs removed — in-course tabs use Learning underline style
+// (see sass/instructor/_instructor.scss, body.view-in-course).
 
 ////////////////// Course about page
 .content-wrapper {
@@ -2553,11 +4830,17 @@ nav.wrapper-preview-menu {
     max-width: 100% !important;
     padding: 32px 48px 48px 24px !important;
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       display: flex;
       flex-wrap: wrap;
       gap: 24px;
       align-items: flex-start;
+    }
+
+    @include media-breakpoint-down(lg) {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
     @include media-breakpoint-down(md) {
@@ -2574,12 +4857,19 @@ nav.wrapper-preview-menu {
     font: normal 1em/1.6em Open Sans;
     box-sizing: border-box;
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       flex: 1 1 0;
       float: none !important;
       width: auto !important;
       margin-right: 0 !important;
       min-width: 0;
+      order: 1;
+    }
+
+    @include media-breakpoint-down(lg) {
+      order: 2;
+      width: 100% !important;
+      float: none !important;
     }
 
     @include media-breakpoint-down(md) {
@@ -2645,16 +4935,19 @@ nav.wrapper-preview-menu {
   }
 
   .course-sidebar {
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       flex: 0 0 450px;
       float: none !important;
       width: 450px !important;
       margin-left: auto;
+      order: 2;
     }
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
+      order: 1;
       width: 100% !important;
       margin-left: 0;
+      float: none !important;
     }
 
     > section {
@@ -2743,16 +5036,38 @@ nav.wrapper-preview-menu {
     margin-left: 0;
     margin-right: 0;
 
+    @include media-breakpoint-down(lg) {
+      min-height: 0;
+    }
+
     .intro-inner-wrapper {
       border: none;
       background: transparent;
       box-shadow: none;
       min-height: 340px;
 
+      @include media-breakpoint-down(lg) {
+        min-height: 0;
+      }
+
+      > div.table {
+        @include media-breakpoint-down(lg) {
+          display: flex !important;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+      }
+
       .intro > .heading-group {
         box-shadow: none;
         text-align: center;
         border-bottom: none;
+
+        @include media-breakpoint-down(lg) {
+          margin-bottom: 12px;
+          padding-bottom: 0;
+        }
 
         h1 {
           font-weight: 200;
@@ -2768,6 +5083,21 @@ nav.wrapper-preview-menu {
 
       .intro {
         padding: 48px 20px 48px 32px;
+
+        @include media-breakpoint-down(lg) {
+          display: block !important;
+          width: 100% !important;
+          max-width: 720px;
+          float: none !important;
+          padding: 36px 24px 16px;
+          text-align: center;
+          order: 1;
+        }
+
+        @include media-breakpoint-down(md) {
+          max-width: 100%;
+          padding: 28px 16px 16px;
+        }
       }
 
       .intro .main-cta {
@@ -2778,6 +5108,11 @@ nav.wrapper-preview-menu {
         width: 100%;
         float: none;
         margin: 0;
+
+        @include media-breakpoint-down(lg) {
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
 
         .cta-status {
           display: flex;
@@ -2852,10 +5187,29 @@ nav.wrapper-preview-menu {
       .media {
         padding: 32px 48px 32px 8px;
 
+        @include media-breakpoint-down(lg) {
+          display: block !important;
+          width: 100% !important;
+          max-width: 720px;
+          float: none !important;
+          padding: 20px 24px 36px;
+          order: 2;
+        }
+
+        @include media-breakpoint-down(md) {
+          max-width: 100%;
+          padding: 18px 16px 28px;
+        }
+
         .hero {
           border: none;
           min-height: 280px;
           overflow: hidden;
+
+          @include media-breakpoint-down(lg) {
+            min-height: 0;
+            border-radius: 8px;
+          }
 
           img {
             display: block;
@@ -2865,6 +5219,18 @@ nav.wrapper-preview-menu {
             min-height: 280px;
             object-fit: cover;
             object-position: center center;
+
+            @include media-breakpoint-down(lg) {
+              width: 100%;
+              max-width: 100%;
+              margin-left: 0;
+              min-height: 220px;
+              height: auto;
+            }
+
+            @include media-breakpoint-down(md) {
+              min-height: 180px;
+            }
           }
         }
       }
@@ -2917,6 +5283,7 @@ nav.wrapper-preview-menu {
 
 @import '../../../profile/profile';
 @import '../../../account/account-settings';
+@import '../../../instructor/instructor';
 
 .container.about {
   color: #fff;
@@ -3109,6 +5476,72 @@ nav.wrapper-preview-menu {
 
     p {
       text-align: right;
+    }
+  }
+}
+
+// Learning MFE unit iframe — capa problem buttons (Show answer, Submit)
+$leti-courseware-accent: #00407c;
+$leti-courseware-accent-hover: #01306e;
+
+body.view-courseware,
+body.view-in-course {
+  .xmodule_display.xmodule_CapaModule,
+  .xblock-student_view-problem {
+    .problem .action {
+      button.show,
+      button.show.btn-default,
+      button.show.btn-default.btn-small {
+        color: $leti-courseware-accent !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0;
+        font-weight: 600;
+        box-shadow: none !important;
+        padding-left: 0;
+        padding-right: 0;
+
+        &:hover,
+        &:focus,
+        &:active {
+          color: $leti-courseware-accent-hover !important;
+          background: transparent !important;
+          border: none !important;
+          text-decoration: underline;
+        }
+      }
+
+      button.submit.btn-brand,
+      button.submit.btn-primary,
+      .submit-attempt-container button.submit {
+        background-color: $leti-courseware-accent !important;
+        border-color: $leti-courseware-accent !important;
+        color: #fff !important;
+        border-radius: 5px;
+        font-weight: 600;
+        box-shadow: none !important;
+        opacity: 1 !important;
+        background-image: none !important;
+        filter: none !important;
+        -webkit-font-smoothing: antialiased;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background-color: $leti-courseware-accent-hover !important;
+          border-color: $leti-courseware-accent-hover !important;
+          color: #fff !important;
+        }
+
+        &:disabled,
+        &[disabled] {
+          background-color: #b8c5d0 !important;
+          border-color: #b8c5d0 !important;
+          color: #fff !important;
+          opacity: 1 !important;
+          cursor: not-allowed;
+        }
+      }
     }
   }
 }
