@@ -66,10 +66,7 @@ body.layout-accomplishment .wrapper-banner-user {
 
 body.layout-accomplishment .wrapper-banner-user {
   background-color: #05336e;
-  background-image: url('../images/back.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: none;
 }
 
 body.layout-accomplishment .leti-cert-mid {
@@ -192,11 +189,8 @@ body.layout-accomplishment .accomplishment-orgs .wrapper-organization {
 
 body.layout-accomplishment .accomplishment-orgs .organization-logo {
   position: static;
-  display: block;
   max-height: 50px;
   max-width: 100%;
-  margin: 0 auto;
-  transform: none !important;
 }
 
 body.layout-accomplishment .leti-cert-logo {
