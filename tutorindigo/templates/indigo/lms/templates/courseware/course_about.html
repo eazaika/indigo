@@ -204,19 +204,26 @@ from six import string_types
             </li>
             % endif
 
+          <%
+            course_other_settings = course.other_course_settings or {}
+            course_weeks = course_other_settings.get('weeks_to_complete')
+          %>
+          % if course_weeks is not None and course_weeks != '':
+          <li class="important-dates-item"><span class="icon fa fa-clock-o" aria-hidden="true"></span><p class="important-dates-item-title">${_("Количество недель")}</p><span class="important-dates-item-text">${course_weeks}</span></li>
+          % endif
           % if get_course_about_section(request, course, "effort"):
-            <li class="important-dates-item"><span class="icon fa fa-pencil" aria-hidden="true"></span><p class="important-dates-item-title">${_("Estimated Effort")}</p><span class="important-dates-item-text effort">${get_course_about_section(request, course, "effort")}</span></li>
+            <li class="important-dates-item"><span class="icon fa fa-pencil" aria-hidden="true"></span><p class="important-dates-item-title">${_("Оценка сложности")}</p><span class="important-dates-item-text effort">${get_course_about_section(request, course, "effort")}</span></li>
+          % endif
+          <%
+            course_zet = course_other_settings.get('zet')
+            if course_zet is None:
+                course_zet = course_other_settings.get('ZET')
+          %>
+          % if course_zet is not None and course_zet != '':
+          <li class="important-dates-item"><span class="icon fa fa-graduation-cap" aria-hidden="true"></span><p class="important-dates-item-title">${_("Количество зачётных единиц")}</p><span class="important-dates-item-text">${course_zet}</span></li>
           % endif
 
           ##<li class="important-dates-item"><span class="icon fa fa-clock-o" aria-hidden="true"></span><p class="important-dates-item-title">${_('Course Length')}</p><span class="important-dates-item-text course-length">${_('{number} weeks').format(number=15)}</span></li>
-
-          %if course_price and (is_cosmetic_price_enabled):
-            <li class="important-dates-item">
-              <span class="icon fa fa-money" aria-hidden="true"></span>
-              <p class="important-dates-item-title">${_("Price")}</p>
-              <span class="important-dates-item-text">${course_price}</span>
-            </li>
-          %endif
 
           % if pre_requisite_courses:
           <% prc_target = reverse('about_course', args=[text_type(pre_requisite_courses[0]['key'])]) %>

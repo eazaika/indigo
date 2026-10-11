@@ -64,6 +64,14 @@ body.layout-accomplishment .wrapper-banner-user {
   box-shadow: none;
 }
 
+body.layout-accomplishment .wrapper-banner-user {
+  background-color: #05336e;
+  background-image: url('../images/back.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 body.layout-accomplishment .leti-cert-mid {
   display: flow-root;
   margin-top: 0 !important;
@@ -83,13 +91,13 @@ body.layout-accomplishment .leti-cert-mid .introduction-copy {
 body.layout-accomplishment .leti-cert-mid .accomplishment-rendering {
   top: 0 !important;
   overflow: visible;
-  background-color: #00407c !important;
-  background-image: url('../images/back.png') !important;
-  background-size: cover !important;
-  background-position: center !important;
+  background-color: #fff !important;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9) 0 100%), url('../certificates/images/laurel-back.png') !important;
+  background-size: contain !important;
+  background-position: center 25% !important;
   background-repeat: no-repeat !important;
-  color: #fff !important;
-  border-top: none !important;
+  color: #404040 !important;
+  border-top: 0.15rem solid #05336e !important;
   box-shadow: none !important;
   padding-bottom: 0.625rem !important;
   -webkit-print-color-adjust: exact;
@@ -117,7 +125,7 @@ body.layout-accomplishment .accomplishment-rendering .accomplishment-statement-d
 body.layout-accomplishment .accomplishment-rendering .accomplishment-summary,
 body.layout-accomplishment .accomplishment-rendering .signatory-name,
 body.layout-accomplishment .accomplishment-rendering .signatory-credentials {
-  color: #fff !important;
+  color: #404040 !important;
 }
 
 body.layout-accomplishment .accomplishment-rendering .accomplishment-statement,
@@ -129,6 +137,19 @@ body.layout-accomplishment .accomplishment-rendering .accomplishment-orgs-title 
 body.layout-accomplishment .accomplishment-rendering .accomplishment-type {
   margin-top: 0 !important;
   padding-top: 16px;
+}
+
+body.layout-accomplishment .accomplishment-rendering .accomplishment-type-label {
+  color: #05336e !important;
+  font-family: "Domine", ui-monospace !important;
+}
+
+body.layout-accomplishment.certificate-verified .accomplishment-rendering {
+  border-top-color: #dab150 !important;
+}
+
+body.layout-accomplishment.certificate-verified .accomplishment-rendering .accomplishment-type-label {
+  color: #dab150 !important;
 }
 
 body.layout-accomplishment .accomplishment-rendering .accomplishment-type-symbol {
@@ -155,6 +176,29 @@ body.layout-accomplishment .accomplishment-orgs .organization {
   height: auto !important;
 }
 
+body.layout-accomplishment .accomplishment-orgs .wrapper-orgs {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.layout-accomplishment .accomplishment-orgs .wrapper-organization {
+  flex: 0 1 auto;
+  max-width: none;
+}
+
+body.layout-accomplishment .accomplishment-orgs .organization-logo {
+  position: static;
+  display: block;
+  max-height: 50px;
+  max-width: 100%;
+  margin: 0 auto;
+  transform: none !important;
+}
+
 body.layout-accomplishment .leti-cert-logo {
   position: relative;
   display: inline-flex !important;
@@ -166,21 +210,7 @@ body.layout-accomplishment .leti-cert-logo {
 }
 
 body.layout-accomplishment .leti-cert-logo::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 130%;
-  height: 165%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.42) 0%,
-    rgba(255, 255, 255, 0.14) 42%,
-    transparent 72%
-  );
-  z-index: 0;
-  pointer-events: none;
+  content: none;
 }
 
 body.layout-accomplishment .leti-cert-logo .logo {
@@ -192,13 +222,12 @@ body.layout-accomplishment .leti-cert-logo .logo {
   max-width: none;
   margin: 0;
   background: transparent;
-  filter:
-    drop-shadow(0 0 5px rgba(255, 255, 255, 0.55))
-    drop-shadow(0 0 12px rgba(255, 255, 255, 0.28));
+  filter: none;
 }
 
 body.layout-accomplishment .accomplishment-rendering .signatory-signature {
-  filter: brightness(0) invert(1);
+  filter: none;
+  max-height: 150px;
 }
 
 body.layout-accomplishment .banner-user .message-title,
@@ -289,10 +318,10 @@ body.layout-accomplishment hr.divider {
   }
 
   body.layout-accomplishment .accomplishment-rendering {
-    background-color: #00407c !important;
-    background-image: url('../images/back.png') !important;
-    background-size: cover !important;
-    background-position: center !important;
+    background-color: #fff !important;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9) 0 100%), url('../certificates/images/laurel-back.png') !important;
+    background-size: contain !important;
+    background-position: center 25% !important;
     background-repeat: no-repeat !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
