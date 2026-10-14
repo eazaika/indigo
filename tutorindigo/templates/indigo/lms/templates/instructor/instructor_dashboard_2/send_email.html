@@ -22,6 +22,34 @@ from openedx.core.djangolib.markup import HTML
     width: 100% !important;
     margin: 6px 0 !important;
   }
+    #section-send-email .recent-enrollment-days {
+        box-sizing: border-box;
+        width: 3.5em !important;
+        min-width: 3.5em !important;
+        max-width: 3.5em !important;
+        flex: 0 0 3.5em;
+        margin: 0 0.35em;
+        padding-left: 3px;
+        padding-right: 3px;
+        appearance: textfield;
+        -moz-appearance: textfield;
+    }
+    #section-send-email .recent-enrollment-days::-webkit-inner-spin-button,
+    #section-send-email .recent-enrollment-days::-webkit-outer-spin-button {
+        margin: 0;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+    #section-send-email .recent-enrollment-count {
+        margin-left: 0.5em;
+    }
+    #section-send-email .recent-enrollment-target {
+        flex-wrap: wrap !important;
+    }
+    #section-send-email .recent-enrollment-hint {
+        flex: 0 0 100%;
+        margin-left: 2em;
+    }
 </style>
 <div class="vert-left send-email leti-send-email" id="section-send-email">
     <div class="request-response msg msg-confirm copy" id="request-response"></div>
@@ -58,6 +86,15 @@ from openedx.core.djangolib.markup import HTML
                     <label for="target_learners">${_("All Learners")}</label>
                 </li>
                 %endif
+                <li class="recent-enrollment-target">
+                    <input type="checkbox" name="send_to" value="recent_enrollments" id="target_recent_enrollments">
+                    <label for="target_recent_enrollments">${_("Learners enrolled in the last")}</label>
+                      <input type="number" class="recent-enrollment-days" min="0" step="1" aria-label="${_("Number of days")}">
+                    <span>${_("days")}</span>
+                    <span class="recent-enrollment-count" role="status" aria-live="polite"
+                          data-endpoint="${section_data['recent_enrollment_count_url']}"></span>
+                      <span class="recent-enrollment-hint">${_("Enter 0 for learners enrolled today.")}</span>
+                </li>
             </ul>
             %if len(section_data['cohorts']) > 0:
             <ul role="group" class="email-targets-secondary">
