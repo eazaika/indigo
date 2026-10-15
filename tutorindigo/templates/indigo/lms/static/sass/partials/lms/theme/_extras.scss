@@ -108,7 +108,10 @@ body:not(.leti-programs-catalog-page) .find-courses {
 body.view-dashboard,
 body.view-profile,
 body.view-account-settings,
-body.layout-accomplishment {
+body.layout-accomplishment,
+body.leti-program-about-page,
+body.view-find-courses,
+body:has(.find-courses) {
   header.global-header {
     background-color: #00407c;
     position: absolute;
@@ -123,22 +126,22 @@ body.layout-accomplishment {
 
     .nav-links .main .nav-tab a {
       color: #fff !important;
-      padding: 23px 6px 24px;
+      padding: 23px 14px 24px;
       font-weight: 300;
-      background: rgb(51, 107, 156) !important;
-      border-bottom: 1px dashed rgb(92, 135, 173);
+      background: transparent !important;
+      border-bottom: 0;
       margin-bottom: 0;
 
       &.active {
-        background: rgb(51, 107, 156) !important;
-        border-bottom: 1px dashed rgb(92, 135, 173);
+        background: transparent !important;
+        border-bottom: 0;
         color: #fff !important;
       }
 
       &:hover,
       &:focus {
-        background: rgb(26, 83, 137) !important;
-        border-bottom: 1px solid rgb(109, 145, 180);
+        background: transparent !important;
+        border-bottom: 0;
         color: #fff !important;
       }
     }
@@ -151,6 +154,47 @@ body.layout-accomplishment {
         color: #fff !important;
       }
     }
+  }
+}
+
+header.global-header {
+  .nav-links .main .nav-tab {
+    position: relative;
+
+    & + .nav-tab::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 1px;
+      height: 24px;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    a {
+      font-family: Plex, 'IBM Plex Sans', sans-serif !important;
+      font-size: 1rem !important;
+      font-weight: 300 !important;
+      line-height: 1.5 !important;
+      background: transparent !important;
+      border-bottom: 0 !important;
+
+      &:hover,
+      &:focus {
+        background: transparent !important;
+        border-bottom: 0 !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+        text-decoration: underline !important;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 6px;
+      }
+    }
+  }
+
+  .user-image-frame {
+    margin-left: -4px !important;
+    border-radius: 4px !important;
   }
 }
 
@@ -516,24 +560,27 @@ body.view-updates {
         flex: 0 0 auto;
         height: 72px;
         color: #fff !important;
-        font-size: inherit;
+        font-family: Plex, 'IBM Plex Sans', sans-serif !important;
+        font-size: 1rem !important;
         font-weight: 300;
-        line-height: 1.3;
+        line-height: 1.5 !important;
         text-decoration: none;
         white-space: nowrap;
-        background: rgb(51, 107, 156) !important;
-        border-bottom: 1px dashed rgb(92, 135, 173);
-        padding: 0 12px;
+        background: transparent !important;
+        border-bottom: 0 !important;
+        padding: 0 14px;
         margin: 0;
         box-sizing: border-box;
 
         &:hover,
-        &:focus,
-        &.active {
+        &:focus {
           color: #fff !important;
-          text-decoration: none;
-          background: rgb(26, 83, 137) !important;
-          border-bottom: 1px solid rgb(109, 145, 180);
+          text-decoration: underline !important;
+          text-decoration-thickness: 1px;
+          text-underline-offset: 6px;
+          background: transparent !important;
+          border-bottom: 0 !important;
+          text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
         }
       }
     }
@@ -655,22 +702,29 @@ body.view-updates {
 
 .global-header .nav-links .main .nav-tab a {
   color: #fff !important;
-  padding: 23px 6px 24px;
+  padding: 23px 14px 24px;
+  font-family: Plex, 'IBM Plex Sans', sans-serif !important;
+  font-size: 1rem !important;
   font-weight: 300;
-  background: rgb(51, 107, 156) !important;
-  border-bottom: 1px dashed rgb(92, 135, 173);
+  line-height: 1.5 !important;
+  background: transparent !important;
+  border-bottom: 0 !important;
 
   &.active {
-    background: rgb(51, 107, 156) !important;
-    border-bottom: 1px dashed rgb(92, 135, 173);
+    background: transparent !important;
+    border-bottom: 0 !important;
     color: #fff !important;
   }
 
   &:hover,
   &:focus {
-    background: rgb(26, 83, 137) !important;
-    border-bottom: 1px solid rgb(109, 145, 180);
+    background: transparent !important;
+    border-bottom: 0 !important;
     color: #fff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
   }
 }
 
