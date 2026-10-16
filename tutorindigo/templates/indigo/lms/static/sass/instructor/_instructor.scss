@@ -2319,6 +2319,72 @@ body.view-instructordash {
         min-height: 0;
       }
     }
+
+    .scheduled-email-queue {
+      margin: 0 28px 24px;
+      padding-top: 18px;
+      border-top: 1px solid $instructor-border;
+
+      > .hd-4 {
+        margin: 0 0 12px;
+        color: $instructor-accent;
+        font-family: $font-family-title;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .scheduled-email-tasks {
+        margin: 0;
+      }
+
+      .scheduled-email-table-wrapper {
+        overflow-x: auto;
+      }
+
+      .scheduled-email-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: $instructor-text;
+      }
+
+      .scheduled-email-table th,
+      .scheduled-email-table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid $instructor-border;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      .scheduled-email-table th {
+        background: rgba(0, 73, 124, 0.06);
+        color: $instructor-accent;
+        font-weight: 700;
+      }
+
+      .scheduled-email-countdown {
+        color: $instructor-accent;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .scheduled-email-table a {
+        color: $instructor-accent;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .no-scheduled-email-tasks,
+      .scheduled-email-error {
+        margin: 16px 0 0;
+        color: $instructor-muted;
+        line-height: 1.5;
+      }
+
+      .scheduled-email-error {
+        color: #a32929;
+      }
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -2546,6 +2612,10 @@ body.view-instructordash {
       }
     }
 
+    .email-scheduling-warning-label {
+      text-transform: uppercase;
+    }
+
     // Send button — align right
     .leti-email-card--compose {
       > input[name="send"] {
@@ -2653,7 +2723,8 @@ body.view-instructordash {
     input[type="button"],
     input[name="send"],
     input[name="task-history-email-content"],
-    input[name="task-history-email"] {
+    input[name="task-history-email"],
+    .scheduled-email-queue .scheduled-email-table .cancel-scheduled-email {
       @include leti-instructor-btn-primary;
       background: $instructor-accent !important;
       background-color: $instructor-accent !important;
@@ -2671,6 +2742,22 @@ body.view-instructordash {
         background-color: #01306e !important;
         border-color: #01306e !important;
         color: #fff !important;
+      }
+    }
+
+    .scheduled-email-queue .scheduled-email-table .cancel-scheduled-email {
+      margin: 0 !important;
+      background: #a32929 !important;
+      background-color: #a32929 !important;
+      border-color: #a32929 !important;
+      box-shadow: 4px 4px 0 rgba(163, 41, 41, 0.22) !important;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: #7f2020 !important;
+        background-color: #7f2020 !important;
+        border-color: #7f2020 !important;
       }
     }
   }
@@ -4473,6 +4560,63 @@ body.view-instructordash {
     .invalidation-history {
       margin-top: 16px;
     }
+  }
+}
+
+body.view-instructordash .email-toast-container {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  z-index: 12000 !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 10px;
+  width: calc(100vw - 32px);
+  max-width: 440px;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none;
+}
+
+body.view-instructordash .email-toast {
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid $instructor-border;
+  border-left: 5px solid $instructor-accent;
+  border-radius: 8px;
+  background: $instructor-surface;
+  box-shadow: 0 14px 40px rgba(0, 29, 54, 0.24);
+  color: $instructor-text;
+  font-family: $instructor-body-font;
+  line-height: 1.5;
+  pointer-events: auto;
+}
+
+body.view-instructordash .email-toast-error {
+  border-left-color: #a32929;
+}
+
+body.view-instructordash .email-toast-dismiss {
+  flex: 0 0 auto;
+  border: 0;
+  padding: 2px;
+  background: transparent;
+  color: $instructor-muted;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  body.view-instructordash .email-toast {
+    padding: 14px 16px;
+  }
+
+  body.view-instructordash .scheduled-email-table th,
+  body.view-instructordash .scheduled-email-table td {
+    padding: 9px 10px;
   }
 }
 

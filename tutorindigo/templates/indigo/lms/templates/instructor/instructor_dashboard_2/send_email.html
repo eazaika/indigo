@@ -52,7 +52,6 @@ from openedx.core.djangolib.markup import HTML
     }
 </style>
 <div class="vert-left send-email leti-send-email" id="section-send-email">
-    <div class="request-response msg msg-confirm copy" id="request-response"></div>
     %if 'communications_mfe_url' in section_data:
     <p>
         <em>
@@ -155,13 +154,34 @@ from openedx.core.djangolib.markup import HTML
         <p class="copy">${_("We recommend sending learners no more than one email message per week. Before you send your email, review the text carefully and send it to yourself first, so that you can preview the formatting and make sure embedded images and links work correctly.")}</p>
     </div>
     <div class="submit-email-warning">
-        <p class="copy"><span style="color: red;"><b>${_("CAUTION!")}</b></span>
-        ${_("When you select Send Email, your email message is added to the queue for sending, and cannot be cancelled.")}
+        <p class="copy"><span class="email-scheduling-warning-label" style="color: red;"><b>${_("Important!")}</b></span>
+        ${_("Your message will be added to the sending queue. You can cancel it any time before the scheduled send time.")}
         </p>
     </div>
     <br />
     <input type="button" name="send" value="${_("Send")}" data-endpoint="${ section_data['send_email'] }" >
     <div class="request-response-error"></div>
+    <div class="scheduled-email-queue" style="display: none;">
+        <h4 class="hd hd-4">${_("Messages queued for sending")}</h4>
+        <div class="scheduled-email-tasks" data-endpoint="${section_data['scheduled_bulk_email_tasks_url']}">
+            <div class="scheduled-email-table-wrapper">
+                <table class="scheduled-email-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">${_("Message")}</th>
+                            <th scope="col">${_("Scheduled for")}</th>
+                            <th scope="col">${_("Time remaining")}</th>
+                            <th scope="col">${_("Action")}</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <p class="no-scheduled-email-tasks" style="display: none;"></p>
+            <p class="scheduled-email-error" role="alert"></p>
+        </div>
+        <div class="scheduled-email-messages-wrapper"></div>
+    </div>
     </div>
 
     %if settings.FEATURES.get('ENABLE_INSTRUCTOR_BACKGROUND_TASKS'):
