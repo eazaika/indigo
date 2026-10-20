@@ -81,6 +81,28 @@ $instructor-active-bg: rgba(0, 73, 124, 0.12);
   }
 }
 
+// Solid red control — email queue «Отменить» and cohort «Удалить группу»
+@mixin leti-instructor-btn-danger {
+  @include leti-instructor-btn-primary;
+  background: #a32929 !important;
+  background-color: #a32929 !important;
+  background-image: none !important;
+  border: 1px solid #a32929 !important;
+  color: #fff !important;
+  box-shadow: 4px 4px 0 rgba(163, 41, 41, 0.22) !important;
+  text-shadow: none !important;
+  filter: none !important;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: #7f2020 !important;
+    background-color: #7f2020 !important;
+    border-color: #7f2020 !important;
+    color: #fff !important;
+  }
+}
+
 @mixin leti-instructor-card {
   background: $instructor-surface;
   border: none;
@@ -1789,6 +1811,15 @@ body.view-instructordash {
       }
     }
 
+    // «Удалить группу» — same control as email «Отменить».
+    // Selector stays ahead of .cohort-management-settings .action-primary.
+    .cohort-management-settings .cohort-management-delete-actions button.form-submit.action-delete-cohort {
+      @include leti-instructor-btn-danger;
+      position: static !important;
+      float: none !important;
+      margin: 0 !important;
+    }
+
     // Empty shells under «Add Cohort» — hide white card placeholders
     .cohort-management-add-form:empty,
     .cohort-management-group:empty,
@@ -2723,8 +2754,7 @@ body.view-instructordash {
     input[type="button"],
     input[name="send"],
     input[name="task-history-email-content"],
-    input[name="task-history-email"],
-    .scheduled-email-queue .scheduled-email-table .cancel-scheduled-email {
+    input[name="task-history-email"] {
       @include leti-instructor-btn-primary;
       background: $instructor-accent !important;
       background-color: $instructor-accent !important;
@@ -2746,19 +2776,8 @@ body.view-instructordash {
     }
 
     .scheduled-email-queue .scheduled-email-table .cancel-scheduled-email {
+      @include leti-instructor-btn-danger;
       margin: 0 !important;
-      background: #a32929 !important;
-      background-color: #a32929 !important;
-      border-color: #a32929 !important;
-      box-shadow: 4px 4px 0 rgba(163, 41, 41, 0.22) !important;
-
-      &:hover,
-      &:focus,
-      &:active {
-        background: #7f2020 !important;
-        background-color: #7f2020 !important;
-        border-color: #7f2020 !important;
-      }
     }
   }
 
