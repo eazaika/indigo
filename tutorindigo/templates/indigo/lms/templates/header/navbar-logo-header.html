@@ -6,7 +6,6 @@
 <%!
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from lms.djangoapps.ccx.overrides import get_current_ccx
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.features.enterprise_support.utils import get_enterprise_learner_generic_name, get_enterprise_learner_portal
 from common.djangoapps.edxmako.shortcuts import marketing_link
@@ -28,13 +27,6 @@ is_static_course_tab_page = course and last_segment and len(last_segment) >= 24 
 use_course_about_header = is_course_about or is_instructor_page or is_static_course_tab_page or is_pdfbook_page or is_bookmarks_page or is_updates_page
 courses_are_browsable = settings.FEATURES.get('COURSES_ARE_BROWSABLE')
 catalog_href = marketing_link('COURSES') if courses_are_browsable else '/courses'
-course_display_name = ''
-if use_course_about_header:
-  course_display_name = course.display_name_with_default
-  if settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
-    ccx = get_current_ccx(course.id)
-    if ccx:
-      course_display_name = ccx.display_name
 %>
 
 % if use_course_about_header:
@@ -48,11 +40,6 @@ if use_course_about_header:
     % else:
       <a class="course-catalog-link tab-nav-link" href="${catalog_href}">${_('Discover New')}</a>
     % endif
-    <div class="course-header course-header--about">
-      <span class="provider">${course.display_org_with_default}:</span>
-      <span class="course-number">${course.display_number_with_default}</span>
-      <span class="course-name">${course_display_name}</span>
-    </div>
   </div>
 % endif
 
@@ -73,20 +60,6 @@ if use_course_about_header:
             <span class="font-italic"> | EDGE</span>
         % endif
     </a>
-  % endif
-  % if course and not use_course_about_header:
-    <div class="course-header">
-      <span class="provider">${course.display_org_with_default}:</span>
-      <span class="course-number">${course.display_number_with_default}</span>
-      <%
-      display_name = course.display_name_with_default
-      if settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
-        ccx = get_current_ccx(course.id)
-        if ccx:
-          display_name = ccx.display_name
-      %>
-      <span class="course-name">${display_name}</span>
-    </div>
   % endif
 </h1>
 % if enable_enterprise_sidebar:

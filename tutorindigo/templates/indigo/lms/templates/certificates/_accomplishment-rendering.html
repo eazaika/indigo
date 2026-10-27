@@ -27,14 +27,42 @@ course_mode_class = course_mode if course_mode else ''
 
     <div class="wrapper-accomplishment-rendering">
         <div class="accomplishment-rendering">
+            <span class="deco-corner deco-corner-tl"></span>
+            <span class="deco-corner deco-corner-tr"></span>
+            <span class="deco-corner deco-corner-bl"></span>
+            <span class="deco-corner deco-corner-br"></span>
+
             <div class="accomplishment-type">
+                <span class="accomplishment-type-symbol">
+                    <img class="src" src="${static.url('certificates/images/MAIN_spinner_150.gif')}" alt="Image for course mode of type ${course_mode_class}">
+                </span>
+
+                % if accomplishment_ministry or accomplishment_consortium or accomplishment_university:
+                    % if accomplishment_ministry:
+                    <span class="accomplishment-type-label hd-5">${accomplishment_ministry}</span>
+                    % endif
+                    % if accomplishment_consortium:
+                    <span class="accomplishment-type-label hd-5">${accomplishment_consortium}</span>
+                    % endif
+                    % if accomplishment_university:
+                    <span class="accomplishment-type-label hd-5">${accomplishment_university}</span>
+                    % endif
+                    <span class="accomplishment-type-label hd-1 emphasized" style="margin-top: 1rem;">${_("CERTIFICATE")}</span>
+                    % if cert_underline:
+                    <span class="accomplishment-type-label hd-5">${cert_underline}</span>
+                    % endif
+                % else:
                 <span class="accomplishment-type-label hd-3">${document_title}</span>
+                % endif
             </div>
 
             <div class="wrapper-statement-and-signatories">
                 <div class="accomplishment-statement">
                     <p class="accomplishment-statement-lead">
                         <strong class="accomplishment-recipient hd-1 emphasized">${accomplishment_copy_name}</strong>
+                        % if stud_underline:
+                        <span class="copy copy-lead">${stud_underline}</span>
+                        % endif
                         <span class="accomplishment-summary copy copy-lead">${accomplishment_copy_description_full}</span>
 
                         <span class="accomplishment-course hd-1 emphasized">
@@ -44,7 +72,12 @@ course_mode_class = course_mode if course_mode else ''
                         </span>
                     </p>
 
+                    % if accomplishment_dates:
+                    <p class="accomplishment-statement-detail copy copy-lead" style="margin-bottom: 0;">${accomplishment_copy_course_description}</p>
+                    <p class="accomplishment-statement-detail copy copy-lead">${accomplishment_dates}</p>
+                    % else:
                     <p class="accomplishment-statement-detail copy copy-lead">${accomplishment_copy_course_description}</p>
+                    % endif
                 </div>
 
                 % if mode != 'base':
@@ -86,6 +119,14 @@ course_mode_class = course_mode if course_mode else ''
                         </div>
                     </li>
 
+                    <li class="wrapper-organization">
+                        <div class="organization organization-leti">
+                            <a href="https://www.etu.ru">
+                                <img class="organization-logo" src="${static.url('images/logo_leti.png')}" alt="LETI University">
+                            </a>
+                        </div>
+                    </li>
+
                     % if organization_logo:
                     <li class="wrapper-organization">
                         <div class="organization">
@@ -107,7 +148,7 @@ course_mode_class = course_mode if course_mode else ''
                     <dt class="label sr-only">${_("Awarded to:")}</dt>
                     <dd class="value copy copy-meta">
                         <span class="recipient-img">
-                            <img class="src" src="/static/certificates/images/demo-user-profile.png" alt="Recipient Image">
+                            <img class="src" src="${static.url('certificates/images/stud_icon_' + course_mode_class + '.png')}" alt="Recipient Image">
                         </span>
                         <div class="recipient-details">
                             <h3 class="recipient-name">${accomplishment_copy_name}</h3>
